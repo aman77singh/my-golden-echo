@@ -95,6 +95,7 @@ function Constellation() {
       <svg className="h-full w-full opacity-70" viewBox="0 0 100 100" preserveAspectRatio="none">
         {stars.slice(0, 20).map((star, i) => {
           const next = stars[(i + 7) % stars.length];
+          if (!next) return null;
           return <motion.line key={`line-${i}`} x1={star.x} y1={star.y} x2={next.x} y2={next.y} className="stroke-accent/15" strokeWidth=".08" initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: [.03, .3, .08] }} transition={{ duration: 2.5, delay: i * .08 }} />;
         })}
         {stars.map((star, i) => <motion.circle key={i} cx={star.x} cy={star.y} r={star.r / 10} className="fill-accent" animate={{ opacity: [.15, .85, .15], scale: [.7, 1.4, .7] }} transition={{ duration: 2.2 + (i % 5) * .4, repeat: Infinity, delay: star.delay }} />)}
@@ -222,7 +223,7 @@ function ThoughtsSection() {
 
 function MusicPlayer({ activeTrack, playing, setPlaying, selectTrack }: { activeTrack: number; playing: boolean; setPlaying: (value: boolean) => void; selectTrack: (index: number) => void }) {
   const [open, setOpen] = useState(false);
-  const track = content.spotify.tracks[activeTrack];
+  const track = content.spotify.tracks[activeTrack] ?? content.spotify.tracks[0];
   useEffect(() => {
     if (!content.spotify.clientId || !content.spotify.accessToken) return;
     const script = document.createElement("script"); script.src = "https://sdk.scdn.co/spotify-player.js"; script.async = true; document.body.appendChild(script);
@@ -248,7 +249,7 @@ function MusicPlayer({ activeTrack, playing, setPlaying, selectTrack }: { active
 }
 
 function MusicSection({ activeTrack }: { activeTrack: number }) {
-  const track = content.spotify.tracks[activeTrack];
+  const track = content.spotify.tracks[activeTrack] ?? content.spotify.tracks[0];
   return <section id="music" data-section className="section-shell bg-surface"><SectionHeading number="06" eyebrow="Our soundtrack" title="Some memories begin with a song." />
     <div className="grid items-center gap-10 md:grid-cols-[.8fr_1.2fr]"><div className="relative mx-auto aspect-square w-full max-w-sm rounded-full bg-vinyl shadow-vinyl"><div className="absolute inset-[8%] overflow-hidden rounded-full border border-border"><img src={track.art} alt={`Album art for ${track.title}`} width={1280} height={1536} loading="lazy" className="h-full w-full object-cover opacity-70" /></div><div className="absolute inset-[44%] rounded-full bg-background shadow-inner" /></div><div><p className="font-script text-2xl text-accent">Playing in our heads</p><h3 className="mt-2 font-display text-4xl text-foreground">{track.title}</h3><p className="mt-3 text-muted-foreground">{track.artist}</p><div className="mt-8 h-px overflow-hidden bg-border"><motion.div className="h-full bg-accent" animate={{ width: ["0%", "100%"] }} transition={{ duration: 24, repeat: Infinity, ease: "linear" }} /></div></div></div>
   </section>;
