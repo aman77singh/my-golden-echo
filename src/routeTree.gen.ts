@@ -10,33 +10,128 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApologiesRouteImport } from './routes/apologies'
+import { Route as LetterRouteImport } from './routes/letter'
+import { Route as MusicRouteImport } from './routes/music'
+import { Route as PhotosRouteImport } from './routes/photos'
+import { Route as SecretRouteImport } from './routes/secret'
+import { Route as ThoughtsRouteImport } from './routes/thoughts'
+import { Route as TimelineRouteImport } from './routes/timeline'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApologiesRoute = ApologiesRouteImport.update({
+  id: '/apologies',
+  path: '/apologies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LetterRoute = LetterRouteImport.update({
+  id: '/letter',
+  path: '/letter',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MusicRoute = MusicRouteImport.update({
+  id: '/music',
+  path: '/music',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PhotosRoute = PhotosRouteImport.update({
+  id: '/photos',
+  path: '/photos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SecretRoute = SecretRouteImport.update({
+  id: '/secret',
+  path: '/secret',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ThoughtsRoute = ThoughtsRouteImport.update({
+  id: '/thoughts',
+  path: '/thoughts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TimelineRoute = TimelineRouteImport.update({
+  id: '/timeline',
+  path: '/timeline',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/apologies': typeof ApologiesRoute
+  '/letter': typeof LetterRoute
+  '/music': typeof MusicRoute
+  '/photos': typeof PhotosRoute
+  '/secret': typeof SecretRoute
+  '/thoughts': typeof ThoughtsRoute
+  '/timeline': typeof TimelineRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/apologies': typeof ApologiesRoute
+  '/letter': typeof LetterRoute
+  '/music': typeof MusicRoute
+  '/photos': typeof PhotosRoute
+  '/secret': typeof SecretRoute
+  '/thoughts': typeof ThoughtsRoute
+  '/timeline': typeof TimelineRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/apologies': typeof ApologiesRoute
+  '/letter': typeof LetterRoute
+  '/music': typeof MusicRoute
+  '/photos': typeof PhotosRoute
+  '/secret': typeof SecretRoute
+  '/thoughts': typeof ThoughtsRoute
+  '/timeline': typeof TimelineRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/apologies'
+    | '/letter'
+    | '/music'
+    | '/photos'
+    | '/secret'
+    | '/thoughts'
+    | '/timeline'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/apologies'
+    | '/letter'
+    | '/music'
+    | '/photos'
+    | '/secret'
+    | '/thoughts'
+    | '/timeline'
+  id:
+    | '__root__'
+    | '/'
+    | '/apologies'
+    | '/letter'
+    | '/music'
+    | '/photos'
+    | '/secret'
+    | '/thoughts'
+    | '/timeline'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApologiesRoute: typeof ApologiesRoute
+  LetterRoute: typeof LetterRoute
+  MusicRoute: typeof MusicRoute
+  PhotosRoute: typeof PhotosRoute
+  SecretRoute: typeof SecretRoute
+  ThoughtsRoute: typeof ThoughtsRoute
+  TimelineRoute: typeof TimelineRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +143,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/apologies': {
+      id: '/apologies'
+      path: '/apologies'
+      fullPath: '/apologies'
+      preLoaderRoute: typeof ApologiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/letter': {
+      id: '/letter'
+      path: '/letter'
+      fullPath: '/letter'
+      preLoaderRoute: typeof LetterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/music': {
+      id: '/music'
+      path: '/music'
+      fullPath: '/music'
+      preLoaderRoute: typeof MusicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/photos': {
+      id: '/photos'
+      path: '/photos'
+      fullPath: '/photos'
+      preLoaderRoute: typeof PhotosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/secret': {
+      id: '/secret'
+      path: '/secret'
+      fullPath: '/secret'
+      preLoaderRoute: typeof SecretRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/thoughts': {
+      id: '/thoughts'
+      path: '/thoughts'
+      fullPath: '/thoughts'
+      preLoaderRoute: typeof ThoughtsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/timeline': {
+      id: '/timeline'
+      path: '/timeline'
+      fullPath: '/timeline'
+      preLoaderRoute: typeof TimelineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApologiesRoute: ApologiesRoute,
+  LetterRoute: LetterRoute,
+  MusicRoute: MusicRoute,
+  PhotosRoute: PhotosRoute,
+  SecretRoute: SecretRoute,
+  ThoughtsRoute: ThoughtsRoute,
+  TimelineRoute: TimelineRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
