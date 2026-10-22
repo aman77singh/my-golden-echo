@@ -4,6 +4,8 @@ import { SymptomLog, ISymptomLogDoc } from "../models/SymptomLog.js";
 import { User } from "../models/User.js";
 import { AuthUser, CycleFlow } from "../types/shared.js";
 import { ForbiddenError, NotFoundError } from "../utils/errors.js";
+import { emitToCouple } from "../socket.js";
+import { sendToPartner } from "./pushService.js";
 
 export interface CreateCycleDTO {
   startDate: string | Date;
@@ -26,6 +28,23 @@ export interface SymptomLogDTO {
   mood?: string;
 }
 
+async function notifyPartnerOfCycleActivity(currentUser: AuthUser, action: string): Promise<void> {
+  if (!currentUser.shareCycle) return;
+
+  emitToCouple(currentUser.coupleId, "cycle:activity", {
+    actorId: currentUser.id,
+    actorName: currentUser.name,
+    action,
+  });
+
+  void sendToPartner(currentUser.id, {
+    title: "Cycle update 🌸",
+    body: `${currentUser.name} updated shared cycle information.`,
+    category: "cycle",
+    url: "/app/cycle",
+  });
+}
+
 export class CycleService {
   /**
    * Only the owner (role 'her') may create their cycle record.
@@ -43,6 +62,7 @@ export class CycleService {
       flow: data.flow,
       notes: data.notes,
     });
+    await notifyPartnerOfCycleActivity(currentUser, "created");
     return cycle;
   }
 
@@ -111,6 +131,7 @@ export class CycleService {
     if (data.notes !== undefined) cycle.notes = data.notes;
 
     await cycle.save();
+    await notifyPartnerOfCycleActivity(currentUser, "updated");
     return cycle;
   }
 
@@ -136,6 +157,7 @@ export class CycleService {
     }
 
     await cycle.deleteOne();
+    await notifyPartnerOfCycleActivity(currentUser, "deleted");
   }
 
   /**
@@ -167,6 +189,7 @@ export class CycleService {
       }
     );
 
+    await notifyPartnerOfCycleActivity(currentUser, "symptoms");
     return log;
   }
 
@@ -236,5 +259,6 @@ export class CycleService {
     }
 
     await log.deleteOne();
+    await notifyPartnerOfCycleActivity(currentUser, "symptoms");
   }
 }

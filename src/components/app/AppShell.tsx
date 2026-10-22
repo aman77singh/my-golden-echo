@@ -8,7 +8,6 @@ import {
   CalendarHeart,
   Sparkles,
   MoreHorizontal,
-  Heart,
   Bell,
 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -33,6 +32,11 @@ export function AppShell({ children }: AppShellProps) {
   const [moreOpen, setMoreOpen] = React.useState(false);
   const [pushPromptOpen, setPushPromptOpen] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState<CurrentUser | null>(() => getAuthenticatedUser());
+  const [avatarLoadFailed, setAvatarLoadFailed] = React.useState(false);
+
+  React.useEffect(() => {
+    setAvatarLoadFailed(false);
+  }, [currentUser?.avatarUrl]);
 
   React.useEffect(() => {
     document.body.classList.add("app-theme");
@@ -112,8 +116,17 @@ export function AppShell({ children }: AppShellProps) {
         {/* Top Header */}
         <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-border/70 bg-background/90 px-4 backdrop-blur-xl shadow-xs">
           <Link to="/app" className="flex items-center gap-2">
-            <span className="flex h-7 w-7 items-center justify-center rounded-xl bg-gradient-to-tr from-[#E5A962] to-[#E07A5F] text-white shadow-sm shadow-accent/30">
-              <Heart className="h-4 w-4 fill-current" />
+            <span className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-full bg-gradient-to-tr from-[#E5A962] to-[#E07A5F] text-xs font-bold text-white shadow-sm shadow-accent/30">
+              {currentUser.avatarUrl && !avatarLoadFailed ? (
+                <img
+                  src={currentUser.avatarUrl}
+                  alt=""
+                  className="h-full w-full object-cover"
+                  onError={() => setAvatarLoadFailed(true)}
+                />
+              ) : (
+                currentUser.name?.trim().charAt(0).toUpperCase() || "?"
+              )}
             </span>
             <span className="font-display text-base font-bold tracking-tight text-foreground">
               Our Space

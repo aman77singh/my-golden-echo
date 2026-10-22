@@ -94,7 +94,11 @@ datesRouter.post(
         estimatedCost: req.body.estimatedCost,
       });
 
-      emitToCouple(req.user!.coupleId, "date:new", idea);
+      emitToCouple(req.user!.coupleId, "date:new", {
+        ...idea.toObject(),
+        actorId: req.user!.id,
+        actorName: req.user!.name,
+      });
 
       sendToPartner(req.user!.id, {
         title: "New Date Idea in the Jar! 🍷",
@@ -126,7 +130,11 @@ datesRouter.patch("/:id/complete", async (req: Request, res: Response, next: Nex
     idea.completed = !idea.completed;
     await idea.save();
 
-    emitToCouple(req.user!.coupleId, "date:update", idea);
+    emitToCouple(req.user!.coupleId, "date:update", {
+      ...idea.toObject(),
+      actorId: req.user!.id,
+      actorName: req.user!.name,
+    });
 
     res.status(200).json(idea);
   } catch (error) {
@@ -147,6 +155,10 @@ datesRouter.delete("/:id", async (req: Request, res: Response, next: NextFunctio
     if (!idea) throw new NotFoundError("Date idea not found.");
 
     await idea.deleteOne();
+    emitToCouple(req.user!.coupleId, "date:delete", {
+      actorId: req.user!.id,
+      actorName: req.user!.name,
+    });
     res.status(200).json({ message: "Date idea removed." });
   } catch (error) {
     next(error);

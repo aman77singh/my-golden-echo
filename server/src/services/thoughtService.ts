@@ -215,6 +215,7 @@ export class ThoughtService {
     emitToCouple(currentUser.coupleId, "thought:response", {
       thoughtId: thought._id.toString(),
       thought,
+      actorId: currentUser.id,
     });
 
     // Send push notification to author

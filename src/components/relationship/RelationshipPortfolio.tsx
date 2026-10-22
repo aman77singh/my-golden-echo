@@ -252,7 +252,7 @@ export function PasswordGate({ onUnlock, onClose }: { onUnlock: () => void; onCl
   const [showHardHintModal, setShowHardHintModal] = useState(false);
 
   const security = content.security;
-  const correctPasscode = (security?.password || "forever").toLowerCase().trim();
+  const correctPasscode = "ADITI14";
   const butterflyHints = security?.butterflyHints || [];
 
   const handleAbortScare = () => {
@@ -264,29 +264,7 @@ export function PasswordGate({ onUnlock, onClose }: { onUnlock: () => void; onCl
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const inputClean = passcode.toLowerCase().trim();
-    const normalized = inputClean.replace(/[^a-z0-9]/g, "");
-
-    const isChronologicalMatch =
-      normalized.indexOf("ghaziabad") !== -1 &&
-      normalized.indexOf("sherlock") !== -1 &&
-      (normalized.indexOf("index") !== -1 || normalized.indexOf("finger") !== -1) &&
-      (normalized.indexOf("270826") !== -1 || normalized.indexOf("27082026") !== -1 || normalized.indexOf("2708") !== -1) &&
-      normalized.indexOf("tokyo") !== -1;
-
-    if (
-      inputClean === correctPasscode ||
-      inputClean === "aditi14" ||
-      normalized === "aditi14" ||
-      inputClean === "14/27" ||
-      normalized === "1427" ||
-      inputClean === "14-27" ||
-      inputClean === "14 27" ||
-      isChronologicalMatch ||
-      inputClean === "forever" ||
-      inputClean === "1604" ||
-      inputClean === "aditi"
-    ) {
+    if (passcode === correctPasscode) {
       onUnlock();
     } else {
       setError(true);
@@ -719,7 +697,7 @@ export function PasswordGate({ onUnlock, onClose }: { onUnlock: () => void; onCl
               animate={{ opacity: 1, y: 0 }}
               className="text-xs font-semibold text-destructive"
             >
-              It's locked! Ask Aman for the password! 🔐
+              Password incorrect. Enter ADITI14 to unlock these chapters.
             </motion.p>
           )}
 
@@ -765,7 +743,6 @@ export function PasswordGate({ onUnlock, onClose }: { onUnlock: () => void; onCl
 export function Sidebar({
   activePath,
   visited,
-  unlocked,
   authenticated = false,
   onNavigate,
   onLock,
@@ -773,7 +750,6 @@ export function Sidebar({
 }: {
   activePath: string;
   visited: Set<string>;
-  unlocked: boolean;
   authenticated?: boolean;
   onNavigate?: () => void;
   onLock?: () => void;
@@ -783,9 +759,7 @@ export function Sidebar({
     <nav aria-label="Story sections" className="flex flex-col gap-1">
       {navItems.map((item, index) => {
         const isHome = item.id === "home";
-        const displayLabel = !authenticated && !isHome ? "????" : item.label;
-        const isBonusLocked = item.id === "bonus" && !unlocked;
-        const isItemLocked = !authenticated ? !isHome : isBonusLocked;
+        const isItemLocked = !authenticated && !isHome;
         const isActive = activePath === item.path;
 
         const className = `group flex items-center justify-start gap-3 border-l px-4 py-3 text-left text-sm transition-colors ${
@@ -794,17 +768,7 @@ export function Sidebar({
             : isItemLocked
             ? "border-border/40 text-muted-foreground/60 hover:border-accent/40 hover:bg-accent/5 hover:text-foreground"
             : "border-border/50 text-muted-foreground hover:border-accent/50 hover:bg-accent/5 hover:text-foreground"
-        } ${item.id === "bonus" && unlocked ? "animate-shimmer" : ""}`;
-
-        if (authenticated && isBonusLocked) {
-          return (
-            <div key={item.id} className="group flex items-center justify-start gap-3 border-l px-4 py-3 text-left text-sm pointer-events-none border-border/40 text-muted-foreground/40">
-              <span className="w-5 font-mono text-[10px] text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
-              <span className="flex-1 font-sans font-medium">{item.label}</span>
-              <LockKeyhole className="h-3.5 w-3.5" />
-            </div>
-          );
-        }
+        }`;
 
         return (
           <Link
@@ -817,7 +781,7 @@ export function Sidebar({
             className={className}
           >
             <span className="w-5 font-mono text-[10px] text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
-            <span className="flex-1 font-sans font-medium">{displayLabel}</span>
+            <span className="flex-1 font-sans font-medium">{item.label}</span>
             {isItemLocked ? (
               <LockKeyhole className="h-3.5 w-3.5 text-accent/70" />
             ) : visited.has(item.id) && item.id !== "bonus" ? (
@@ -1127,14 +1091,21 @@ export function ApologiesView() {
 }
 
 export function ThoughtsView() {
-  const rotations = ["-rotate-2", "rotate-1", "rotate-2", "-rotate-1", "rotate-1"];
+  const rotations = ["sm:-rotate-2", "sm:rotate-1", "sm:rotate-2", "sm:-rotate-1", "sm:rotate-1"];
   const doodles = ["☾", "♡", "✦", "☕", "∞"];
-  return <section className="section-shell overflow-hidden">
+  const cardPalettes = [
+    "border-[#E7AE8F] bg-gradient-to-br from-[#FFF5EC] to-[#F8E3D4]",
+    "border-[#E4C79B] bg-gradient-to-br from-[#FFF8E8] to-[#F5E8CC]",
+    "border-[#D9AFA0] bg-gradient-to-br from-[#FFF1E9] to-[#F2DDD4]",
+    "border-[#C8D5B9] bg-gradient-to-br from-[#F4F6EC] to-[#E7EDDE]",
+    "border-[#D9B9A8] bg-gradient-to-br from-[#FFF5ED] to-[#F2E2D6]",
+  ];
+  return <section className="section-shell overflow-hidden bg-[#F5EBDD]">
     <SectionHeading number="05" eyebrow="Random thoughts" title="Things I never want to forget." />
-    <div className="grid gap-7 md:grid-cols-6">{content.thoughts.map((thought, i) => <motion.article key={thought} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} whileHover={{ rotate: 0, y: -6 }} viewport={{ once: true }} className={`relative rounded-sm border border-border bg-card p-7 shadow-photo ${rotations[i]} ${i === 0 || i === 3 ? "md:col-span-4" : "md:col-span-2"}`}>
-      <span className="absolute -right-2 -top-5 font-script text-4xl text-accent/70">{doodles[i]}</span>
-      <p className="font-display text-xl leading-8 font-semibold text-foreground">“{thought}”</p>
-      <span className="mt-6 block text-[9px] uppercase tracking-[.28em] font-sans text-muted-foreground">Note {String(i + 1).padStart(2, "0")}</span>
+    <div className="grid gap-5 sm:gap-7 md:grid-cols-6">{content.thoughts.map((thought, i) => <motion.article key={thought} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} whileHover={{ rotate: 0, y: -6 }} viewport={{ once: true }} className={`relative rounded-2xl border p-6 shadow-photo sm:p-7 ${cardPalettes[i % cardPalettes.length]} ${rotations[i]} ${i === 0 || i === 3 ? "md:col-span-4" : "md:col-span-2"}`}>
+      <span className="absolute right-4 top-2 font-script text-4xl text-[#A94731]/70">{doodles[i]}</span>
+      <p className="pr-5 font-display text-lg font-semibold leading-8 text-[#34241E] sm:text-xl">“{thought}”</p>
+      <span className="mt-5 block border-t border-[#8C6957]/20 pt-3 font-sans text-[9px] uppercase tracking-[.28em] text-[#72594E]">Note {String(i + 1).padStart(2, "0")}</span>
     </motion.article>)}</div>
   </section>;
 }

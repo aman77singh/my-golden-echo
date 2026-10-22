@@ -5,6 +5,7 @@ import {
   createRootRouteWithContext,
   useRouter,
   useLocation,
+  useNavigate,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -150,6 +151,7 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const location = useLocation();
+  const navigate = useNavigate();
   const pathname = location.pathname;
 
   const security = content.security;
@@ -179,9 +181,9 @@ function RootComponent() {
     } catch {}
   }, []);
 
-  const unlocked = requiredSections.every((id) => visited.has(id));
   const ourSong = content.spotify.tracks[activeTrack]?.isOurSong && playing;
-  const shouldShowGate = isSecurityEnabled && !authenticated;
+  const isProtectedChapter = Boolean(pathToId[pathname] && pathname !== "/");
+  const shouldShowGate = isSecurityEnabled && isProtectedChapter && !authenticated;
 
   useEffect(() => {
     const sectionId = pathToId[pathname];
@@ -242,7 +244,10 @@ function RootComponent() {
     return (
       <QueryClientProvider client={queryClient}>
         <HeartCursor />
-        <PasswordGate onUnlock={handleUnlock} />
+        <PasswordGate
+          onUnlock={handleUnlock}
+          onClose={() => navigate({ to: "/" })}
+        />
         <div className="pointer-events-none fixed inset-0 z-[80] opacity-[.035] mix-blend-multiply film-grain" aria-hidden="true" />
       </QueryClientProvider>
     );
@@ -273,7 +278,6 @@ function RootComponent() {
           <Sidebar
             activePath={pathname}
             visited={visited}
-            unlocked={unlocked}
             authenticated={authenticated}
             onLock={handleLock}
           />
@@ -298,7 +302,6 @@ function RootComponent() {
               <Sidebar
                 activePath={pathname}
                 visited={visited}
-                unlocked={unlocked}
                 authenticated={authenticated}
                 onNavigate={() => setMenuOpen(false)}
                 onLock={() => {

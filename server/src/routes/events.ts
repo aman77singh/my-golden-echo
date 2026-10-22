@@ -114,7 +114,11 @@ eventsRouter.post(
         isCountdown: req.body.isCountdown,
       });
 
-      emitToCouple(req.user!.coupleId, "event:new", event);
+      emitToCouple(req.user!.coupleId, "event:new", {
+        ...event.toObject(),
+        actorId: req.user!.id,
+        actorName: req.user!.name,
+      });
 
       res.status(201).json(event);
     } catch (error) {
@@ -146,6 +150,11 @@ eventsRouter.patch(
       if (req.body.isCountdown !== undefined) event.isCountdown = req.body.isCountdown;
 
       await event.save();
+      emitToCouple(req.user!.coupleId, "event:update", {
+        ...event.toObject(),
+        actorId: req.user!.id,
+        actorName: req.user!.name,
+      });
       res.status(200).json(event);
     } catch (error) {
       next(error);
@@ -166,6 +175,11 @@ eventsRouter.delete("/:id", async (req: Request, res: Response, next: NextFuncti
     if (!event) throw new NotFoundError("Event not found.");
 
     await event.deleteOne();
+    emitToCouple(req.user!.coupleId, "event:delete", {
+      actorId: req.user!.id,
+      actorName: req.user!.name,
+      title: event.title,
+    });
     res.status(200).json({ message: "Event removed successfully." });
   } catch (error) {
     next(error);

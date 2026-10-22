@@ -281,6 +281,7 @@ export class ProgressService {
     emitToCouple(currentUser.coupleId, "progress:reaction", {
       postId: post._id.toString(),
       reactions: post.reactions,
+      actorId: currentUser.id,
     });
 
     return post;

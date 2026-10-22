@@ -142,6 +142,7 @@ conversationsRouter.post(
         emitToCouple(req.user!.coupleId, "conversation:revealed", {
           date: starter.date,
           starter,
+          actorId: userId,
         });
 
         sendToPartner(userId, {

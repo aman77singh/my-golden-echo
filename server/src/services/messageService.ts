@@ -157,6 +157,7 @@ export class MessageService {
     emitToCouple(currentUser.coupleId, "message:reaction", {
       messageId: message._id.toString(),
       reactions: message.reactions,
+      actorId: currentUser.id,
     });
 
     return message;
