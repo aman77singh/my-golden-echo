@@ -4,6 +4,7 @@ import { env } from "../config/env.js";
 import { User } from "../models/User.js";
 import { UnauthorizedError } from "../utils/errors.js";
 import { AuthUser } from "../types/shared.js";
+import { initializeCycleSharingPreference } from "../services/authService.js";
 
 interface AccessTokenPayload {
   userId: string;
@@ -29,10 +30,12 @@ export async function requireAuth(req: Request, _res: Response, next: NextFuncti
       throw new UnauthorizedError("Invalid access token.");
     }
 
-    const user = await User.findById(decoded.userId).select("-passwordHash").lean();
+    const user = await User.findById(decoded.userId).select("-passwordHash");
     if (!user) {
       throw new UnauthorizedError("User no longer exists.");
     }
+
+    await initializeCycleSharingPreference(user);
 
     const authUser: AuthUser = {
       id: user._id.toString(),

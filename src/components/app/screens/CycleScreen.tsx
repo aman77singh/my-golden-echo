@@ -112,8 +112,7 @@ export function CycleScreen() {
 
   // Partner shareCycle check:
   // If currentUser is 'him', check coupleData.partner?.shareCycle
-  const partnerShared =
-    coupleData?.partner?.shareCycle ?? false;
+  const partnerShared = coupleData?.partner?.shareCycle ?? false;
 
   const myShareCycle = coupleData?.user?.shareCycle ?? false;
 
@@ -148,7 +147,7 @@ export function CycleScreen() {
       toast.success(
         res.user.shareCycle
           ? "Cycle shared with your partner 💕"
-          : "Cycle data is now private to you 🔒"
+          : "Cycle data is now private to you 🔒",
       );
       queryClient.invalidateQueries({ queryKey: ["couple"] });
       queryClient.invalidateQueries({ queryKey: ["cycles"] });

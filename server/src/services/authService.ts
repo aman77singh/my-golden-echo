@@ -4,6 +4,7 @@ import { User, IUserDoc } from "../models/User.js";
 import { env } from "../config/env.js";
 import { UnauthorizedError } from "../utils/errors.js";
 import { AuthUser, LoginResponse } from "../types/shared.js";
+import { emitToCouple } from "../socket.js";
 
 interface TokenPayload {
   userId: string;
@@ -36,6 +37,35 @@ export function formatAuthUser(user: IUserDoc): AuthUser {
       eveningProgressHour: 20,
     },
   };
+}
+
+export async function initializeCycleSharingPreference(user: IUserDoc): Promise<void> {
+  if (user.role !== "her" || user.cycleSharingPreferenceConfigured) {
+    return;
+  }
+
+  const initializedUser = await User.findOneAndUpdate(
+    { _id: user._id, cycleSharingPreferenceConfigured: { $ne: true } },
+    { $set: { shareCycle: true, cycleSharingPreferenceConfigured: true } },
+    { new: true }
+  );
+
+  if (initializedUser) {
+    user.shareCycle = true;
+    user.cycleSharingPreferenceConfigured = true;
+    emitToCouple(initializedUser.coupleId.toString(), "privacy:update", {
+      userId: initializedUser._id.toString(),
+      shareCycle: true,
+    });
+    return;
+  }
+
+  const currentUser = await User.findById(user._id);
+  if (!currentUser) {
+    throw new UnauthorizedError("User no longer exists.");
+  }
+  user.shareCycle = currentUser.shareCycle;
+  user.cycleSharingPreferenceConfigured = currentUser.cycleSharingPreferenceConfigured;
 }
 
 export function generateAccessToken(user: IUserDoc): string {
@@ -71,6 +101,8 @@ export async function loginUser(email: string, password: string): Promise<{
     throw new UnauthorizedError("Invalid email or password.");
   }
 
+  await initializeCycleSharingPreference(user);
+
   const accessToken = generateAccessToken(user);
   const refreshToken = generateRefreshToken(user);
 
@@ -100,6 +132,8 @@ export async function refreshAccessToken(refreshToken: string): Promise<LoginRes
   if (!user) {
     throw new UnauthorizedError("User associated with token no longer exists.");
   }
+
+  await initializeCycleSharingPreference(user);
 
   const newAccessToken = generateAccessToken(user);
 

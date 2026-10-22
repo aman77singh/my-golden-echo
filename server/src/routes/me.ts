@@ -46,6 +46,7 @@ meRouter.patch(
       }
 
       user.shareCycle = req.body.shareCycle;
+      user.cycleSharingPreferenceConfigured = true;
       await user.save();
 
       emitToCouple(req.user!.coupleId, "privacy:update", {
@@ -176,4 +177,3 @@ meRouter.delete("/", async (req: Request, res: Response, next: NextFunction) => 
     next(error);
   }
 });
-

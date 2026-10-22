@@ -397,13 +397,13 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
           <div>
             <h3 className="text-xs font-semibold text-foreground">Cycle Privacy</h3>
             <p className="text-[10px] text-muted-foreground">
-              Share cycle rhythm and symptom logs with partner
+              Cycle data is shared automatically. You can turn this off anytime.
             </p>
           </div>
         </div>
 
         <div className="flex items-center justify-between pt-1 border-t border-border/60">
-          <span className="text-xs text-foreground">Share Cycle Tracker</span>
+          <span className="text-xs text-foreground">Share Cycle Data</span>
           <Switch
             checked={userProfile?.shareCycle ?? false}
             onCheckedChange={(checked) => privacyMutation.mutate(checked)}

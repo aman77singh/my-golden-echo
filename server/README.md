@@ -140,7 +140,7 @@ npm test
 ```
 The test suite verifies:
 - Multi-tenant couple data isolation
-- Protection of partner private thoughts and unshared cycle data
+- Protection of partner private thoughts and cycle data when sharing is disabled; cycle sharing is enabled automatically for Aditi and can be turned off in privacy settings
 - Message and progress post ownership controls
 - Cloudinary signed upload generation
 - Authentication login, refresh, and logout flows

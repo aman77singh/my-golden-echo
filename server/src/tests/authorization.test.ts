@@ -45,6 +45,7 @@ beforeAll(async () => {
     passwordHash,
     role: "her",
     shareCycle: false,
+    cycleSharingPreferenceConfigured: true,
   });
   userA1Id = userA1._id.toString();
 
@@ -55,6 +56,7 @@ beforeAll(async () => {
     passwordHash,
     role: "him",
     shareCycle: false,
+    cycleSharingPreferenceConfigured: true,
   });
   userA2Id = userA2._id.toString();
 
@@ -69,6 +71,7 @@ beforeAll(async () => {
     passwordHash,
     role: "her",
     shareCycle: false,
+    cycleSharingPreferenceConfigured: true,
   });
   userB1Id = userB1._id.toString();
 
@@ -79,6 +82,7 @@ beforeAll(async () => {
     passwordHash,
     role: "him",
     shareCycle: false,
+    cycleSharingPreferenceConfigured: true,
   });
   userB2Id = userB2._id.toString();
 
@@ -464,6 +468,71 @@ describe("5. Cycle & SymptomLog Privacy Rules (shareCycle)", () => {
     expect(symRes.body.length).toBeGreaterThan(0);
     expect(symRes.body[0].symptoms).toContain("cramps");
   });
+
+  it("automatically shares cycle data once and preserves an explicit privacy opt-out", async () => {
+    const couple = await Couple.create({ startDate: new Date("2025-01-01") });
+    const aditi = await User.create({
+      coupleId: couple._id,
+      name: "Aditi",
+      email: "aditi@cycle-sharing.local",
+      passwordHash: await bcrypt.hash("TestPass123!", 12),
+      role: "her",
+      shareCycle: false,
+    });
+    await User.create({
+      coupleId: couple._id,
+      name: "Aman",
+      email: "aman@cycle-sharing.local",
+      passwordHash: await bcrypt.hash("TestPass123!", 12),
+      role: "him",
+      shareCycle: false,
+      cycleSharingPreferenceConfigured: true,
+    });
+
+    const loginRes = await request(app)
+      .post("/auth/login")
+      .send({ email: "aditi@cycle-sharing.local", password: "TestPass123!" });
+
+    expect(loginRes.status).toBe(200);
+    expect(loginRes.body.user.shareCycle).toBe(true);
+
+    const token = loginRes.body.accessToken;
+    await User.updateOne(
+      { email: "aditi@cycle-sharing.local" },
+      { $set: { shareCycle: false, cycleSharingPreferenceConfigured: false } }
+    );
+    const existingSessionRes = await request(app)
+      .get("/me")
+      .set("Authorization", `Bearer ${token}`);
+    expect(existingSessionRes.status).toBe(200);
+    expect(existingSessionRes.body.shareCycle).toBe(true);
+
+    await User.updateOne(
+      { _id: aditi._id },
+      { $set: { shareCycle: false, cycleSharingPreferenceConfigured: false } }
+    );
+    const partnerLoginRes = await request(app)
+      .post("/auth/login")
+      .send({ email: "aman@cycle-sharing.local", password: "TestPass123!" });
+    const coupleRes = await request(app)
+      .get("/couple")
+      .set("Authorization", `Bearer ${partnerLoginRes.body.accessToken}`);
+    expect(coupleRes.status).toBe(200);
+    expect(coupleRes.body.partner.shareCycle).toBe(true);
+
+    const disableRes = await request(app)
+      .patch("/me/privacy")
+      .set("Authorization", `Bearer ${token}`)
+      .send({ shareCycle: false });
+    expect(disableRes.status).toBe(200);
+    expect(disableRes.body.user.shareCycle).toBe(false);
+
+    const profileRes = await request(app)
+      .get("/me")
+      .set("Authorization", `Bearer ${token}`);
+    expect(profileRes.status).toBe(200);
+    expect(profileRes.body.shareCycle).toBe(false);
+  });
 });
 
 describe("6. ProgressPost & Reply Rules", () => {
@@ -785,6 +854,8 @@ describe("9. Moods, Notes & Couple Status (Task 3)", () => {
 
     expect(res.status).toBe(200);
     expect(res.body.couple.startDate).toBeDefined();
+    expect(res.body.user.name).toBe("Alice");
+    expect(res.body.user.shareCycle).toBe(true);
     expect(res.body.partner.name).toBe("Alex");
   });
 

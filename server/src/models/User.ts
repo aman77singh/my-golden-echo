@@ -8,6 +8,7 @@ export interface IUserDoc extends Document {
   passwordHash: string;
   role: UserRole;
   shareCycle: boolean;
+  cycleSharingPreferenceConfigured: boolean;
   avatarUrl?: string;
   timezone: string;
   notificationPrefs: {
@@ -40,6 +41,7 @@ const userSchema = new Schema<IUserDoc>(
     passwordHash: { type: String, required: true },
     role: { type: String, enum: ["her", "him"], required: true },
     shareCycle: { type: Boolean, default: false },
+    cycleSharingPreferenceConfigured: { type: Boolean, default: false },
     avatarUrl: { type: String },
     timezone: { type: String, default: "Asia/Kolkata" },
     notificationPrefs: {
