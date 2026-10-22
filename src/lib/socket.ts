@@ -151,10 +151,11 @@ export function connectSocket(queryClient: QueryClient): Socket | null {
   socket.on("message:new", (newMsg: any) => {
     queryClient.setQueryData<any[]>(["messages"], (old) => {
       if (!old) return [newMsg];
-      // Avoid duplicate if already added optimistically
-      const exists = old.some((m) => m._id === newMsg._id || (m.tempId && m.tempId === newMsg.tempId));
-      if (exists) {
-        return old.map((m) => (m._id === newMsg._id || m.tempId === newMsg.tempId ? newMsg : m));
+      const existingIndex = old.findIndex((message) => message._id === newMsg._id);
+      if (existingIndex >= 0) {
+        return old.flatMap((message, index) =>
+          message._id !== newMsg._id ? [message] : index === existingIndex ? [newMsg] : []
+        );
       }
       return [...old, newMsg];
     });
@@ -252,4 +253,3 @@ if (typeof window !== "undefined") {
   window.addEventListener("visibilitychange", handleForegroundOrOnline);
   window.addEventListener("online", handleForegroundOrOnline);
 }
-

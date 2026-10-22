@@ -261,13 +261,23 @@ export function ChatScreen() {
       toast.error("Couldn't deliver message. Please retry.");
     },
     onSuccess: (confirmedMsg, vars) => {
-      queryClient.setQueryData<MessageItem[]>(["messages"], (old = []) =>
-        old.map((m) =>
-          m.tempId === vars.tempId || m._id === vars.tempId
-            ? { ...confirmedMsg, status: "sent" }
-            : m
-        )
-      );
+      queryClient.setQueryData<MessageItem[]>(["messages"], (old = []) => {
+        let inserted = false;
+        const confirmedMessage = { ...confirmedMsg, status: "sent" as const };
+
+        const messages = old.flatMap((message) => {
+          const isOptimistic = message.tempId === vars.tempId || message._id === vars.tempId;
+          const isConfirmed = message._id === confirmedMsg._id;
+
+          if (!isOptimistic && !isConfirmed) return [message];
+          if (inserted) return [];
+
+          inserted = true;
+          return [confirmedMessage];
+        });
+
+        return inserted ? messages : [...messages, confirmedMessage];
+      });
       setReplyingTo(null);
     },
   });
@@ -275,7 +285,7 @@ export function ChatScreen() {
   // Send Text Action
   const handleSendText = () => {
     const trimmed = text.trim();
-    if (!trimmed) return;
+    if (!trimmed || sendMessageMutation.isPending) return;
 
     const tempId = `temp-${Date.now()}`;
     sendMessageMutation.mutate({
