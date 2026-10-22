@@ -728,6 +728,15 @@ export function PasswordGate({ onUnlock, onClose }: { onUnlock: () => void; onCl
           >
             Unlock Keepsake 🗝️
           </Button>
+
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleNeedHintClick}
+            className="w-full rounded-xl border border-accent/40 bg-accent/10 py-3 font-sans text-xs font-semibold text-accent shadow-sm hover:bg-accent/20 transition-all flex items-center justify-center gap-2"
+          >
+            <span>{butterfliesUnlocked ? "Catch Floating Butterflies 🦋✨" : "Need a Hint? Release Butterfly Riddles 🦋✨"}</span>
+          </Button>
         </form>
 
         <div className="mt-6 border-t border-border/50 pt-4 text-center">
@@ -822,6 +831,21 @@ export function Sidebar({
         <span className="font-mono text-[10px] text-accent font-bold">OPEN ↗</span>
       </a>
 
+      {!authenticated && (
+        <Link
+          to="/timeline"
+          onClick={() => {
+            if (onNavigate) onNavigate();
+          }}
+          className="group mt-2 flex items-center justify-between rounded-xl border border-amber-500/40 bg-amber-500/10 px-3.5 py-2 text-left text-xs font-semibold text-amber-300 shadow-sm transition-all hover:bg-amber-500/20 active:scale-98"
+        >
+          <span className="flex items-center gap-2 font-sans font-medium">
+            <span>Butterfly Riddles 🦋✨</span>
+          </span>
+          <span className="font-mono text-[10px] text-accent font-bold">SOLVE →</span>
+        </Link>
+      )}
+
       {onLock && (
         <button
           type="button"
@@ -878,6 +902,14 @@ export function HomeView() {
             <span>Our Phone App 📱</span>
             <span className="text-[10px] font-mono opacity-80 group-hover:translate-x-0.5 transition-transform">↗</span>
           </a>
+
+          <button
+            type="button"
+            onClick={() => navigate({ to: "/timeline" })}
+            className="group inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/15 px-4 py-2 text-xs font-semibold text-amber-300 shadow-md backdrop-blur-md transition-all hover:border-amber-400 hover:bg-amber-500/25 hover:scale-105 active:scale-95"
+          >
+            <span>Butterfly Riddles 🦋✨</span>
+          </button>
         </div>
         <TimeTogether />
       </motion.div>
