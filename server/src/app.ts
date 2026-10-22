@@ -18,6 +18,16 @@ import { messagesRouter } from "./routes/messages.js";
 import { moodsRouter } from "./routes/moods.js";
 import { notesRouter } from "./routes/notes.js";
 import { coupleRouter } from "./routes/couple.js";
+import { goalsRouter } from "./routes/goals.js";
+import { meRouter } from "./routes/me.js";
+import { pushRouter } from "./routes/push.js";
+import { jobsRouter } from "./routes/jobs.js";
+import { eventsRouter } from "./routes/events.js";
+import { gratitudeRouter } from "./routes/gratitude.js";
+import { conversationsRouter } from "./routes/conversations.js";
+import { checkinsRouter } from "./routes/checkins.js";
+import { surprisesRouter } from "./routes/surprises.js";
+import { datesRouter } from "./routes/dates.js";
 import { NotFoundError } from "./utils/errors.js";
 
 export function createApp() {
@@ -42,7 +52,7 @@ export function createApp() {
       },
       credentials: true,
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-      allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+      allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "X-Jobs-Secret", "X-Cron-Secret"],
     })
   );
 
@@ -78,6 +88,16 @@ export function createApp() {
   app.use("/moods", moodsRouter);
   app.use("/notes", notesRouter);
   app.use("/couple", coupleRouter);
+  app.use("/goals", goalsRouter);
+  app.use("/me", meRouter);
+  app.use("/push", pushRouter);
+  app.use("/jobs", jobsRouter);
+  app.use("/events", eventsRouter);
+  app.use("/gratitude", gratitudeRouter);
+  app.use("/conversations", conversationsRouter);
+  app.use("/checkins", checkinsRouter);
+  app.use("/surprises", surprisesRouter);
+  app.use("/dates", datesRouter);
 
   // API router namespace
   app.use("/api", apiRouter);

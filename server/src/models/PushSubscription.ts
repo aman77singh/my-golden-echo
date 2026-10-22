@@ -2,6 +2,7 @@ import { Schema, model, Document, Types } from "mongoose";
 
 export interface IPushSubscriptionDoc extends Document {
   userId: Types.ObjectId;
+  coupleId?: Types.ObjectId;
   endpoint: string;
   keys: {
     p256dh: string;
@@ -14,6 +15,7 @@ export interface IPushSubscriptionDoc extends Document {
 const pushSubscriptionSchema = new Schema<IPushSubscriptionDoc>(
   {
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true, index: true },
+    coupleId: { type: Schema.Types.ObjectId, ref: "Couple", index: true },
     endpoint: { type: String, required: true, unique: true, index: true },
     keys: {
       p256dh: { type: String, required: true },

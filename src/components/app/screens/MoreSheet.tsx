@@ -1,16 +1,15 @@
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Link } from "@tanstack/react-router";
 import {
-  Heart,
-  Target,
-  StickyNote,
   Calendar,
+  Sparkles,
+  MessageSquare,
+  HeartHandshake,
+  Gift,
+  Compass,
+  Bell,
   Download,
   Laptop,
-  LogOut,
-  Sparkles,
-  Bell,
-  X,
 } from "lucide-react";
 
 interface MoreSheetProps {
@@ -23,28 +22,53 @@ interface MoreSheetProps {
 export function MoreSheet({ open, onOpenChange, onInstallApp, isInstallable }: MoreSheetProps) {
   const menuItems = [
     {
-      icon: Heart,
-      title: "Mood Tracker & Vibe History",
-      desc: "Daily energy and emotional check-in history",
-      badge: "Vibe",
-    },
-    {
-      icon: Target,
-      title: "Shared Goals & Bucket List",
-      desc: "Dreams, trips, and milestones we are saving for",
-      badge: "Goals",
-    },
-    {
-      icon: StickyNote,
-      title: "Love Notes & Sticky Box",
-      desc: "Sweet surprises left for each other anytime",
-      badge: "Notes",
-    },
-    {
       icon: Calendar,
-      title: "Anniversary & Special Dates",
-      desc: "Upcoming dates, countdowns & reminders",
-      badge: "Dates",
+      title: "Shared Calendar & Countdowns",
+      desc: "Milestones, cycle events & live countdown cards",
+      badge: "Events",
+      to: "/app/calendar",
+    },
+    {
+      icon: Sparkles,
+      title: "Gratitude Jar",
+      desc: "Daily slips of gratitude & random memory pull",
+      badge: "Love",
+      to: "/app/gratitude",
+    },
+    {
+      icon: MessageSquare,
+      title: "Daily Conversation Starter",
+      desc: "Answer privately, revealed once both answer",
+      badge: "Prompts",
+      to: "/app/conversation",
+    },
+    {
+      icon: HeartHandshake,
+      title: "Weekly Check-in",
+      desc: "Gentle ratings & one thing to nurture together",
+      badge: "Rhythm",
+      to: "/app/checkin",
+    },
+    {
+      icon: Gift,
+      title: "Surprise Planner",
+      desc: "Secret vault visible to you only",
+      badge: "Private",
+      to: "/app/surprises",
+    },
+    {
+      icon: Compass,
+      title: "Date Jar",
+      desc: "Add ideas & pick a spontaneous date at random",
+      badge: "Adventures",
+      to: "/app/datejar",
+    },
+    {
+      icon: Bell,
+      title: "Settings, Security & Data",
+      desc: "Push alerts, biometrics, data export & quiet hours",
+      badge: "Settings",
+      to: "/app/settings",
     },
   ];
 
@@ -71,9 +95,8 @@ export function MoreSheet({ open, onOpenChange, onInstallApp, isInstallable }: M
         <div className="mt-3 space-y-2">
           {menuItems.map((item) => {
             const Icon = item.icon;
-            return (
+            const content = (
               <div
-                key={item.title}
                 className="group flex items-center justify-between rounded-2xl border border-white/5 bg-white/[0.02] p-3 transition-colors hover:border-accent/40 hover:bg-accent/5 cursor-pointer"
               >
                 <div className="flex items-center gap-3">
@@ -90,6 +113,21 @@ export function MoreSheet({ open, onOpenChange, onInstallApp, isInstallable }: M
                 </span>
               </div>
             );
+
+            if (item.to) {
+              return (
+                <Link
+                  key={item.title}
+                  to={item.to}
+                  onClick={() => onOpenChange(false)}
+                  className="block"
+                >
+                  {content}
+                </Link>
+              );
+            }
+
+            return <div key={item.title}>{content}</div>;
           })}
         </div>
 

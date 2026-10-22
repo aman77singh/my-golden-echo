@@ -436,9 +436,15 @@ describe("5. Cycle & SymptomLog Privacy Rules (shareCycle)", () => {
     expect(delRes.status).toBe(403);
   });
 
-  it("When Alice enables shareCycle (true), Partner (Alex) CAN read cycle and symptom data", async () => {
-    // Enable shareCycle for Alice
-    await User.findByIdAndUpdate(userA1Id, { shareCycle: true });
+  it("When Alice enables shareCycle (true) via PATCH /me/privacy, Partner (Alex) CAN read cycle and symptom data", async () => {
+    // Enable shareCycle for Alice via PATCH /me/privacy
+    const patchRes = await request(app)
+      .patch("/me/privacy")
+      .set("Authorization", `Bearer ${tokenA1}`)
+      .send({ shareCycle: true });
+
+    expect(patchRes.status).toBe(200);
+    expect(patchRes.body.user.shareCycle).toBe(true);
 
     // Alex reads cycle records
     const cycleRes = await request(app)
@@ -528,6 +534,68 @@ describe("6. ProgressPost & Reply Rules", () => {
 
     expect(res.status).toBe(200);
     expect(res.body.replies.length).toBe(0);
+  });
+
+  it("Goal CRUD: create goal, increment count on progress post, and calculate weekly summary", async () => {
+    // 1. Create a goal
+    const goalRes = await request(app)
+      .post("/goals")
+      .set("Authorization", `Bearer ${tokenA1}`)
+      .send({
+        title: "Read Physics Textbook",
+        category: "Study",
+        targetCount: 10,
+        unit: "chapters",
+        deadline: new Date(Date.now() + 86400000 * 30).toISOString(),
+      });
+
+    expect(goalRes.status).toBe(201);
+    expect(goalRes.body.currentCount).toBe(0);
+    const goalId = goalRes.body._id;
+
+    // 2. Both partners can list goals
+    const goalsList = await request(app)
+      .get("/goals")
+      .set("Authorization", `Bearer ${tokenA2}`);
+    expect(goalsList.status).toBe(200);
+    expect(goalsList.body.some((g: any) => g._id === goalId)).toBe(true);
+
+    // 3. Post progress with goalId increments currentCount by countAdded
+    const postWithGoal = await request(app)
+      .post("/progress")
+      .set("Authorization", `Bearer ${tokenA1}`)
+      .send({
+        goalId,
+        category: "Study",
+        body: "Finished chapter 1 & 2 of physics!",
+        countAdded: 2,
+        minutes: 60,
+        struggled: false,
+      });
+    expect(postWithGoal.status).toBe(201);
+
+    // Verify goal currentCount was incremented
+    const updatedGoal = await request(app)
+      .get(`/goals/${goalId}`)
+      .set("Authorization", `Bearer ${tokenA1}`);
+    expect(updatedGoal.status).toBe(200);
+    expect(updatedGoal.body.currentCount).toBe(2);
+
+    // 4. Partner can react using /react
+    const reactRes = await request(app)
+      .post(`/progress/${postWithGoal.body._id}/react`)
+      .set("Authorization", `Bearer ${tokenA2}`)
+      .send({ emoji: "🔥" });
+    expect(reactRes.status).toBe(200);
+
+    // 5. GET /progress/summary/weekly returns stats
+    const summaryRes = await request(app)
+      .get("/progress/summary/weekly")
+      .set("Authorization", `Bearer ${tokenA1}`);
+    expect(summaryRes.status).toBe(200);
+    expect(summaryRes.body.daysPosted).toBeGreaterThanOrEqual(1);
+    expect(summaryRes.body.totalCount).toBeGreaterThanOrEqual(2);
+    expect(summaryRes.body.cheersReceived).toBeGreaterThanOrEqual(1);
   });
 });
 

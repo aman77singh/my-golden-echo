@@ -104,6 +104,20 @@ thoughtsRouter.put(
   }
 );
 
+thoughtsRouter.patch(
+  "/:id",
+  validateParams(idParamSchema),
+  validateBody(updateThoughtSchema),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const thought = await ThoughtService.updateThought(req.user!, req.params.id, req.body);
+      res.status(200).json(thought);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 /**
  * DELETE /thoughts/:id
  * Only author can delete
@@ -138,3 +152,37 @@ thoughtsRouter.post(
     }
   }
 );
+
+/**
+ * POST /thoughts/:id/react
+ * Quick emoji reaction on a thought
+ */
+thoughtsRouter.post(
+  "/:id/react",
+  validateParams(idParamSchema),
+  validateBody(z.object({ emoji: z.string().min(1) })),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const thought = await ThoughtService.addResponse(req.user!, req.params.id, {
+        emoji: req.body.emoji,
+      });
+      res.status(200).json(thought);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+/**
+ * POST /thoughts/check-in
+ * Manually trigger insecurity check-in job
+ */
+thoughtsRouter.post("/check-in", async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    const count = await ThoughtService.runInsecurityCheckIns();
+    res.status(200).json({ message: "Insecurity check-in job processed.", sentCount: count });
+  } catch (error) {
+    next(error);
+  }
+});
+

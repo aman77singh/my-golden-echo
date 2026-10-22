@@ -19,6 +19,22 @@ export function formatAuthUser(user: IUserDoc): AuthUser {
     role: user.role,
     shareCycle: user.shareCycle,
     avatarUrl: user.avatarUrl,
+    timezone: user.timezone || "Asia/Kolkata",
+    notificationPrefs: user.notificationPrefs || {
+      messages: true,
+      progress: true,
+      thoughts: true,
+      cycle: true,
+      reminders: true,
+    },
+    quietHours: user.quietHours || {
+      enabled: false,
+      start: "22:00",
+      end: "08:00",
+    },
+    reminders: user.reminders || {
+      eveningProgressHour: 20,
+    },
   };
 }
 

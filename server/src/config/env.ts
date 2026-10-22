@@ -19,6 +19,7 @@ const envSchema = z.object({
   VAPID_PUBLIC_KEY: z.string().optional(),
   VAPID_PRIVATE_KEY: z.string().optional(),
   VAPID_SUBJECT: z.string().optional(),
+  JOBS_SECRET_KEY: z.string().default("our_space_cron_secret_tick_2026"),
   SEED_HER_NAME: z.string().default("Aditi"),
   SEED_HER_EMAIL: z.string().email().default("aditi@ourspace.local"),
   SEED_HER_PASSWORD: z.string().min(6).default("AditiSecret123!"),

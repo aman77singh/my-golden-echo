@@ -96,6 +96,22 @@ progressRouter.get(
 );
 
 /**
+ * GET /progress/summary/weekly
+ * Returns weekly progress summary for review
+ */
+progressRouter.get(
+  "/summary/weekly",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const summary = await ProgressService.getWeeklySummary(req.user!);
+      res.status(200).json(summary);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+/**
  * PUT /progress/:id
  * Only author edits
  */
@@ -183,23 +199,32 @@ progressRouter.delete(
 );
 
 /**
- * POST /progress/:id/reactions
+ * POST /progress/:id/react & POST /progress/:id/reactions
  * Toggle reaction
  */
+const handleReaction = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const post = await ProgressService.toggleReaction(
+      req.user!,
+      req.params.id,
+      req.body.emoji
+    );
+    res.status(200).json(post);
+  } catch (error) {
+    next(error);
+  }
+};
+
+progressRouter.post(
+  "/:id/react",
+  validateParams(idParamSchema),
+  validateBody(reactionSchema),
+  handleReaction
+);
+
 progressRouter.post(
   "/:id/reactions",
   validateParams(idParamSchema),
   validateBody(reactionSchema),
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const post = await ProgressService.toggleReaction(
-        req.user!,
-        req.params.id,
-        req.body.emoji
-      );
-      res.status(200).json(post);
-    } catch (error) {
-      next(error);
-    }
-  }
+  handleReaction
 );

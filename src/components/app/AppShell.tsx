@@ -9,14 +9,18 @@ import {
   Sparkles,
   MoreHorizontal,
   Heart,
+  Bell,
 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { usePWAInstall } from "@/hooks/usePWAInstall";
 import { PWAInstallPrompt } from "@/components/pwa/PWAInstallPrompt";
 import { MoreSheet } from "@/components/app/screens/MoreSheet";
+import { PushPermissionModal } from "@/components/app/screens/PushPermissionModal";
 import { Toaster } from "@/components/ui/sonner";
 import { ensureAuthenticatedSession } from "@/lib/api";
 import { connectSocket } from "@/lib/socket";
+
+import { PrivacyLockOverlay } from "@/components/app/PrivacyLockOverlay";
 
 interface AppShellProps {
   children?: React.ReactNode;
@@ -27,11 +31,25 @@ export function AppShell({ children }: AppShellProps) {
   const location = useLocation();
   const pathname = location.pathname;
   const [moreOpen, setMoreOpen] = React.useState(false);
+  const [pushPromptOpen, setPushPromptOpen] = React.useState(false);
 
   React.useEffect(() => {
     ensureAuthenticatedSession()
       .then(() => {
         connectSocket(queryClient);
+
+        // Check if user has not yet seen the notification prompt
+        if (
+          typeof window !== "undefined" &&
+          "Notification" in window &&
+          Notification.permission === "default" &&
+          !localStorage.getItem("has_seen_push_prompt")
+        ) {
+          const timer = setTimeout(() => {
+            setPushPromptOpen(true);
+          }, 1500);
+          return () => clearTimeout(timer);
+        }
       })
       .catch((err) => {
         console.warn("Session init warning:", err);
@@ -57,10 +75,11 @@ export function AppShell({ children }: AppShellProps) {
 
   return (
     <div className="min-h-screen bg-[#0d0d12] text-foreground flex flex-col font-sans antialiased selection:bg-accent/30 selection:text-accent">
-      {/* Background Ambience */}
-      <div className="fixed inset-0 pointer-events-none z-0">
+      {/* Background Ambience & Film Grain */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[340px] h-[300px] bg-gradient-to-b from-[#E5A962]/10 via-[#E07A5F]/5 to-transparent blur-[80px]" />
         <div className="absolute bottom-20 left-1/2 -translate-x-1/2 w-[300px] h-[240px] bg-gradient-to-t from-accent/5 to-transparent blur-[70px]" />
+        <div className="absolute inset-0 opacity-[0.035] film-grain mix-blend-overlay pointer-events-none" />
       </div>
 
       {/* Mobile Shell Wrapper */}
@@ -77,6 +96,16 @@ export function AppShell({ children }: AppShellProps) {
           </Link>
 
           <div className="flex items-center gap-1.5">
+            <Link
+              to="/app/settings"
+              className={`flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors hover:border-accent/40 hover:bg-accent/10 hover:text-foreground active:scale-95 ${
+                pathname === "/app/settings" ? "text-accent border-accent/40 bg-accent/10" : "text-muted-foreground"
+              }`}
+              aria-label="Notifications and Settings"
+            >
+              <Bell className="h-4 w-4" />
+            </Link>
+
             <button
               type="button"
               onClick={() => setMoreOpen(true)}
@@ -90,18 +119,20 @@ export function AppShell({ children }: AppShellProps) {
 
         {/* Tab Page Content with Fade + Slide Transition */}
         <main className="flex-1 px-4 pt-4">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={pathname}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.28, ease: "easeInOut" }}
-              className="min-h-full"
-            >
-              {children}
-            </motion.div>
-          </AnimatePresence>
+          <PrivacyLockOverlay>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={pathname}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.28, ease: "easeInOut" }}
+                className="min-h-full"
+              >
+                {children}
+              </motion.div>
+            </AnimatePresence>
+          </PrivacyLockOverlay>
         </main>
 
         {/* Bottom Tab Bar */}
@@ -164,6 +195,12 @@ export function AppShell({ children }: AppShellProps) {
         onOpenChange={setMoreOpen}
         onInstallApp={promptInstall}
         isInstallable={isInstallable}
+      />
+
+      {/* Push Notifications First-Time Permission Prompt */}
+      <PushPermissionModal
+        open={pushPromptOpen}
+        onOpenChange={setPushPromptOpen}
       />
 
       {/* Global Notifications */}

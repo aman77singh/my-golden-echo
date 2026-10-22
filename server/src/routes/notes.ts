@@ -5,6 +5,7 @@ import { requireAuth } from "../middleware/auth.js";
 import { validateBody } from "../middleware/validate.js";
 import { Note } from "../models/Note.js";
 import { emitToCouple } from "../socket.js";
+import { sendToPartner } from "../services/pushService.js";
 
 export const notesRouter = Router();
 
@@ -12,7 +13,7 @@ notesRouter.use(requireAuth);
 
 const createNoteSchema = z.object({
   body: z.string().min(1, "Note body is required"),
-  kind: z.enum(["love", "reminder", "gratitude", "custom", "ping"]).optional().default("love"),
+  kind: z.enum(["love", "reminder", "gratitude", "custom", "ping", "badday"]).optional().default("love"),
 });
 
 /**
@@ -36,6 +37,34 @@ notesRouter.post(
         senderId: req.user!.id,
         senderName: req.user!.name,
       });
+
+      // Push notifications for ping, bad day mode, and love notes
+      if (req.body.kind === "ping") {
+        sendToPartner(req.user!.id, {
+          title: "Thinking of You ❤️",
+          body: `${req.user!.name} is thinking of you right now.`,
+          category: "messages",
+          url: "/app",
+        }).catch(() => {});
+      } else if (req.body.kind === "badday") {
+        sendToPartner(
+          req.user!.id,
+          {
+            title: "Soft Day Mode Activated 🤍",
+            body: `${req.user!.name} is having a tough day and needs extra gentle care and patience.`,
+            category: "thoughts",
+            url: "/app",
+          },
+          true // allow bad day alert even in quiet hours as it's an urgent emotional signal
+        ).catch(() => {});
+      } else {
+        sendToPartner(req.user!.id, {
+          title: `Note from ${req.user!.name} 💌`,
+          body: req.body.body,
+          category: "messages",
+          url: "/app",
+        }).catch(() => {});
+      }
 
       res.status(201).json(note);
     } catch (error) {

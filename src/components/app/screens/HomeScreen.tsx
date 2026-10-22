@@ -20,6 +20,10 @@ import { apiFetch, getStoredUser } from "@/lib/api";
 import { getDailyLoveNote } from "@/config";
 import { SetMoodSheet } from "./SetMoodSheet";
 import { MoodHistoryModal } from "./MoodHistoryModal";
+import { BadDaySheet } from "../cycle/BadDaySheet";
+import { predictCycle } from "@/app/cycle";
+import suggestionsData from "@/app/suggestions.json";
+import { ICycle, CyclePhase } from "@/types/shared";
 
 interface Mood {
   _id: string;
@@ -82,6 +86,7 @@ export function HomeScreen() {
 
   const [isMoodSheetOpen, setIsMoodSheetOpen] = useState(false);
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
+  const [isBadDayOpen, setIsBadDayOpen] = useState(false);
   const [now, setNow] = useState<Date>(new Date());
   const [showHeartBurst, setShowHeartBurst] = useState(false);
 
@@ -99,6 +104,51 @@ export function HomeScreen() {
     queryFn: () => apiFetch("/couple"),
     staleTime: 1000 * 60 * 5,
   });
+
+  const isHer =
+    coupleData?.user?.role === "her" ||
+    storedUser?.role === "her" ||
+    (coupleData?.user?.name || "").toLowerCase().includes("aditi");
+
+  const partnerShared = coupleData?.partner?.shareCycle ?? false;
+
+  // Fetch cycles
+  const { data: cycles = [] } = useQuery<ICycle[]>({
+    queryKey: ["cycles"],
+    queryFn: () => apiFetch("/cycles"),
+    enabled: isHer || partnerShared,
+    retry: false,
+  });
+
+  // Fetch bad day notes
+  const { data: badDayNotes = [] } = useQuery<
+    { _id: string; fromId: string; body: string; createdAt: string }[]
+  >({
+    queryKey: ["notes", "badday"],
+    queryFn: () => apiFetch("/notes?kind=badday&limit=1"),
+    refetchInterval: 15000,
+  });
+
+  // Cycle prediction & suggestions
+  const cyclePrediction = React.useMemo(() => {
+    return predictCycle(cycles);
+  }, [cycles]);
+
+  const currentPhase: CyclePhase = cyclePrediction?.currentPhase || "follicular";
+
+  const phaseTips = React.useMemo(() => {
+    const data =
+      (suggestionsData as any)[currentPhase] || suggestionsData.follicular;
+    return isHer ? data.forHer.slice(0, 3) : data.forPartner.slice(0, 3);
+  }, [currentPhase, isHer]);
+
+  const latestBadDay = React.useMemo(() => {
+    if (!badDayNotes || badDayNotes.length === 0) return null;
+    const note = badDayNotes[0];
+    const hoursAgo =
+      (Date.now() - new Date(note.createdAt).getTime()) / (1000 * 60 * 60);
+    return hoursAgo < 24 ? note : null;
+  }, [badDayNotes]);
 
   // Fetch Latest Moods
   const { data: moodsData, isLoading: isLoadingMoods } = useQuery<LatestMoodsResponse>({
@@ -307,6 +357,41 @@ export function HomeScreen() {
         </div>
       </motion.div>
 
+      {/* Active Bad Day Alert Card (if triggered in last 24h) */}
+      {latestBadDay && (
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="rounded-3xl border border-rose-500/40 bg-gradient-to-r from-rose-500/20 via-[#201524] to-amber-500/10 p-4 shadow-xl"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="text-3xl">🫂</span>
+              <div>
+                <span className="rounded-full bg-rose-500/20 px-2 py-0.5 text-[10px] font-bold text-rose-300 uppercase tracking-wider">
+                  Comfort Needed Today
+                </span>
+                <h4 className="font-serif text-sm font-bold text-foreground mt-0.5">
+                  {isHer ? "Your Bad Day Signal Active" : `${partnerName} is having a tough day`}
+                </h4>
+                <p className="text-xs text-rose-200/90 font-medium mt-0.5">
+                  "{latestBadDay.body}"
+                </p>
+              </div>
+            </div>
+            {!isHer && (
+              <button
+                type="button"
+                onClick={() => sendPingMutation.mutate()}
+                className="rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 px-3.5 py-1.5 text-xs font-bold text-white shadow-md hover:scale-105 active:scale-95 transition-all"
+              >
+                Send Warm Hug 💖
+              </button>
+            )}
+          </div>
+        </motion.div>
+      )}
+
       {/* Mood Section: Side-by-side cards (Mine & Partner's) */}
       <section className="space-y-3">
         <div className="flex items-center justify-between px-1">
@@ -507,6 +592,110 @@ export function HomeScreen() {
         </div>
       </section>
 
+      {/* Cycle Wellness & Suggestions (Her View) */}
+      {isHer && (
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="rounded-3xl border border-rose-500/30 bg-gradient-to-br from-rose-500/10 via-[#191524] to-[#121118] p-5 shadow-lg"
+        >
+          <div className="flex items-center justify-between border-b border-white/5 pb-3">
+            <div className="flex items-center gap-2">
+              <span className="text-xl">🌸</span>
+              <div>
+                <h4 className="font-serif text-sm font-bold text-foreground">
+                  {currentPhase.charAt(0).toUpperCase() + currentPhase.slice(1)} Phase · Day {cyclePrediction?.currentDay || 1}
+                </h4>
+                <p className="text-[10px] text-muted-foreground">
+                  {cyclePrediction?.daysUntilNextPeriod !== undefined
+                    ? `${cyclePrediction.daysUntilNextPeriod} days to next period`
+                    : "Honoring your body's rhythm"}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setIsBadDayOpen(true)}
+                className="rounded-xl border border-rose-400/40 bg-rose-500/20 px-3 py-1.5 text-xs font-bold text-rose-200 hover:bg-rose-500/30 active:scale-95 transition-all shadow-sm"
+              >
+                Bad Day Mode 🫂
+              </button>
+              <Link
+                to="/app/cycle"
+                className="text-xs font-semibold text-rose-300 hover:underline"
+              >
+                Tracker →
+              </Link>
+            </div>
+          </div>
+
+          <div className="mt-3.5 space-y-2">
+            <p className="text-[11px] font-semibold text-rose-300 uppercase tracking-wider">
+              Suggestions For You Today:
+            </p>
+            {phaseTips.map((tip, idx) => (
+              <div key={idx} className="flex items-start gap-2 text-xs text-foreground/90 font-sans leading-relaxed">
+                <span className="text-amber-400 font-bold">•</span>
+                <span>{tip}</span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      )}
+
+      {/* Cycle Support (Partner View) */}
+      {!isHer && (
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="rounded-3xl border border-white/10 bg-[#16161f]/80 p-5 shadow-lg backdrop-blur-md"
+        >
+          <div className="flex items-center justify-between border-b border-white/5 pb-3">
+            <div className="flex items-center gap-2">
+              <span className="text-xl">🌸</span>
+              <div>
+                <h4 className="font-serif text-sm font-bold text-foreground">
+                  {partnerShared
+                    ? `How to Support ${partnerName} Today (${currentPhase} phase)`
+                    : `Cycle Wellness · ${partnerName}`}
+                </h4>
+                <p className="text-[10px] text-muted-foreground">
+                  {partnerShared
+                    ? `Day ${cyclePrediction?.currentDay || 1} of her cycle`
+                    : "Private tracking"}
+                </p>
+              </div>
+            </div>
+            <Link
+              to="/app/cycle"
+              className="text-xs text-rose-300 font-semibold hover:underline"
+            >
+              View →
+            </Link>
+          </div>
+
+          {partnerShared ? (
+            <div className="mt-3.5 space-y-2">
+              <p className="text-[11px] font-semibold text-amber-300 uppercase tracking-wider">
+                Support Cards For Her Today:
+              </p>
+              {phaseTips.map((tip, idx) => (
+                <div key={idx} className="flex items-start gap-2 text-xs text-foreground/90 font-sans leading-relaxed">
+                  <span className="text-rose-400 font-bold">•</span>
+                  <span>{tip}</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="mt-3 text-xs italic text-muted-foreground/80 leading-relaxed">
+              {partnerName} hasn't shared her cycle data. Respecting her personal privacy with unconditional love 💕
+            </p>
+          )}
+        </motion.div>
+      )}
+
       {/* Partner Daily Status Card */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
@@ -654,6 +843,13 @@ export function HomeScreen() {
       <MoodHistoryModal
         open={isHistoryModalOpen}
         onOpenChange={setIsHistoryModalOpen}
+        partnerName={partnerName}
+      />
+
+      {/* Bad Day Mode Sheet */}
+      <BadDaySheet
+        open={isBadDayOpen}
+        onOpenChange={setIsBadDayOpen}
         partnerName={partnerName}
       />
     </div>

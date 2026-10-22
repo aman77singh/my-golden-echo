@@ -7,6 +7,7 @@ export interface IGoalDoc extends Document {
   title: string;
   category: string;
   targetCount?: number;
+  currentCount?: number;
   unit?: string;
   deadline?: Date;
   status: GoalStatus;
@@ -21,6 +22,7 @@ const goalSchema = new Schema<IGoalDoc>(
     title: { type: String, required: true, trim: true },
     category: { type: String, required: true, trim: true },
     targetCount: { type: Number },
+    currentCount: { type: Number, default: 0 },
     unit: { type: String },
     deadline: { type: Date },
     status: {

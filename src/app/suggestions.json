@@ -1,0 +1,74 @@
+{
+  "menstrual": {
+    "forHer": [
+      "Warm soothing soups, rich broths, and iron-rich foods like dark leafy greens and berries",
+      "Restorative floor yoga, gentle child's pose, and warm blanket snuggles",
+      "Sip warm ginger, peppermint, or raspberry leaf herbal tea for cramp comfort",
+      "Cancel non-essential demands; honor your body's request for slow pacing and extra sleep",
+      "Soak in a warm bath with Epsom salts and calming lavender essential oil",
+      "Wear your softest, loosest clothes and keep a heating pad nestled against your lower tummy"
+    ],
+    "forPartner": [
+      "Keep her favorite heating pad plugged in and bring her soft, fuzzy socks",
+      "Prepare or order warm comfort food (noodle soups, hot chocolate, warm rice bowls)",
+      "Take care of dishes, tidying, and errands without her having to ask",
+      "Offer gentle lower-back, shoulder, or foot massages with soothing oil",
+      "Run a warm bath with candles and leave a fluffy towel warmed up for her",
+      "Be a calm, peaceful presence—give her unconditional space and loving reassurance"
+    ]
+  },
+  "follicular": {
+    "forHer": [
+      "Fresh crisp salads, vibrant citrus, probiotic foods, and hydrating morning smoothies",
+      "Re-energizing cardio, dance workouts, or morning jogs in the fresh air",
+      "Channel your rising mental clarity and optimism into planning new dreams and creative projects",
+      "Plan fun weekend outings, dates, and social coffees with loved ones",
+      "Soak in 15 minutes of natural morning sunlight to boost serotonin and vitality",
+      "Set motivating monthly goals—your brain is primed for novelty and strategic focus"
+    ],
+    "forPartner": [
+      "Plan an active, adventurous date like a scenic hike, museum stroll, or new cafe hunt",
+      "Match her rising enthusiasm and brainstorm exciting future plans together",
+      "Surprise her with fresh colorful flowers or a refreshing iced matcha latte",
+      "Cheer on her new ideas, work ambitions, or creative side projects",
+      "Cook a fresh, colorful dinner together with fun music in the kitchen",
+      "Compliment her radiant energy and tell her how inspiring her enthusiasm is"
+    ]
+  },
+  "ovulatory": {
+    "forHer": [
+      "Fiber-rich veggies, fresh berries, avocados, wild salmon, and plenty of electrolyte water",
+      "Peak energy workouts—HIIT, strength training, power yoga, or long runs",
+      "Your confidence and social charisma are glowing—schedule key presentations and date nights",
+      "Wear your favorite outfit that makes you feel confident, radiant, and empowered",
+      "Express your heartfelt desires and romantic feelings openly with your partner",
+      "Celebrate your vitality, beauty, and magnetic connection with the world"
+    ],
+    "forPartner": [
+      "Take her out for an unforgettable romantic date night where you both dress up",
+      "Give her your undivided attention, maintain affectionate eye contact, and listen deeply",
+      "Tell her specifically how gorgeous, magnetic, and wonderful she is",
+      "Be spontaneous—bring home surprise tickets or plan a late-night dessert drive",
+      "Initiate playful romantic gestures, lingering hugs, and passionate affection",
+      "Celebrate her achievements and tell her how proud you are to be by her side"
+    ]
+  },
+  "luteal": {
+    "forHer": [
+      "Magnesium-rich foods (roasted pumpkin seeds, bananas, dark chocolate, sweet potatoes)",
+      "Transition from intense training to grounding pilates, yin yoga, or sunset strolls",
+      "Wind down an hour before bed with dim lighting, relaxing music, and screen-free reading",
+      "Protect your peace: practice saying 'no' to draining tasks and embrace cozy nesting",
+      "Jot down racing thoughts in a brain-dump journal to release pre-period tension",
+      "Prioritize regular protein-rich snacks to keep your blood sugar and mood steady"
+    ],
+    "forPartner": [
+      "Stock up her secret stash of dark chocolate, salty snacks, and her favorite treats",
+      "Be an emotional anchor—avoid arguments and replace frustration with warm hugs",
+      "Surprise her with a cozy movie night, warm blanket, and zero expectations",
+      "Tidy up the bedroom, fluff her pillows, and create a calm, peaceful atmosphere",
+      "Remind her that any irritability or sadness is temporary: 'I love you and I've got you'",
+      "Offer spontaneous forehead kisses and remind her she doesn't have to carry everything alone"
+    ]
+  }
+}

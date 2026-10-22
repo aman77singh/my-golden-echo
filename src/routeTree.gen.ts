@@ -19,9 +19,16 @@ import { Route as SecretRouteImport } from './routes/secret'
 import { Route as ThoughtsRouteImport } from './routes/thoughts'
 import { Route as TimelineRouteImport } from './routes/timeline'
 import { Route as AppIndexRouteImport } from './routes/app/index'
+import { Route as AppCalendarRouteImport } from './routes/app/calendar'
 import { Route as AppChatRouteImport } from './routes/app/chat'
+import { Route as AppCheckinRouteImport } from './routes/app/checkin'
+import { Route as AppConversationRouteImport } from './routes/app/conversation'
 import { Route as AppCycleRouteImport } from './routes/app/cycle'
+import { Route as AppDatejarRouteImport } from './routes/app/datejar'
+import { Route as AppGratitudeRouteImport } from './routes/app/gratitude'
 import { Route as AppProgressRouteImport } from './routes/app/progress'
+import { Route as AppSettingsRouteImport } from './routes/app/settings'
+import { Route as AppSurprisesRouteImport } from './routes/app/surprises'
 import { Route as AppThoughtsRouteImport } from './routes/app/thoughts'
 
 const IndexRoute = IndexRouteImport.update({
@@ -74,9 +81,24 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCalendarRoute = AppCalendarRouteImport.update({
+  id: '/calendar',
+  path: '/calendar',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppChatRoute = AppChatRouteImport.update({
   id: '/chat',
   path: '/chat',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCheckinRoute = AppCheckinRouteImport.update({
+  id: '/checkin',
+  path: '/checkin',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppConversationRoute = AppConversationRouteImport.update({
+  id: '/conversation',
+  path: '/conversation',
   getParentRoute: () => AppRoute,
 } as any)
 const AppCycleRoute = AppCycleRouteImport.update({
@@ -84,9 +106,29 @@ const AppCycleRoute = AppCycleRouteImport.update({
   path: '/cycle',
   getParentRoute: () => AppRoute,
 } as any)
+const AppDatejarRoute = AppDatejarRouteImport.update({
+  id: '/datejar',
+  path: '/datejar',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppGratitudeRoute = AppGratitudeRouteImport.update({
+  id: '/gratitude',
+  path: '/gratitude',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppProgressRoute = AppProgressRouteImport.update({
   id: '/progress',
   path: '/progress',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSurprisesRoute = AppSurprisesRouteImport.update({
+  id: '/surprises',
+  path: '/surprises',
   getParentRoute: () => AppRoute,
 } as any)
 const AppThoughtsRoute = AppThoughtsRouteImport.update({
@@ -105,9 +147,16 @@ export interface FileRoutesByFullPath {
   '/secret': typeof SecretRoute
   '/thoughts': typeof ThoughtsRoute
   '/timeline': typeof TimelineRoute
+  '/app/calendar': typeof AppCalendarRoute
   '/app/chat': typeof AppChatRoute
+  '/app/checkin': typeof AppCheckinRoute
+  '/app/conversation': typeof AppConversationRoute
   '/app/cycle': typeof AppCycleRoute
+  '/app/datejar': typeof AppDatejarRoute
+  '/app/gratitude': typeof AppGratitudeRoute
   '/app/progress': typeof AppProgressRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app/surprises': typeof AppSurprisesRoute
   '/app/thoughts': typeof AppThoughtsRoute
   '/app/': typeof AppIndexRoute
 }
@@ -120,9 +169,16 @@ export interface FileRoutesByTo {
   '/secret': typeof SecretRoute
   '/thoughts': typeof ThoughtsRoute
   '/timeline': typeof TimelineRoute
+  '/app/calendar': typeof AppCalendarRoute
   '/app/chat': typeof AppChatRoute
+  '/app/checkin': typeof AppCheckinRoute
+  '/app/conversation': typeof AppConversationRoute
   '/app/cycle': typeof AppCycleRoute
+  '/app/datejar': typeof AppDatejarRoute
+  '/app/gratitude': typeof AppGratitudeRoute
   '/app/progress': typeof AppProgressRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app/surprises': typeof AppSurprisesRoute
   '/app/thoughts': typeof AppThoughtsRoute
   '/app': typeof AppIndexRoute
 }
@@ -137,9 +193,16 @@ export interface FileRoutesById {
   '/secret': typeof SecretRoute
   '/thoughts': typeof ThoughtsRoute
   '/timeline': typeof TimelineRoute
+  '/app/calendar': typeof AppCalendarRoute
   '/app/chat': typeof AppChatRoute
+  '/app/checkin': typeof AppCheckinRoute
+  '/app/conversation': typeof AppConversationRoute
   '/app/cycle': typeof AppCycleRoute
+  '/app/datejar': typeof AppDatejarRoute
+  '/app/gratitude': typeof AppGratitudeRoute
   '/app/progress': typeof AppProgressRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app/surprises': typeof AppSurprisesRoute
   '/app/thoughts': typeof AppThoughtsRoute
   '/app/': typeof AppIndexRoute
 }
@@ -155,9 +218,16 @@ export interface FileRouteTypes {
     | '/secret'
     | '/thoughts'
     | '/timeline'
+    | '/app/calendar'
     | '/app/chat'
+    | '/app/checkin'
+    | '/app/conversation'
     | '/app/cycle'
+    | '/app/datejar'
+    | '/app/gratitude'
     | '/app/progress'
+    | '/app/settings'
+    | '/app/surprises'
     | '/app/thoughts'
     | '/app/'
   fileRoutesByTo: FileRoutesByTo
@@ -170,9 +240,16 @@ export interface FileRouteTypes {
     | '/secret'
     | '/thoughts'
     | '/timeline'
+    | '/app/calendar'
     | '/app/chat'
+    | '/app/checkin'
+    | '/app/conversation'
     | '/app/cycle'
+    | '/app/datejar'
+    | '/app/gratitude'
     | '/app/progress'
+    | '/app/settings'
+    | '/app/surprises'
     | '/app/thoughts'
     | '/app'
   id:
@@ -186,9 +263,16 @@ export interface FileRouteTypes {
     | '/secret'
     | '/thoughts'
     | '/timeline'
+    | '/app/calendar'
     | '/app/chat'
+    | '/app/checkin'
+    | '/app/conversation'
     | '/app/cycle'
+    | '/app/datejar'
+    | '/app/gratitude'
     | '/app/progress'
+    | '/app/settings'
+    | '/app/surprises'
     | '/app/thoughts'
     | '/app/'
   fileRoutesById: FileRoutesById
@@ -277,11 +361,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/calendar': {
+      id: '/app/calendar'
+      path: '/calendar'
+      fullPath: '/app/calendar'
+      preLoaderRoute: typeof AppCalendarRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/chat': {
       id: '/app/chat'
       path: '/chat'
       fullPath: '/app/chat'
       preLoaderRoute: typeof AppChatRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/checkin': {
+      id: '/app/checkin'
+      path: '/checkin'
+      fullPath: '/app/checkin'
+      preLoaderRoute: typeof AppCheckinRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/conversation': {
+      id: '/app/conversation'
+      path: '/conversation'
+      fullPath: '/app/conversation'
+      preLoaderRoute: typeof AppConversationRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/cycle': {
@@ -291,11 +396,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCycleRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/datejar': {
+      id: '/app/datejar'
+      path: '/datejar'
+      fullPath: '/app/datejar'
+      preLoaderRoute: typeof AppDatejarRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/gratitude': {
+      id: '/app/gratitude'
+      path: '/gratitude'
+      fullPath: '/app/gratitude'
+      preLoaderRoute: typeof AppGratitudeRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/progress': {
       id: '/app/progress'
       path: '/progress'
       fullPath: '/app/progress'
       preLoaderRoute: typeof AppProgressRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/settings': {
+      id: '/app/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/surprises': {
+      id: '/app/surprises'
+      path: '/surprises'
+      fullPath: '/app/surprises'
+      preLoaderRoute: typeof AppSurprisesRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/thoughts': {
@@ -309,17 +442,31 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppCalendarRoute: typeof AppCalendarRoute
   AppChatRoute: typeof AppChatRoute
+  AppCheckinRoute: typeof AppCheckinRoute
+  AppConversationRoute: typeof AppConversationRoute
   AppCycleRoute: typeof AppCycleRoute
+  AppDatejarRoute: typeof AppDatejarRoute
+  AppGratitudeRoute: typeof AppGratitudeRoute
   AppProgressRoute: typeof AppProgressRoute
+  AppSettingsRoute: typeof AppSettingsRoute
+  AppSurprisesRoute: typeof AppSurprisesRoute
   AppThoughtsRoute: typeof AppThoughtsRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppCalendarRoute: AppCalendarRoute,
   AppChatRoute: AppChatRoute,
+  AppCheckinRoute: AppCheckinRoute,
+  AppConversationRoute: AppConversationRoute,
   AppCycleRoute: AppCycleRoute,
+  AppDatejarRoute: AppDatejarRoute,
+  AppGratitudeRoute: AppGratitudeRoute,
   AppProgressRoute: AppProgressRoute,
+  AppSettingsRoute: AppSettingsRoute,
+  AppSurprisesRoute: AppSurprisesRoute,
   AppThoughtsRoute: AppThoughtsRoute,
   AppIndexRoute: AppIndexRoute,
 }

@@ -3,6 +3,7 @@ import { Message, IMessageDoc } from "../models/Message.js";
 import { AuthUser } from "../types/shared.js";
 import { ForbiddenError, NotFoundError } from "../utils/errors.js";
 import { emitToCouple } from "../socket.js";
+import { sendToPartner } from "./pushService.js";
 
 export interface SendMessageDTO {
   body?: string;
@@ -32,6 +33,22 @@ export class MessageService {
 
     // Emit message:new over Socket.IO to couple
     emitToCouple(currentUser.coupleId, "message:new", message);
+
+    // Send push notification to partner
+    const preview = data.body
+      ? data.body.length > 80
+        ? data.body.substring(0, 77) + "..."
+        : data.body
+      : data.voiceUrl
+      ? "🎙️ Sent a voice message"
+      : "📷 Sent a photo";
+
+    sendToPartner(currentUser.id, {
+      title: currentUser.name,
+      body: preview,
+      category: "messages",
+      url: "/app/chat",
+    }).catch(() => {});
 
     return message;
   }

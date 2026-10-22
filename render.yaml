@@ -41,3 +41,6 @@ services:
         sync: false
       - key: VAPID_SUBJECT
         sync: false
+      - key: JOBS_SECRET_KEY
+        generateValue: true
+

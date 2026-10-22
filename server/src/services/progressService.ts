@@ -1,8 +1,11 @@
 import { Types } from "mongoose";
 import { ProgressPost, IProgressPostDoc } from "../models/ProgressPost.js";
+import { Goal } from "../models/Goal.js";
 import { User } from "../models/User.js";
 import { AuthUser } from "../types/shared.js";
 import { ForbiddenError, NotFoundError } from "../utils/errors.js";
+import { emitToCouple } from "../socket.js";
+import { sendToPartner, sendToUser } from "./pushService.js";
 
 export interface CreateProgressPostDTO {
   goalId?: string;
@@ -23,7 +26,7 @@ export interface ProgressReplyDTO {
 
 export class ProgressService {
   /**
-   * Create a progress post
+   * Create a progress post and increment goal if attached
    */
   static async createPost(currentUser: AuthUser, data: CreateProgressPostDTO): Promise<IProgressPostDoc> {
     const post = await ProgressPost.create({
@@ -40,6 +43,39 @@ export class ProgressService {
       replies: [],
       reactions: [],
     });
+
+    // If goalId is attached, increment Goal.currentCount by countAdded
+    if (data.goalId) {
+      const added = data.countAdded !== undefined && data.countAdded > 0 ? data.countAdded : 1;
+      const goal = await Goal.findOne({
+        _id: new Types.ObjectId(data.goalId),
+        coupleId: new Types.ObjectId(currentUser.coupleId),
+      });
+
+      if (goal) {
+        goal.currentCount = (goal.currentCount || 0) + added;
+        if (goal.targetCount && goal.currentCount >= goal.targetCount) {
+          goal.status = "completed";
+        }
+        await goal.save();
+      }
+    }
+
+    emitToCouple(currentUser.coupleId, "progress:new", post);
+
+    // Send push notification to partner
+    const preview = data.body
+      ? data.body.length > 70
+        ? data.body.substring(0, 67) + "..."
+        : data.body
+      : `Logged progress in ${data.category}`;
+
+    sendToPartner(currentUser.id, {
+      title: `${currentUser.name} shared progress 🌱`,
+      body: data.struggled ? `Struggled today, but showed up: "${preview}"` : preview,
+      category: "progress",
+      url: "/app/progress",
+    }).catch(() => {});
 
     return post;
   }
@@ -61,7 +97,11 @@ export class ProgressService {
     const limit = Math.min(options?.limit ?? 50, 100);
     const skip = options?.skip ?? 0;
 
-    return ProgressPost.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit);
+    return ProgressPost.find(query)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .populate("goalId", "title targetCount currentCount unit");
   }
 
   /**
@@ -143,6 +183,23 @@ export class ProgressService {
     } as any);
 
     await post.save();
+
+    emitToCouple(currentUser.coupleId, "progress:reply", {
+      postId: post._id.toString(),
+      reply: post.replies[post.replies.length - 1],
+      post,
+    });
+
+    // Notify author if replying to partner's post
+    if (post.userId.toString() !== currentUser.id) {
+      sendToUser(post.userId.toString(), {
+        title: `${currentUser.name} cheered you on! 💛`,
+        body: data.quickCheer ? `${data.quickCheer} ${data.body || ""}` : (data.body || "Left an encouraging reply"),
+        category: "progress",
+        url: "/app/progress",
+      }).catch(() => {});
+    }
+
     return post;
   }
 
@@ -207,10 +264,81 @@ export class ProgressService {
         userId: new Types.ObjectId(currentUser.id),
         emoji,
       });
+
+      // Send push notification to author if reacting to partner's post
+      if (post.userId.toString() !== currentUser.id) {
+        sendToUser(post.userId.toString(), {
+          title: `${currentUser.name} reacted ${emoji}`,
+          body: `To your post: "${post.body ? (post.body.length > 40 ? post.body.substring(0, 37) + '...' : post.body) : post.category}"`,
+          category: "progress",
+          url: "/app/progress",
+        }).catch(() => {});
+      }
     }
 
     await post.save();
+
+    emitToCouple(currentUser.coupleId, "progress:reaction", {
+      postId: post._id.toString(),
+      reactions: post.reactions,
+    });
+
     return post;
+  }
+
+  /**
+   * Get weekly summary of progress for Sunday review
+   */
+  static async getWeeklySummary(currentUser: AuthUser): Promise<{
+    daysPosted: number;
+    totalCount: number;
+    cheersReceived: number;
+    totalMinutes: number;
+    weekStart: string;
+    weekEnd: string;
+  }> {
+    const coupleId = new Types.ObjectId(currentUser.coupleId);
+
+    // Calculate current week range (Monday 00:00 to Sunday 23:59)
+    const now = new Date();
+    const dayOfWeek = now.getDay();
+    const distanceToMonday = (dayOfWeek + 6) % 7;
+    const weekStart = new Date(now);
+    weekStart.setDate(now.getDate() - distanceToMonday);
+    weekStart.setHours(0, 0, 0, 0);
+
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekStart.getDate() + 6);
+    weekEnd.setHours(23, 59, 59, 999);
+
+    const posts = await ProgressPost.find({
+      coupleId,
+      createdAt: { $gte: weekStart, $lte: weekEnd },
+    }).lean();
+
+    const distinctDays = new Set(
+      posts.map((p) => new Date(p.createdAt).toISOString().split("T")[0])
+    );
+
+    let totalCount = 0;
+    let totalMinutes = 0;
+    let cheersReceived = 0;
+
+    for (const p of posts) {
+      totalCount += p.countAdded || 0;
+      totalMinutes += p.minutes || 0;
+      cheersReceived += p.reactions?.length || 0;
+      cheersReceived += p.replies?.length || 0;
+    }
+
+    return {
+      daysPosted: distinctDays.size,
+      totalCount,
+      cheersReceived,
+      totalMinutes,
+      weekStart: weekStart.toISOString(),
+      weekEnd: weekEnd.toISOString(),
+    };
   }
 
   /**

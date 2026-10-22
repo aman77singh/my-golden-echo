@@ -114,6 +114,33 @@ export async function apiFetch<T = any>(
   return response.json();
 }
 
+export const apiClient = {
+  get: async <T = any>(endpoint: string, options?: RequestInit) => {
+    const data = await apiFetch<T>(endpoint, { ...options, method: "GET" });
+    return { data };
+  },
+  post: async <T = any>(endpoint: string, body?: any, options?: RequestInit) => {
+    const data = await apiFetch<T>(endpoint, {
+      ...options,
+      method: "POST",
+      body: body instanceof FormData ? body : JSON.stringify(body),
+    });
+    return { data };
+  },
+  patch: async <T = any>(endpoint: string, body?: any, options?: RequestInit) => {
+    const data = await apiFetch<T>(endpoint, {
+      ...options,
+      method: "PATCH",
+      body: JSON.stringify(body),
+    });
+    return { data };
+  },
+  delete: async <T = any>(endpoint: string, options?: RequestInit) => {
+    const data = await apiFetch<T>(endpoint, { ...options, method: "DELETE" });
+    return { data };
+  },
+};
+
 /**
  * Ensure the client has an authenticated session.
  * Logs in with seed credentials if not authenticated.

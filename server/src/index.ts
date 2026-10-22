@@ -4,6 +4,8 @@ import { connectDatabase, disconnectDatabase } from "./config/db.js";
 import { env } from "./config/env.js";
 import { logger } from "./logger.js";
 import { initSocketServer } from "./socket.js";
+import cron from "node-cron";
+import { CronService } from "./services/cronService.js";
 
 async function bootstrap() {
   try {
@@ -22,6 +24,15 @@ async function bootstrap() {
       logger.info(
         `🌟 Our Space backend listening on port ${env.PORT} (${env.NODE_ENV})`
       );
+    });
+
+    // 4b. Schedule timezone-aware, idempotent jobs every 15 minutes
+    cron.schedule("*/15 * * * *", async () => {
+      try {
+        await CronService.runAllDueJobs();
+      } catch (err: any) {
+        logger.error({ err: err?.message }, "Failed to process scheduled jobs.");
+      }
     });
 
     // 5. Graceful shutdown

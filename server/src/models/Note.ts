@@ -15,7 +15,7 @@ const noteSchema = new Schema<INoteDoc>(
     coupleId: { type: Schema.Types.ObjectId, ref: "Couple", required: true, index: true },
     fromId: { type: Schema.Types.ObjectId, ref: "User", required: true, index: true },
     body: { type: String, required: true },
-    kind: { type: String, enum: ["love", "reminder", "gratitude", "custom", "ping"], default: "love" },
+    kind: { type: String, enum: ["love", "reminder", "gratitude", "custom", "ping", "badday"], default: "love" },
   },
   { timestamps: true }
 );

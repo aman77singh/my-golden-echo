@@ -16,6 +16,7 @@ export interface IThoughtDoc extends Document {
   visibility: ThoughtVisibility;
   justVenting?: boolean;
   responses: Types.DocumentArray<IThoughtResponseDoc & Document>;
+  checkInSentAt?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -46,6 +47,7 @@ const thoughtSchema = new Schema<IThoughtDoc>(
     },
     justVenting: { type: Boolean, default: false },
     responses: { type: [thoughtResponseSchema], default: [] },
+    checkInSentAt: { type: Date },
   },
   { timestamps: true }
 );

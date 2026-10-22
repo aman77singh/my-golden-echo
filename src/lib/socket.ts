@@ -75,9 +75,34 @@ export function connectSocket(queryClient: QueryClient): Socket | null {
     }
   });
 
-  // 3. Real-time Progress Update
+  // 3. Real-time Progress Updates
   socket.on("progress:update", () => {
     queryClient.invalidateQueries({ queryKey: ["progress"] });
+  });
+
+  socket.on("progress:new", (post: any) => {
+    queryClient.invalidateQueries({ queryKey: ["progress"] });
+    queryClient.invalidateQueries({ queryKey: ["goals"] });
+    if (post?.body) {
+      toast("New Progress Shared! 🔥", {
+        description: `${post.category}: ${post.body.slice(0, 45)}...`,
+      });
+    }
+  });
+
+  socket.on("progress:reply", ({ reply }: any) => {
+    queryClient.invalidateQueries({ queryKey: ["progress"] });
+    toast("New Cheer on Progress! 👏", {
+      description: reply?.quickCheer || reply?.body || "Sent a cheer!",
+      icon: "🎉",
+    });
+  });
+
+  socket.on("progress:reaction", ({ postId, reactions }: any) => {
+    queryClient.setQueryData<any[]>(["progress"], (old) => {
+      if (!old) return old;
+      return old.map((p) => (p._id === postId ? { ...p, reactions } : p));
+    });
   });
 
   // 4. Real-time Chat Messages
@@ -119,6 +144,41 @@ export function connectSocket(queryClient: QueryClient): Socket | null {
     if (typeof window !== "undefined") {
       window.dispatchEvent(new CustomEvent("ourspace:typing", { detail: data }));
     }
+  });
+
+  // 6. Real-time Thoughts & Insecurities
+  socket.on("thought:new", (thought: any) => {
+    queryClient.invalidateQueries({ queryKey: ["thoughts"] });
+    if (thought?.kind === "insecurity") {
+      toast("Partner shared a vulnerability 🤍", {
+        description: "A tender space to listen without needing to fix.",
+      });
+    } else {
+      toast("New Thought Shared ✨", {
+        description: thought?.body?.slice(0, 50) + "...",
+      });
+    }
+  });
+
+  socket.on("thought:response", () => {
+    queryClient.invalidateQueries({ queryKey: ["thoughts"] });
+    toast("Partner responded with gentle care 🤍", {
+      icon: "🫂",
+    });
+  });
+
+  socket.on("insecurity:nudge", (data: { message?: string }) => {
+    queryClient.invalidateQueries({ queryKey: ["thoughts"] });
+    toast("Gentle Nudge 🤍", {
+      description: data?.message || "Check in with her about what she shared.",
+      duration: 6000,
+    });
+  });
+
+  socket.on("privacy:update", () => {
+    queryClient.invalidateQueries({ queryKey: ["couple"] });
+    queryClient.invalidateQueries({ queryKey: ["cycles"] });
+    queryClient.invalidateQueries({ queryKey: ["thoughts"] });
   });
 
   return socket;
