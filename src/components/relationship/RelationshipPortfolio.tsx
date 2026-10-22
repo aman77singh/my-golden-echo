@@ -746,10 +746,72 @@ export function PasswordGate({ onUnlock, onClose }: { onUnlock: () => void; onCl
   );
 }
 
+export function ChapterPasswordGate({ onUnlock, onBack }: { onUnlock: () => void; onBack: () => void }) {
+  const [passcode, setPasscode] = useState("");
+  const [error, setError] = useState(false);
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (passcode === "14MAY") {
+      onUnlock();
+      return;
+    }
+    setError(true);
+    setPasscode("");
+  };
+
+  return (
+    <div className="fixed inset-0 z-[120] flex min-h-dvh items-center justify-center bg-background/95 p-4 backdrop-blur-2xl">
+      <div className="w-full max-w-md rounded-2xl border border-border/80 bg-card/95 p-6 text-center shadow-panel sm:p-8">
+        <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full border border-accent/40 bg-accent/10 text-accent">
+          <LockKeyhole className="h-7 w-7" />
+        </div>
+        <p className="font-mono text-xs tracking-widest text-muted-foreground">CHAPTERS 02–08</p>
+        <h1 className="mt-2 font-display text-2xl font-bold text-foreground sm:text-3xl">
+          Still being prepared
+        </h1>
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+          These Keepsake pages are not finished yet. Enter their separate password to preview them.
+        </p>
+        <form onSubmit={handleSubmit} className="mt-6 space-y-3">
+          <input
+            type="password"
+            value={passcode}
+            onChange={(event) => {
+              setPasscode(event.target.value);
+              setError(false);
+            }}
+            placeholder="Enter chapter password"
+            aria-label="Chapter password"
+            aria-invalid={error}
+            className={`w-full rounded-xl border bg-background/80 px-4 py-3.5 text-center font-sans text-base text-foreground outline-none placeholder:text-muted-foreground/60 ${
+              error
+                ? "border-destructive ring-2 ring-destructive/20"
+                : "border-border focus:border-accent focus:ring-2 focus:ring-accent/20"
+            }`}
+          />
+          {error && <p className="text-sm font-semibold text-destructive">That password isn’t correct.</p>}
+          <Button type="submit" className="min-h-11 w-full rounded-xl bg-accent font-semibold text-accent-foreground">
+            Unlock chapters
+          </Button>
+        </form>
+        <button
+          type="button"
+          onClick={onBack}
+          className="mt-5 font-sans text-xs text-muted-foreground underline transition-colors hover:text-accent"
+        >
+          Back to Home / Us
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export function Sidebar({
   activePath,
   visited,
   authenticated = false,
+  chaptersUnlocked = authenticated,
   onNavigate,
   onLock,
   onHomeClick,
@@ -757,6 +819,7 @@ export function Sidebar({
   activePath: string;
   visited: Set<string>;
   authenticated?: boolean;
+  chaptersUnlocked?: boolean;
   onNavigate?: () => void;
   onLock?: () => void;
   onHomeClick?: () => void;
@@ -765,7 +828,7 @@ export function Sidebar({
     <nav aria-label="Story sections" className="flex flex-col gap-1">
       {navItems.map((item, index) => {
         const isHome = item.id === "home";
-        const isItemLocked = !authenticated && !isHome;
+        const isItemLocked = !chaptersUnlocked && !isHome;
         const isActive = activePath === item.path;
 
         const className = `group flex items-center justify-start gap-3 border-l px-4 py-3 text-left text-sm transition-colors ${

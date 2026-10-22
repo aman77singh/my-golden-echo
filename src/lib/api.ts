@@ -37,6 +37,10 @@ export const API_BASE_URL = getApiBaseUrl();
 const TOKEN_KEY = "our_space_token";
 const USER_KEY = "our_space_user";
 
+function isPlaceholderToken(token: string | null): boolean {
+  return token === "demo-token" || token?.startsWith("auth-token-") === true;
+}
+
 export interface CurrentUser {
   id: string;
   coupleId: string;
@@ -131,7 +135,7 @@ export async function apiFetch<T = any>(
   isRetry = false
 ): Promise<T> {
   let token = getStoredToken();
-  if (token === "demo-token") {
+  if (isPlaceholderToken(token)) {
     setStoredToken(null);
     token = null;
   }
@@ -258,7 +262,12 @@ export function logoutUser() {
 export function getAuthenticatedUser(): CurrentUser | null {
   const token = getStoredToken();
   const user = getStoredUser();
-  if (!token || !user || token === "demo-token") return null;
+  if (isPlaceholderToken(token)) {
+    setStoredToken(null);
+    setStoredUser(null);
+    return null;
+  }
+  if (!token || !user) return null;
   return user;
 }
 
@@ -272,7 +281,7 @@ export async function ensureAuthenticatedSession(): Promise<{
   const existingToken = getStoredToken();
   const existingUser = getStoredUser();
 
-  if (existingToken && existingUser && existingToken !== "demo-token") {
+  if (existingToken && existingUser && !isPlaceholderToken(existingToken)) {
     return { token: existingToken, user: existingUser };
   }
   return null;

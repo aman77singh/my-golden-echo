@@ -31,35 +31,17 @@ export function PhoneAuthScreen({ onSuccess }: PhoneAuthScreenProps) {
     }
 
     setLoading(true);
-    const cleanPw = password.trim();
-    const isCouplePassword =
-      cleanPw === "14/27" ||
-      cleanPw.toUpperCase() === "ADITI14" ||
-      cleanPw.toLowerCase() === "aditi14" ||
-      cleanPw === "1427";
-
     try {
-      const res = await loginUser(email.trim(), cleanPw);
-      toast.success(`Welcome to Our Space, ${res.user.name || (selectedRole === "her" ? "Aditi" : "Aman")}! 💕`);
+      const res = await loginUser(email.trim(), password.trim());
+      toast.success(
+        `Welcome to Our Space, ${res.user.name || (selectedRole === "her" ? "Aditi" : "Aman")}! 💕`,
+      );
       onSuccess(res.user);
-    } catch (err: any) {
-      // If server is unreachable or Failed to fetch, but password matches couple password
-      if (isCouplePassword) {
-        const isHer = selectedRole === "her" || email.toLowerCase().includes("aditi");
-        const fallbackUser: CurrentUser = {
-          id: isHer ? "aditi-user-1" : "aman-user-1",
-          coupleId: "aman-aditi-couple",
-          name: isHer ? "Aditi" : "Aman",
-          email: isHer ? "aditi@ourspace.local" : "aman@ourspace.local",
-          role: isHer ? "her" : "him",
-        };
-        const { setStoredToken, setStoredUser } = await import("@/lib/api");
-        setStoredToken("auth-token-" + (isHer ? "aditi" : "aman"));
-        setStoredUser(fallbackUser);
-        toast.success(`Welcome to Our Space, ${fallbackUser.name}! 💕`);
-        onSuccess(fallbackUser);
+    } catch (err: unknown) {
+      if (err instanceof TypeError && err.message === "Failed to fetch") {
+        toast.error("Couldn't connect to Our Space. Check your connection and try again.");
       } else {
-        toast.error("Incorrect password. Please try again.");
+        toast.error(err instanceof Error ? err.message : "Login failed. Please try again.");
       }
     } finally {
       setLoading(false);
@@ -154,9 +136,7 @@ export function PhoneAuthScreen({ onSuccess }: PhoneAuthScreenProps) {
 
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="text-[11px] font-semibold text-foreground">
-                Password
-              </label>
+              <label className="text-[11px] font-semibold text-foreground">Password</label>
             </div>
             <div className="relative">
               <input

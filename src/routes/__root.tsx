@@ -5,6 +5,7 @@ import {
   createRootRouteWithContext,
   useRouter,
   useLocation,
+  useNavigate,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -20,6 +21,7 @@ import {
   HeartCursor,
   Intro,
   PasswordGate,
+  ChapterPasswordGate,
   requiredSections,
 } from "@/components/relationship/RelationshipPortfolio";
 
@@ -150,12 +152,14 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const location = useLocation();
+  const navigate = useNavigate();
   const pathname = location.pathname;
 
   const security = content.security;
   const isSecurityEnabled = security?.enabled ?? true;
 
   const [authenticated, setAuthenticated] = useState<boolean>(false);
+  const [chaptersUnlocked, setChaptersUnlocked] = useState<boolean>(false);
 
   const [intro, setIntro] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -181,7 +185,9 @@ function RootComponent() {
 
   const ourSong = content.spotify.tracks[activeTrack]?.isOurSong && playing;
   const isKeepsakePage = Boolean(pathToId[pathname]);
-  const shouldShowGate = isSecurityEnabled && isKeepsakePage && !authenticated;
+  const isProtectedChapter = isKeepsakePage && pathname !== "/";
+  const shouldShowEntryGate = isSecurityEnabled && isKeepsakePage && !authenticated;
+  const shouldShowChapterGate = isSecurityEnabled && authenticated && isProtectedChapter && !chaptersUnlocked;
 
   useEffect(() => {
     const sectionId = pathToId[pathname];
@@ -212,6 +218,7 @@ function RootComponent() {
 
   const handleLock = () => {
     setAuthenticated(false);
+    setChaptersUnlocked(false);
     try {
       if (typeof window !== "undefined") {
         sessionStorage.removeItem("is-authenticated");
@@ -237,13 +244,23 @@ function RootComponent() {
     );
   }
 
-  // Require the Keepsake password before showing its home page or chapters.
-  if (shouldShowGate) {
+  if (shouldShowEntryGate) {
     return (
       <QueryClientProvider client={queryClient}>
         <HeartCursor />
         <PasswordGate onUnlock={handleUnlock} />
         <div className="pointer-events-none fixed inset-0 z-[80] opacity-[.035] mix-blend-multiply film-grain" aria-hidden="true" />
+      </QueryClientProvider>
+    );
+  }
+
+  if (shouldShowChapterGate) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <ChapterPasswordGate
+          onUnlock={() => setChaptersUnlocked(true)}
+          onBack={() => navigate({ to: "/" })}
+        />
       </QueryClientProvider>
     );
   }
@@ -274,6 +291,7 @@ function RootComponent() {
             activePath={pathname}
             visited={visited}
             authenticated={authenticated}
+            chaptersUnlocked={chaptersUnlocked}
             onLock={handleLock}
           />
           <p className="mt-auto text-[9px] uppercase tracking-[.24em] text-muted-foreground font-sans">
@@ -298,6 +316,7 @@ function RootComponent() {
                 activePath={pathname}
                 visited={visited}
                 authenticated={authenticated}
+                chaptersUnlocked={chaptersUnlocked}
                 onNavigate={() => setMenuOpen(false)}
                 onLock={() => {
                   setMenuOpen(false);
