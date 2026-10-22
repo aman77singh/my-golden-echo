@@ -42,8 +42,10 @@ export function PWAInstallPrompt({
                 <Sparkles className="h-6 w-6" />
               </div>
               <div className="min-w-0 flex-1">
-                <h4 className="font-display text-sm font-bold text-foreground">Install Our Space</h4>
-                <p className="text-xs text-muted-foreground">Add to Home Screen for fullscreen & offline access</p>
+                <h4 className="font-display text-sm font-bold text-[#FFF8F0]">Install Our Space</h4>
+                <p className="text-xs leading-relaxed text-[#D8C9BA]">
+                  Add to Home Screen for fullscreen &amp; offline access
+                </p>
               </div>
               <div className="flex items-center gap-1.5">
                 <button
@@ -56,7 +58,7 @@ export function PWAInstallPrompt({
                 <button
                   type="button"
                   onClick={() => setDismissed(true)}
-                  className="rounded-lg p-1.5 text-muted-foreground hover:bg-white/5 hover:text-foreground"
+                  className="rounded-lg p-1.5 text-[#D8C9BA] transition-colors hover:bg-white/10 hover:text-white"
                   aria-label="Dismiss banner"
                 >
                   <X className="h-4 w-4" />

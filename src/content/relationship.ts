@@ -118,7 +118,7 @@ export const relationshipContent = {
     { src: city, caption: "Rain made everything look like a movie.", position: "43% 65%" },
     { src: rooftop, caption: "Blue hour, warm lights, you.", position: "58% 52%" },
     { src: cafe, caption: "Two coffees. One very long conversation.", position: "50% 38%" },
-    { src: city, caption: "Somewhere between lost and exactly where we belonged.", position: "52% 30%" },
+    { src: city, caption: "Even the detours felt right when I was with you.", position: "52% 30%" },
     { src: cafe, caption: "Your hand found mine first.", position: "48% 65%" },
     { src: rooftop, caption: "A soft place to land.", position: "42% 62%" },
     { src: city, caption: "Still choosing the long way home.", position: "55% 52%" },

@@ -13,7 +13,7 @@ export const loveNotes = [
   "Always save me the seat across from you.",
   "Ordinary mornings, extraordinary luck with you.",
   "The quiet dates count twice.",
-  "Somewhere between lost and exactly where we belonged.",
+  "Even the detours felt right when I was with you.",
   "Your hand found mine first, and that was everything.",
   "I love who you are when nobody is watching.",
   "Thank you for being my constant anchor and my sweetest adventure."
