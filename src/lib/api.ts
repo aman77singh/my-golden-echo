@@ -26,13 +26,7 @@ export function getApiBaseUrl(): string {
         : `http://${host}:5001`;
     }
 
-    return configuredUrl && !isLoopbackApiUrl(configuredUrl)
-      ? configuredUrl
-      : PRODUCTION_API_URL;
-  }
-
-  if (configuredUrl && !isLoopbackApiUrl(configuredUrl)) {
-    return configuredUrl;
+    return PRODUCTION_API_URL;
   }
 
   return import.meta.env.DEV && configuredUrl ? configuredUrl : PRODUCTION_API_URL;

@@ -162,7 +162,7 @@ npm run server:dev    # Backend on http://localhost:5001
 ### Client Environment (`.env`)
 | Variable | Description |
 | :--- | :--- |
-| `VITE_API_URL` | Optional backend API URL override. Local development defaults to `http://localhost:5001`; hosted builds default to `https://our-space-backend-8p9m.onrender.com`. |
+| `VITE_API_URL` | Optional API URL override for local/LAN development. Local development defaults to `http://localhost:5001`; hosted apps always use `https://our-space-backend-8p9m.onrender.com`. |
 | `VITE_VAPID_PUBLIC_KEY` | Public VAPID key matching server for browser push subscriptions |
 
 ---
