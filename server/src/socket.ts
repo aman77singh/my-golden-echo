@@ -18,14 +18,9 @@ export function initSocketServer(server: http.Server): SocketIOServer {
 
   const io = new SocketIOServer(server, {
     cors: {
-      origin: (origin, callback) => {
-        if (!origin && env.NODE_ENV !== "production") {
-          return callback(null, true);
-        }
-        if (!origin || allowedOrigins.includes(origin)) {
-          return callback(null, true);
-        }
-        callback(new Error("Socket.IO origin blocked by CORS"));
+      origin: (_origin, callback) => {
+        // Allow mobile devices, local IP, Lovable, Vercel, and tunnel connections
+        return callback(null, true);
       },
       credentials: true,
     },

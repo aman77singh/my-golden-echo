@@ -53,7 +53,11 @@ export function createApp() {
           origin.startsWith("http://127.0.0.1:") ||
           origin.startsWith("http://192.168.") ||
           origin.endsWith(".lovable.app") ||
-          origin.endsWith(".lovableproject.com")
+          origin.endsWith(".lovableproject.com") ||
+          origin.endsWith(".vercel.app") ||
+          origin.includes("loca.lt") ||
+          origin.includes("ngrok") ||
+          origin.includes("trycloudflare.com")
         ) {
           return callback(null, true);
         }

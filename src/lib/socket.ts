@@ -26,6 +26,9 @@ export function connectSocket(queryClient: QueryClient): Socket | null {
 
   socket = io(getApiBaseUrl(), {
     auth: { token },
+    extraHeaders: {
+      "Bypass-Tunnel-Reminder": "true",
+    },
     transports: ["websocket", "polling"],
     reconnection: true,
     reconnectionAttempts: Infinity,
@@ -46,14 +49,33 @@ export function connectSocket(queryClient: QueryClient): Socket | null {
     console.warn("Socket connection error:", error.message);
   });
 
-  // 1. Real-time Mood Update
+  // 1. Real-time Mood Update (instant 0ms cache update)
   socket.on("mood:update", (data: { mood: any; userId: string; userName?: string }) => {
     console.log("Real-time mood update received:", data);
 
-    // Invalidate mood queries in TanStack Query
+    const currentStoredUser = getStoredUser();
+    const isMine = data.userId === currentStoredUser?.id;
+
+    queryClient.setQueryData<any>(["moods", "latest"], (prev: any) => {
+      if (!prev) {
+        return {
+          mine: isMine ? data.mood : null,
+          partner: !isMine ? data.mood : null,
+          partnerName: data.userName || "Partner",
+        };
+      }
+      return {
+        ...prev,
+        mine: isMine ? data.mood : prev.mine,
+        partner: !isMine ? data.mood : data.mood,
+        partnerName: !isMine && data.userName ? data.userName : prev.partnerName,
+      };
+    });
+
+    // Invalidate mood queries in background to ensure full sync
     queryClient.invalidateQueries({ queryKey: ["moods"] });
 
-    if (data.userName) {
+    if (data.userName && !isMine) {
       toast.success(`${data.userName} updated their vibe: ${data.mood.emoji}`);
     }
   });

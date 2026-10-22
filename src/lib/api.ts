@@ -9,10 +9,10 @@ export function getApiBaseUrl(): string {
     }
   }
   const envUrl = import.meta.env.VITE_API_URL;
-  if (envUrl && !envUrl.includes("our-space-backend-8qkm")) {
+  if (envUrl && !envUrl.includes("our-space-backend-8qkm") && !envUrl.includes("localhost")) {
     return envUrl;
   }
-  return "http://localhost:5001";
+  return "https://clever-llamas-heal.loca.lt";
 }
 
 export const API_BASE_URL = getApiBaseUrl();
@@ -82,6 +82,8 @@ export async function apiFetch<T = any>(
   if (token && !headers.has("Authorization")) {
     headers.set("Authorization", `Bearer ${token}`);
   }
+
+  headers.set("Bypass-Tunnel-Reminder", "true");
 
   const baseUrl = getApiBaseUrl();
   const url = endpoint.startsWith("http")

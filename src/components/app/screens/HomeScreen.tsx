@@ -150,9 +150,11 @@ export function HomeScreen() {
     return hoursAgo < 24 ? note : null;
   }, [badDayNotes]);
 
-  // Fetch Latest Moods with offline-resilient local cache fallback
+  // Fetch Latest Moods with offline-resilient local cache fallback and 2.5s fast polling
   const { data: moodsData, isLoading: isLoadingMoods } = useQuery<LatestMoodsResponse>({
     queryKey: ["moods", "latest"],
+    refetchInterval: 2500,
+    refetchIntervalInBackground: true,
     queryFn: async () => {
       try {
         const res = await apiFetch<LatestMoodsResponse>("/moods/latest");
