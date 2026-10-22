@@ -10,7 +10,9 @@ import {
   Bell,
   Download,
   Laptop,
+  LogOut,
 } from "lucide-react";
+import { logoutUser } from "@/lib/api";
 
 interface MoreSheetProps {
   open: boolean;
@@ -170,6 +172,26 @@ export function MoreSheet({ open, onOpenChange, onInstallApp, isInstallable }: M
             </div>
             <span className="text-xs text-muted-foreground">Visit →</span>
           </a>
+
+          <button
+            type="button"
+            onClick={() => {
+              onOpenChange(false);
+              logoutUser();
+            }}
+            className="flex w-full items-center justify-between rounded-2xl border border-red-500/20 bg-red-500/5 p-3 text-left transition-colors hover:bg-red-500/10"
+          >
+            <div className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-red-500/15 text-red-400">
+                <LogOut className="h-4 w-4" />
+              </div>
+              <div>
+                <h4 className="text-xs font-semibold text-red-400">Switch Profile / Log Out</h4>
+                <p className="text-[11px] text-muted-foreground">Sign in as Aditi or Aman</p>
+              </div>
+            </div>
+            <span className="text-xs font-bold text-red-400">Log Out →</span>
+          </button>
         </div>
       </DialogContent>
     </Dialog>

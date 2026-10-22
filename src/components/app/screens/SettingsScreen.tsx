@@ -20,7 +20,9 @@ import {
   Eye,
   Heart,
   User as UserIcon,
+  LogOut,
 } from "lucide-react";
+import { logoutUser } from "@/lib/api";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { apiClient, getStoredUser } from "@/lib/api";
@@ -642,6 +644,23 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
               </div>
             </div>
             <span className="text-xs font-bold text-accent">Export →</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={logoutUser}
+            className="flex w-full items-center justify-between rounded-xl border border-white/10 bg-white/[0.04] p-3 text-left transition-colors hover:border-accent/40 hover:bg-accent/10"
+          >
+            <div className="flex items-center gap-2.5">
+              <LogOut className="h-4 w-4 text-accent" />
+              <div>
+                <p className="text-xs font-medium text-foreground">Switch Profile / Log Out</p>
+                <p className="text-[10px] text-muted-foreground">
+                  Switch between Aditi and Aman accounts
+                </p>
+              </div>
+            </div>
+            <span className="text-xs font-bold text-accent">Switch →</span>
           </button>
 
           <button

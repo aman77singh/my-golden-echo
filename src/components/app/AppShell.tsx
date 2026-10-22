@@ -17,9 +17,9 @@ import { PWAInstallPrompt } from "@/components/pwa/PWAInstallPrompt";
 import { MoreSheet } from "@/components/app/screens/MoreSheet";
 import { PushPermissionModal } from "@/components/app/screens/PushPermissionModal";
 import { Toaster } from "@/components/ui/sonner";
-import { ensureAuthenticatedSession } from "@/lib/api";
+import { getAuthenticatedUser, type CurrentUser } from "@/lib/api";
 import { connectSocket } from "@/lib/socket";
-
+import { PhoneAuthScreen } from "@/components/app/screens/PhoneAuthScreen";
 import { PrivacyLockOverlay } from "@/components/app/PrivacyLockOverlay";
 
 interface AppShellProps {
@@ -32,29 +32,26 @@ export function AppShell({ children }: AppShellProps) {
   const pathname = location.pathname;
   const [moreOpen, setMoreOpen] = React.useState(false);
   const [pushPromptOpen, setPushPromptOpen] = React.useState(false);
+  const [currentUser, setCurrentUser] = React.useState<CurrentUser | null>(() => getAuthenticatedUser());
 
   React.useEffect(() => {
-    ensureAuthenticatedSession()
-      .then(() => {
-        connectSocket(queryClient);
+    if (currentUser) {
+      connectSocket(queryClient);
 
-        // Check if user has not yet seen the notification prompt
-        if (
-          typeof window !== "undefined" &&
-          "Notification" in window &&
-          Notification.permission === "default" &&
-          !localStorage.getItem("has_seen_push_prompt")
-        ) {
-          const timer = setTimeout(() => {
-            setPushPromptOpen(true);
-          }, 1500);
-          return () => clearTimeout(timer);
-        }
-      })
-      .catch((err) => {
-        console.warn("Session init warning:", err);
-      });
-  }, [queryClient]);
+      // Check if user has not yet seen the notification prompt
+      if (
+        typeof window !== "undefined" &&
+        "Notification" in window &&
+        Notification.permission === "default" &&
+        !localStorage.getItem("has_seen_push_prompt")
+      ) {
+        const timer = setTimeout(() => {
+          setPushPromptOpen(true);
+        }, 1500);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [queryClient, currentUser]);
 
   const {
     isInstallable,
@@ -72,6 +69,19 @@ export function AppShell({ children }: AppShellProps) {
     { to: "/app/cycle", label: "Cycle", icon: CalendarHeart },
     { to: "/app/thoughts", label: "Thoughts", icon: Sparkles },
   ];
+
+  if (!currentUser) {
+    return (
+      <div className="min-h-screen bg-[#0d0d12] text-foreground">
+        <PhoneAuthScreen
+          onSuccess={(user) => {
+            setCurrentUser(user);
+          }}
+        />
+        <Toaster position="top-center" richColors />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#0d0d12] text-foreground flex flex-col font-sans antialiased selection:bg-accent/30 selection:text-accent">
@@ -96,6 +106,11 @@ export function AppShell({ children }: AppShellProps) {
           </Link>
 
           <div className="flex items-center gap-1.5">
+            <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] font-semibold text-accent flex items-center gap-1">
+              <span>{currentUser.name || (currentUser.role === "her" ? "Aditi" : "Aman")}</span>
+              <span>{currentUser.role === "her" ? "💖" : "💙"}</span>
+            </span>
+
             <Link
               to="/app/settings"
               className={`flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors hover:border-accent/40 hover:bg-accent/10 hover:text-foreground active:scale-95 ${

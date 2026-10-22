@@ -75,31 +75,9 @@ export async function apiFetch<T = any>(
     credentials: "include",
   });
 
-  // Auto recover from 401 by attempting seed login
   if (response.status === 401 && !endpoint.includes("/auth/")) {
-    try {
-      const loginRes = await fetch(`${API_BASE_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          email: "aman@ourspace.local",
-          password: "14/27",
-        }),
-      });
-
-      if (loginRes.ok) {
-        const loginData = await loginRes.json();
-        setStoredToken(loginData.accessToken);
-        setStoredUser(loginData.user);
-        headers.set("Authorization", `Bearer ${loginData.accessToken}`);
-        response = await fetch(url, {
-          ...options,
-          headers,
-          credentials: "include",
-        });
-      }
-    } catch {}
+    setStoredToken(null);
+    setStoredUser(null);
   }
 
   if (!response.ok) {
@@ -142,43 +120,68 @@ export const apiClient = {
 };
 
 /**
+ * Log in with user credentials
+ */
+export async function loginUser(email: string, password: string): Promise<{
+  accessToken: string;
+  user: CurrentUser;
+}> {
+  const url = `${API_BASE_URL}/auth/login`;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ email, password }),
+  });
+
+  if (!res.ok) {
+    let msg = "Invalid credentials";
+    try {
+      const json = await res.json();
+      msg = json.error || msg;
+    } catch {}
+    throw new Error(msg);
+  }
+
+  const data = await res.json();
+  setStoredToken(data.accessToken);
+  setStoredUser(data.user);
+  return data;
+}
+
+/**
+ * Log out current user and return to login
+ */
+export function logoutUser() {
+  setStoredToken(null);
+  setStoredUser(null);
+  if (typeof window !== "undefined") {
+    window.location.href = "/app";
+  }
+}
+
+/**
+ * Get current authenticated user or null
+ */
+export function getAuthenticatedUser(): CurrentUser | null {
+  const token = getStoredToken();
+  const user = getStoredUser();
+  if (!token || !user || token === "demo-token") return null;
+  return user;
+}
+
+/**
  * Ensure the client has an authenticated session.
- * Logs in with seed credentials if not authenticated.
  */
 export async function ensureAuthenticatedSession(): Promise<{
   token: string;
   user: CurrentUser;
-}> {
+} | null> {
   const existingToken = getStoredToken();
   const existingUser = getStoredUser();
 
   if (existingToken && existingUser && existingToken !== "demo-token") {
     return { token: existingToken, user: existingUser };
   }
-
-  try {
-    // Attempt login with default seeded Aman credentials
-    const res = await apiFetch<{ accessToken: string; user: CurrentUser }>("/auth/login", {
-      method: "POST",
-      body: JSON.stringify({
-        email: "aman@ourspace.local",
-        password: "14/27",
-      }),
-    });
-
-    setStoredToken(res.accessToken);
-    setStoredUser(res.user);
-    return { token: res.accessToken, user: res.user };
-  } catch (err) {
-    // Fallback: mock offline demo user
-    const fallbackUser: CurrentUser = {
-      id: "demo-user-1",
-      coupleId: "demo-couple-1",
-      name: "Aman",
-      email: "aman@ourspace.local",
-      role: "him",
-    };
-    setStoredUser(fallbackUser);
-    return { token: "demo-token", user: fallbackUser };
-  }
+  return null;
 }
