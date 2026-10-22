@@ -162,7 +162,7 @@ npm run server:dev    # Backend on http://localhost:5001
 ### Client Environment (`.env`)
 | Variable | Description |
 | :--- | :--- |
-| `VITE_API_URL` | Backend API base URL (`http://localhost:5001` or Render URL) |
+| `VITE_API_URL` | Optional backend API URL override. Local development defaults to `http://localhost:5001`; hosted builds default to `https://our-space-backend-8p9m.onrender.com`. |
 | `VITE_VAPID_PUBLIC_KEY` | Public VAPID key matching server for browser push subscriptions |
 
 ---
@@ -221,4 +221,3 @@ To safeguard all memories, chats, and milestone records against accidental loss:
    * **Monthly Snapshots**: Retain for 12 months.
 5. (Optional M10+ tier): Enable **Point-in-Time Restore (PITR)** to roll back to any second within the last 7 days.
 6. The app also features a self-serve **JSON Data Export** under **Settings & Privacy** → **Download Archive**, allowing either partner to export their entire database history anytime.
-

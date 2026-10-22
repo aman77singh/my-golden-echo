@@ -1,17 +1,41 @@
+const PRODUCTION_API_URL = "https://our-space-backend-8p9m.onrender.com";
+const LOCAL_API_URL = "http://localhost:5001";
+
+function isLoopbackApiUrl(url: string): boolean {
+  return /^https?:\/\/(?:localhost|127\.0\.0\.1)(?::\d+)?(?:\/|$)/i.test(url);
+}
+
 export function getApiBaseUrl(): string {
-  if (import.meta.env.VITE_API_URL) {
-    return import.meta.env.VITE_API_URL;
-  }
+  const configuredUrl = import.meta.env.VITE_API_URL;
+
   if (typeof window !== "undefined") {
     const host = window.location.hostname;
-    if (host === "localhost" || host === "127.0.0.1") {
-      return "http://localhost:5001";
+    const isLoopbackHost = host === "localhost" || host === "127.0.0.1";
+    const isLanHost =
+      host.startsWith("192.168.") ||
+      host.startsWith("10.") ||
+      host.startsWith("172.");
+
+    if (isLoopbackHost) {
+      return configuredUrl || LOCAL_API_URL;
     }
-    if (host.startsWith("192.168.") || host.startsWith("10.") || host.startsWith("172.")) {
-      return `http://${host}:5001`;
+
+    if (isLanHost) {
+      return configuredUrl && !isLoopbackApiUrl(configuredUrl)
+        ? configuredUrl
+        : `http://${host}:5001`;
     }
+
+    return configuredUrl && !isLoopbackApiUrl(configuredUrl)
+      ? configuredUrl
+      : PRODUCTION_API_URL;
   }
-  return "http://localhost:5001";
+
+  if (configuredUrl && !isLoopbackApiUrl(configuredUrl)) {
+    return configuredUrl;
+  }
+
+  return import.meta.env.DEV && configuredUrl ? configuredUrl : PRODUCTION_API_URL;
 }
 
 export const API_BASE_URL = getApiBaseUrl();
