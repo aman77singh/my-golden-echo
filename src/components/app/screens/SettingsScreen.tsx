@@ -21,8 +21,10 @@ import {
   Heart,
   User as UserIcon,
   LogOut,
+  Camera,
+  X,
 } from "lucide-react";
-import { logoutUser } from "@/lib/api";
+import { logoutUser, setStoredUser } from "@/lib/api";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { apiClient, getStoredUser } from "@/lib/api";
@@ -52,6 +54,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { INotificationPrefs, IQuietHours, IRemindersConfig, IUser } from "@/types/shared";
+import { compressImage, uploadImage } from "@/lib/mediaUpload";
 
 interface PrefsResponse {
   timezone: string;
@@ -76,6 +79,8 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
   const [biometricsAvailable, setBiometricsAvailable] = React.useState(false);
   const [biometricActive, setBiometricActive] = React.useState(isBiometricEnabled());
   const [deleteModalOpen, setDeleteModalOpen] = React.useState(false);
+  const [avatarLoading, setAvatarLoading] = React.useState(false);
+  const avatarInputRef = React.useRef<HTMLInputElement>(null);
 
   const isIOS = isIosDevice();
   const isStandalone = isStandalonePwa();
@@ -284,6 +289,62 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
     }
   };
 
+  const handleAvatarChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast.error("Choose an image file for your profile photo.");
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("Choose an image smaller than 10 MB.");
+      return;
+    }
+
+    setAvatarLoading(true);
+    try {
+      const compressedImage = await compressImage(file, 512, 0.78);
+      const avatarUrl = await uploadImage(compressedImage);
+      const response = await apiClient.patch<{ user: { avatarUrl?: string } }>("/me/avatar", { avatarUrl });
+      const updatedAvatarUrl = response.data.user.avatarUrl;
+      queryClient.setQueryData<IUser>(["myProfile"], (old) =>
+        old ? { ...old, avatarUrl: updatedAvatarUrl } : old
+      );
+      queryClient.invalidateQueries({ queryKey: ["couple"] });
+      if (currentUser) {
+        setStoredUser({ ...currentUser, avatarUrl: updatedAvatarUrl });
+      }
+      triggerHaptic("success");
+      toast.success("Profile photo saved ✨");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to save your profile photo.");
+    } finally {
+      setAvatarLoading(false);
+    }
+  };
+
+  const handleRemoveAvatar = async () => {
+    setAvatarLoading(true);
+    try {
+      const response = await apiClient.patch<{ user: { avatarUrl?: string } }>("/me/avatar", { avatarUrl: "" });
+      const updatedAvatarUrl = response.data.user.avatarUrl;
+      queryClient.setQueryData<IUser>(["myProfile"], (old) =>
+        old ? { ...old, avatarUrl: updatedAvatarUrl } : old
+      );
+      queryClient.invalidateQueries({ queryKey: ["couple"] });
+      if (currentUser) {
+        setStoredUser({ ...currentUser, avatarUrl: updatedAvatarUrl });
+      }
+      triggerHaptic("success");
+      toast.success("Profile photo removed.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to remove your profile photo.");
+    } finally {
+      setAvatarLoading(false);
+    }
+  };
+
   return (
     <div className="space-y-4 pb-24 text-foreground">
       {/* Header */}
@@ -316,8 +377,30 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
       <div className="rounded-2xl border border-border/70 bg-card/90 p-4 shadow-panel backdrop-blur-xl">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#E5A962] to-[#E07A5F] text-white font-bold text-base shadow-sm">
-              {currentUser?.name?.[0] || "U"}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => avatarInputRef.current?.click()}
+                disabled={avatarLoading}
+                aria-label={userProfile?.avatarUrl ? "Change profile photo" : "Add profile photo"}
+                className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-gradient-to-tr from-[#E5A962] to-[#E07A5F] text-white font-bold text-base shadow-sm disabled:opacity-60"
+              >
+                {userProfile?.avatarUrl ? (
+                  <img src={userProfile.avatarUrl} alt="" className="h-full w-full object-cover" />
+                ) : (
+                  currentUser?.name?.[0] || "U"
+                )}
+              </button>
+              <input
+                ref={avatarInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleAvatarChange}
+              />
+              <span className="pointer-events-none absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border-2 border-card bg-accent text-white">
+                {avatarLoading ? <span className="text-[9px]">…</span> : <Camera className="h-3 w-3" />}
+              </span>
             </div>
             <div>
               <div className="flex items-center gap-1.5">
@@ -331,6 +414,27 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
               <p className="text-[11px] text-muted-foreground">
                 {userProfile?.email || currentUser?.email || "ourspace.local"}
               </p>
+              <div className="mt-1 flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => avatarInputRef.current?.click()}
+                  disabled={avatarLoading}
+                  className="text-[10px] font-semibold text-accent disabled:opacity-60"
+                >
+                  {avatarLoading ? "Saving photo…" : userProfile?.avatarUrl ? "Change photo" : "Add photo"}
+                </button>
+                {userProfile?.avatarUrl && (
+                  <button
+                    type="button"
+                    onClick={handleRemoveAvatar}
+                    disabled={avatarLoading}
+                    className="flex items-center gap-0.5 text-[10px] font-medium text-muted-foreground disabled:opacity-60"
+                  >
+                    <X className="h-3 w-3" />
+                    Remove
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>

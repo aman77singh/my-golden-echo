@@ -521,8 +521,10 @@ export function ChatScreen() {
       <div className="shrink-0 rounded-2xl border border-border/70 bg-card/90 p-3 mb-2 backdrop-blur-md flex items-center justify-between shadow-panel">
         <div className="flex items-center gap-2.5">
           <div className="relative">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-tr from-[#E5A962] to-[#E07A5F] text-xs font-bold text-white shadow-xs">
-              {partnerName.charAt(0)}
+            <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-gradient-to-tr from-[#E5A962] to-[#E07A5F] text-xs font-bold text-white shadow-xs">
+              {coupleData?.partner?.avatarUrl ? (
+                <img src={coupleData.partner.avatarUrl} alt="" className="h-full w-full object-cover" />
+              ) : partnerName.charAt(0)}
             </div>
             <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-card bg-emerald-500 animate-pulse" />
           </div>

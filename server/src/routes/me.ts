@@ -15,6 +15,20 @@ const updatePrivacySchema = z.object({
   shareCycle: z.boolean(),
 });
 
+const updateAvatarSchema = z.object({
+  avatarUrl: z
+    .string()
+    .max(1_500_000)
+    .refine((value) => {
+      if (value === "" || /^data:image\/(?:jpeg|png|webp);base64,/.test(value)) return true;
+      try {
+        return new URL(value).protocol === "https:";
+      } catch {
+        return false;
+      }
+    }, "Profile photo must be a secure image URL or an uploaded image."),
+});
+
 /**
  * GET /me
  * Returns the current authenticated user's profile
@@ -30,6 +44,44 @@ meRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
     next(error);
   }
 });
+
+/**
+ * PATCH /me/avatar
+ * Updates the authenticated user's profile photo
+ */
+meRouter.patch(
+  "/avatar",
+  validateBody(updateAvatarSchema),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const user = await User.findById(req.user!.id);
+
+      if (!user) {
+        throw new NotFoundError("User not found.");
+      }
+
+      user.avatarUrl = req.body.avatarUrl || undefined;
+      await user.save();
+
+      const profile = {
+        id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        avatarUrl: user.avatarUrl,
+      };
+
+      emitToCouple(req.user!.coupleId, "profile:update", {
+        userId: user._id.toString(),
+        avatarUrl: user.avatarUrl,
+      });
+
+      res.status(200).json({ user: profile });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 /**
  * PATCH /me/privacy

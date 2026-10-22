@@ -859,6 +859,46 @@ describe("9. Moods, Notes & Couple Status (Task 3)", () => {
     expect(res.body.partner.name).toBe("Alex");
   });
 
+  it("each partner can save an independent profile photo visible to the other", async () => {
+    const auth = (token: string) => ["Bearer", token].join(" ");
+    const alicePhoto = "data:image/jpeg;base64,YWxpY2U=";
+    const alexPhoto = "https://images.example.com/alex.jpg";
+
+    const aliceUpdate = await request(app)
+      .patch("/me/avatar")
+      .set("Authorization", auth(tokenA1))
+      .send({ avatarUrl: alicePhoto });
+    expect(aliceUpdate.status).toBe(200);
+    expect(aliceUpdate.body.user.avatarUrl).toBe(alicePhoto);
+
+    const alexUpdate = await request(app)
+      .patch("/me/avatar")
+      .set("Authorization", auth(tokenA2))
+      .send({ avatarUrl: alexPhoto });
+    expect(alexUpdate.status).toBe(200);
+    expect(alexUpdate.body.user.avatarUrl).toBe(alexPhoto);
+
+    const aliceSeesAlex = await request(app)
+      .get("/couple")
+      .set("Authorization", auth(tokenA1));
+    expect(aliceSeesAlex.body.partner.avatarUrl).toBe(alexPhoto);
+
+    const alexSeesAlice = await request(app)
+      .get("/couple")
+      .set("Authorization", auth(tokenA2));
+    expect(alexSeesAlice.body.partner.avatarUrl).toBe(alicePhoto);
+  });
+
+  it("rejects insecure profile photo URLs", async () => {
+    const auth = (token: string) => ["Bearer", token].join(" ");
+    const res = await request(app)
+      .patch("/me/avatar")
+      .set("Authorization", auth(tokenA1))
+      .send({ avatarUrl: "http://images.example.com/photo.jpg" });
+
+    expect(res.status).toBe(400);
+  });
+
   it("GET /progress/status checks partner post and reaction status", async () => {
     const res = await request(app)
       .get("/progress/status")

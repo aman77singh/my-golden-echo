@@ -154,7 +154,7 @@ export function DateJarScreen() {
             triggerHaptic("selection");
             setCreateOpen(true);
           }}
-          className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] px-3 py-1.5 text-xs font-semibold text-white shadow-sm shadow-accent/20 transition-transform active:scale-95"
+          className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] px-3 py-1.5 text-xs font-semibold text-[#351f17] shadow-sm shadow-accent/20 transition-transform active:scale-95"
         >
           <Plus className="h-3.5 w-3.5" />
           <span>Add Idea</span>
@@ -176,7 +176,7 @@ export function DateJarScreen() {
             type="button"
             disabled={isPulling || ideas.length === 0}
             onClick={handlePullRandom}
-            className="flex items-center gap-2 rounded-2xl bg-gradient-to-r from-[#E5A962] via-[#E07A5F] to-[#E5A962] px-5 py-2.5 text-xs font-bold text-white shadow-lg shadow-accent/25 transition-all hover:opacity-95 disabled:opacity-40"
+            className="flex items-center gap-2 rounded-2xl bg-gradient-to-r from-[#E5A962] via-[#E07A5F] to-[#E5A962] px-5 py-2.5 text-xs font-bold text-[#351f17] shadow-lg shadow-accent/25 transition-all hover:brightness-95 disabled:opacity-70"
           >
             <Shuffle className={`h-4 w-4 ${isPulling ? "animate-spin" : ""}`} />
             <span>{isPulling ? "Picking an idea..." : "Pick a Random Date! 🎲"}</span>
@@ -354,7 +354,7 @@ export function DateJarScreen() {
               <button
                 type="submit"
                 disabled={createMutation.isPending}
-                className="rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] px-4 py-1.5 text-xs font-semibold text-white shadow-sm shadow-accent/20 transition-all hover:opacity-95 disabled:opacity-50"
+                className="rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] px-4 py-1.5 text-xs font-semibold text-[#351f17] shadow-sm shadow-accent/20 transition-all hover:brightness-95 disabled:opacity-70"
               >
                 {createMutation.isPending ? "Dropping in..." : "Drop in Jar"}
               </button>
@@ -395,7 +395,7 @@ export function DateJarScreen() {
           <button
             type="button"
             onClick={() => setPulledIdea(null)}
-            className="w-full rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] py-2 text-xs font-semibold text-white shadow-md shadow-accent/20"
+            className="w-full rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] py-2 text-xs font-semibold text-[#351f17] shadow-md shadow-accent/20"
           >
             Let's do this! 🍷
           </button>

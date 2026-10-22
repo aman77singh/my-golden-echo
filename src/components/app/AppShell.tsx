@@ -35,6 +35,11 @@ export function AppShell({ children }: AppShellProps) {
   const [currentUser, setCurrentUser] = React.useState<CurrentUser | null>(() => getAuthenticatedUser());
 
   React.useEffect(() => {
+    document.body.classList.add("app-theme");
+    return () => document.body.classList.remove("app-theme");
+  }, []);
+
+  React.useEffect(() => {
     const handleAuthChange = () => {
       setCurrentUser(getAuthenticatedUser());
     };

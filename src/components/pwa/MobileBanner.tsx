@@ -47,14 +47,14 @@ export function MobileBanner() {
       >
         <div className="mx-auto flex max-w-4xl items-center justify-between gap-3">
           <div className="flex items-center gap-2.5 min-w-0">
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent/20 text-accent">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent/20 text-orange-300">
               <Smartphone className="h-4 w-4" />
             </span>
             <div className="min-w-0">
-              <p className="text-xs font-semibold text-foreground truncate">
+              <p className="truncate text-xs font-semibold text-white">
                 Browsing on your phone?
               </p>
-              <p className="text-[11px] text-muted-foreground truncate">
+              <p className="truncate text-[11px] text-slate-300">
                 Experience our private mobile app "Our Space"
               </p>
             </div>
@@ -72,7 +72,7 @@ export function MobileBanner() {
             <button
               type="button"
               onClick={handleDismiss}
-              className="rounded-full p-1.5 text-muted-foreground hover:bg-white/10 hover:text-foreground transition-colors"
+              className="rounded-full p-1.5 text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
               aria-label="Dismiss banner"
             >
               <X className="h-4 w-4" />

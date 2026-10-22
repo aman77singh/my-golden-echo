@@ -5,7 +5,6 @@ import {
   createRootRouteWithContext,
   useRouter,
   useLocation,
-  useNavigate,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -151,7 +150,6 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const location = useLocation();
-  const navigate = useNavigate();
   const pathname = location.pathname;
 
   const security = content.security;
@@ -169,10 +167,7 @@ function RootComponent() {
   useEffect(() => {
     try {
       if (typeof window !== "undefined") {
-        const isAuth = sessionStorage.getItem("is-authenticated") === "true";
-        if (isAuth) {
-          setAuthenticated(true);
-        }
+        sessionStorage.removeItem("is-authenticated");
         if (!sessionStorage.getItem("has-seen-intro")) {
           setIntro(true);
         }
@@ -186,8 +181,7 @@ function RootComponent() {
 
   const unlocked = requiredSections.every((id) => visited.has(id));
   const ourSong = content.spotify.tracks[activeTrack]?.isOurSong && playing;
-  const isHome = pathname === "/";
-  const shouldShowGate = isSecurityEnabled && !authenticated && !isHome;
+  const shouldShowGate = isSecurityEnabled && !authenticated;
 
   useEffect(() => {
     const sectionId = pathToId[pathname];
@@ -248,12 +242,7 @@ function RootComponent() {
     return (
       <QueryClientProvider client={queryClient}>
         <HeartCursor />
-        <PasswordGate
-          onUnlock={handleUnlock}
-          onClose={() => {
-            navigate({ to: "/" });
-          }}
-        />
+        <PasswordGate onUnlock={handleUnlock} />
         <div className="pointer-events-none fixed inset-0 z-[80] opacity-[.035] mix-blend-multiply film-grain" aria-hidden="true" />
       </QueryClientProvider>
     );

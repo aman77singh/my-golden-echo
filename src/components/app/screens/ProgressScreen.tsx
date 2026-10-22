@@ -472,7 +472,7 @@ export function ProgressScreen() {
               <p className="text-xs">Gathering updates...</p>
             </div>
           ) : posts.length === 0 ? (
-            <div className="rounded-3xl border border-dashed border-white/15 bg-white/[0.02] p-10 text-center">
+            <div className="rounded-3xl border border-dashed border-border/80 bg-card/50 p-10 text-center">
               <Sparkles className="mx-auto h-8 w-8 text-amber-400/60" />
               <h4 className="mt-3 font-serif text-base font-semibold text-foreground">
                 No progress posts yet today
@@ -483,7 +483,7 @@ export function ProgressScreen() {
               <button
                 type="button"
                 onClick={() => setNewPostOpen(true)}
-                className="mt-4 inline-flex items-center gap-1.5 rounded-2xl bg-amber-400/20 px-4 py-2 text-xs font-bold text-amber-200 border border-amber-400/40 hover:bg-amber-400/30"
+                className="mt-4 inline-flex items-center gap-1.5 rounded-2xl border border-amber-600/40 bg-amber-300/30 px-4 py-2 text-xs font-bold text-amber-900 hover:bg-amber-300/50"
               >
                 <Plus className="h-3.5 w-3.5" />
                 <span>Create First Update</span>

@@ -122,6 +122,11 @@ export function connectSocket(queryClient: QueryClient): Socket | null {
     queryClient.invalidateQueries({ queryKey: ["progress"] });
   });
 
+  socket.on("profile:update", () => {
+    queryClient.invalidateQueries({ queryKey: ["couple"] });
+    queryClient.invalidateQueries({ queryKey: ["myProfile"] });
+  });
+
   socket.on("progress:new", (post: any) => {
     queryClient.invalidateQueries({ queryKey: ["progress"] });
     queryClient.invalidateQueries({ queryKey: ["goals"] });

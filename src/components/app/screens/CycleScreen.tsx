@@ -349,7 +349,7 @@ export function CycleScreen() {
                   }),
                 });
               }}
-              className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-rose-500 to-amber-500 px-5 py-2.5 text-xs font-bold text-white shadow-lg shadow-rose-500/20 hover:scale-105 active:scale-95 transition-all"
+              className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-rose-500 to-amber-500 px-5 py-2.5 text-xs font-bold text-[#35131b] shadow-lg shadow-rose-500/20 hover:scale-105 active:scale-95 transition-all"
             >
               <Heart className="h-4 w-4 fill-current" />
               <span>Send Loving Ping</span>
@@ -465,7 +465,7 @@ export function CycleScreen() {
           <button
             type="button"
             onClick={() => setBadDayOpen(true)}
-            className="rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 px-3 py-1.5 text-xs font-bold text-white shadow-sm hover:scale-105 active:scale-95 transition-all"
+            className="rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 px-3 py-1.5 text-xs font-bold text-[#35131b] shadow-sm hover:scale-105 active:scale-95 transition-all"
           >
             Bad Day Mode
           </button>
@@ -488,7 +488,7 @@ export function CycleScreen() {
               {prediction?.avgCycleLength || 28}
             </span>
             {isPeriodCurrentlyActive && (
-              <span className="inline-flex items-center gap-1 rounded-full border border-rose-400/40 bg-rose-500/20 px-2.5 py-0.5 text-[10px] font-bold text-rose-200 animate-pulse">
+              <span className="inline-flex items-center gap-1 rounded-full border border-rose-500/40 bg-rose-200/50 px-2.5 py-0.5 text-[10px] font-bold text-rose-900 animate-pulse">
                 <Droplet className="h-3 w-3 fill-current" />
                 Period Active
               </span>
@@ -528,7 +528,7 @@ export function CycleScreen() {
           )}
 
           {/* Mandatory Disclaimer */}
-          <p className="mt-3 text-[10px] text-muted-foreground/60 max-w-xs">
+          <p className="mt-3 max-w-xs text-[10px] text-muted-foreground">
             {ESTIMATES_DISCLAIMER}
           </p>
         </div>
@@ -545,7 +545,7 @@ export function CycleScreen() {
             <button
               type="button"
               onClick={() => setLogSymptomOpen(true)}
-              className="text-xs font-semibold text-rose-300 hover:underline flex items-center gap-1"
+              className="flex items-center gap-1 text-xs font-semibold text-rose-800 hover:underline"
             >
               <Plus className="h-3.5 w-3.5" />
               <span>Log Symptoms</span>
@@ -555,7 +555,7 @@ export function CycleScreen() {
           {isPeriodCurrentlyActive ? (
             <div className="flex items-center justify-between rounded-2xl border border-rose-500/30 bg-rose-500/10 p-3">
               <div>
-                <p className="text-xs font-bold text-rose-200">
+                <p className="text-xs font-bold text-rose-900">
                   Period is logged as active
                 </p>
                 <p className="text-[10px] text-muted-foreground">
@@ -571,7 +571,7 @@ export function CycleScreen() {
                 onClick={() =>
                   latestCycle && logPeriodEndMutation.mutate(latestCycle._id)
                 }
-                className="rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 px-3.5 py-1.5 text-xs font-bold text-white shadow-md active:scale-95 disabled:opacity-50"
+                className="rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 px-3.5 py-1.5 text-xs font-bold text-[#35131b] shadow-md active:scale-95 disabled:opacity-70"
               >
                 {logPeriodEndMutation.isPending ? "Saving..." : "Log Period End"}
               </button>
@@ -585,7 +585,7 @@ export function CycleScreen() {
                 <button
                   type="button"
                   onClick={() => setIsLoggingFlow(!isLoggingFlow)}
-                  className="rounded-xl bg-gradient-to-r from-rose-500 to-rose-600 px-3 py-1.5 text-xs font-bold text-white shadow-md active:scale-95"
+                  className="rounded-xl bg-gradient-to-r from-rose-500 to-rose-600 px-3 py-1.5 text-xs font-bold text-[#35131b] shadow-md active:scale-95"
                 >
                   Log Period Start
                 </button>
@@ -751,13 +751,13 @@ export function CycleScreen() {
                       : ""
                   } ${
                     isPeriodDay
-                      ? "bg-rose-500/30 text-rose-200 border border-rose-500/50 shadow-sm"
+                      ? "bg-rose-200/70 text-rose-900 border border-rose-500/50 shadow-sm"
                       : isOvulationDay
-                      ? "bg-amber-400/25 text-amber-200 border border-amber-400/50 shadow-sm"
+                      ? "bg-amber-200/70 text-amber-900 border border-amber-500/50 shadow-sm"
                       : isFertileDay
-                      ? "bg-purple-500/20 text-purple-200 border border-purple-500/30"
+                      ? "bg-purple-200/70 text-purple-900 border border-purple-500/30"
                       : isPredictedDay
-                      ? "border border-dashed border-rose-400/60 bg-rose-500/10 text-rose-300"
+                      ? "border border-dashed border-rose-400/60 bg-rose-100/70 text-rose-900"
                       : isToday
                       ? "border border-white/20 bg-white/10 text-foreground"
                       : "text-muted-foreground hover:bg-white/5 hover:text-foreground"
@@ -862,7 +862,7 @@ export function CycleScreen() {
                 className="rounded-2xl border border-white/5 bg-white/[0.02] p-3 text-xs space-y-1"
               >
                 <div className="flex items-center justify-between">
-                  <h5 className="font-semibold text-rose-300">
+                  <h5 className="font-semibold text-rose-800">
                     {insight.title}
                   </h5>
                   <span className="rounded-full bg-white/5 px-2 py-0.5 text-[9px] uppercase tracking-wider text-muted-foreground">

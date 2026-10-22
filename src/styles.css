@@ -49,7 +49,7 @@
   --secondary: oklch(0.925 0.028 82);
   --secondary-foreground: oklch(0.20 0.018 45);
   --muted: oklch(0.915 0.028 82);
-  --muted-foreground: oklch(0.44 0.02 45);
+  --muted-foreground: oklch(0.36 0.02 45);
   --accent: oklch(0.60 0.23 35);
   --accent-foreground: oklch(0.97 0.015 82);
   --highlight: oklch(0.60 0.23 35);
@@ -81,6 +81,26 @@
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   ::selection { background: color-mix(in oklab, var(--accent) 32%, transparent); color: var(--foreground); }
 }
+
+body.app-theme [class*="text-amber-200"],
+body.app-theme [class*="text-amber-300"],
+body.app-theme [class*="text-amber-400"] { color: #92400e; }
+body.app-theme [class*="text-rose-200"],
+body.app-theme [class*="text-rose-300"],
+body.app-theme [class*="text-rose-400"] { color: #9f1239; }
+body.app-theme [class*="text-red-300"],
+body.app-theme [class*="text-red-400"] { color: #991b1b; }
+body.app-theme [class*="text-emerald-300"],
+body.app-theme [class*="text-emerald-400"] { color: #065f46; }
+body.app-theme [class*="text-purple-100"],
+body.app-theme [class*="text-purple-200"],
+body.app-theme [class*="text-purple-300"],
+body.app-theme [class*="text-purple-400"] { color: #6b21a8; }
+body.app-theme [class*="text-blue-300"] { color: #1e40af; }
+body.app-theme [class*="text-muted-foreground/30"],
+body.app-theme [class*="text-muted-foreground/40"],
+body.app-theme [class*="text-muted-foreground/50"],
+body.app-theme [class*="text-muted-foreground/60"] { color: var(--muted-foreground); }
 
 @utility section-shell {
   min-height: 100vh;

@@ -51,6 +51,7 @@ interface CoupleResponse {
     name: string;
     role: "her" | "him";
     email: string;
+    avatarUrl?: string;
   };
   partner: {
     _id: string;
@@ -295,15 +296,19 @@ export function HomeScreen() {
             <div className="flex -space-x-2">
               <div
                 title={userName}
-                className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-card bg-gradient-to-br from-[#E5A962] to-[#E07A5F] text-xs font-bold text-white shadow-xs"
+                className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border-2 border-card bg-gradient-to-br from-[#E5A962] to-[#E07A5F] text-xs font-bold text-white shadow-xs"
               >
-                {userName.charAt(0)}
+                {coupleData?.user?.avatarUrl ? (
+                  <img src={coupleData.user.avatarUrl} alt="" className="h-full w-full object-cover" />
+                ) : userName.charAt(0)}
               </div>
               <div
                 title={partnerName}
-                className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-card bg-gradient-to-br from-[#E07A5F] to-[#E5A962] text-xs font-bold text-white shadow-xs"
+                className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border-2 border-card bg-gradient-to-br from-[#E07A5F] to-[#E5A962] text-xs font-bold text-white shadow-xs"
               >
-                {partnerName.charAt(0)}
+                {coupleData?.partner?.avatarUrl ? (
+                  <img src={coupleData.partner.avatarUrl} alt="" className="h-full w-full object-cover" />
+                ) : partnerName.charAt(0)}
               </div>
             </div>
           </div>

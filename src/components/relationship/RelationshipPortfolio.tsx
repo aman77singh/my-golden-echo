@@ -87,12 +87,12 @@ export function TimeTogether() {
   }, []);
   const units = [[time.years, "years"], [time.months, "months"], [time.days, "days"], [time.hours, "hours"], [time.minutes, "minutes"], [time.seconds, "seconds"]] as const;
   return (
-    <div className="relative mt-10">
+    <div className="relative mt-8 sm:mt-10">
       <p className="mb-4 font-script text-xl text-accent">Together for</p>
-      <div className="flex flex-wrap gap-x-7 gap-y-4">
+      <div className="grid grid-cols-3 gap-x-4 gap-y-5 sm:grid-cols-4 sm:gap-x-7">
         {units.map(([value, label]) => (
-          <div key={label} className="min-w-14">
-            <strong className="block font-display text-3xl font-bold tabular-nums text-foreground md:text-4xl">{String(value).padStart(2, "0")}</strong>
+          <div key={label} className="min-w-0">
+            <strong className="block font-display text-2xl font-bold tabular-nums text-foreground sm:text-3xl md:text-4xl">{String(value).padStart(2, "0")}</strong>
             <span className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground font-sans">{label}</span>
           </div>
         ))}
@@ -370,7 +370,7 @@ export function PasswordGate({ onUnlock, onClose }: { onUnlock: () => void; onCl
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className={`fixed inset-0 z-[120] flex items-center justify-center p-4 backdrop-blur-2xl transition-colors duration-300 ${
+      className={`fixed inset-0 z-[120] flex min-h-dvh items-start justify-center overflow-y-auto overscroll-contain p-3 pt-[max(0.75rem,env(safe-area-inset-top))] backdrop-blur-2xl transition-colors duration-300 sm:items-center sm:p-4 ${
         scareStage === "scare" ? "bg-red-950/90" : "bg-background/95"
       }`}
     >
@@ -671,23 +671,23 @@ export function PasswordGate({ onUnlock, onClose }: { onUnlock: () => void; onCl
       <motion.div
         animate={shaking ? { x: [-16, 16, -12, 12, -6, 6, 0] } : {}}
         transition={{ duration: 0.5 }}
-        className="relative z-10 w-full max-w-md rounded-2xl border border-border/80 bg-card/95 p-8 shadow-panel backdrop-blur-xl text-center"
+        className="relative z-10 my-auto w-full max-w-md shrink-0 rounded-2xl border border-border/80 bg-card/95 p-5 text-center shadow-panel backdrop-blur-xl sm:p-8"
       >
-        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-accent/40 bg-accent/10 shadow-glow">
-          <LockKeyhole className="h-8 w-8 text-accent animate-pulse" />
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-accent/40 bg-accent/10 shadow-glow sm:mb-6 sm:h-16 sm:w-16">
+          <LockKeyhole className="h-7 w-7 animate-pulse text-accent sm:h-8 sm:w-8" />
         </div>
 
-        <h2 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+        <h2 className="font-display text-2xl font-bold tracking-tight text-foreground sm:text-4xl">
           It's Locked! 🔒
         </h2>
-        <p className="mt-2 font-script text-2xl sm:text-3xl text-accent font-bold">
+        <p className="mt-2 font-script text-xl font-bold text-accent sm:text-3xl">
           Ask Aman for password 💕
         </p>
-        <p className="mt-4 text-xs font-sans text-muted-foreground leading-relaxed">
+        <p className="mt-3 text-xs font-sans leading-relaxed text-muted-foreground sm:mt-4">
           This keepsake chapter is protected. Ask Aman for the secret password to unlock all chapters!
         </p>
 
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+        <form onSubmit={handleSubmit} className="mt-5 space-y-3 sm:mt-6 sm:space-y-4">
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
@@ -697,8 +697,7 @@ export function PasswordGate({ onUnlock, onClose }: { onUnlock: () => void; onCl
                 if (error) setError(false);
               }}
               placeholder={security?.passcodePlaceholder || "Enter password..."}
-              autoFocus
-              className={`w-full rounded-xl border bg-background/80 px-4 py-3.5 pr-11 font-sans text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground/60 ${
+              className={`w-full rounded-xl border bg-background/80 px-4 py-3 pr-11 font-sans text-base text-foreground outline-none transition-all placeholder:text-muted-foreground/60 sm:py-3.5 sm:text-sm ${
                 error
                   ? "border-destructive ring-2 ring-destructive/20"
                   : "border-border focus:border-accent focus:ring-2 focus:ring-accent/20"
@@ -726,7 +725,7 @@ export function PasswordGate({ onUnlock, onClose }: { onUnlock: () => void; onCl
 
           <Button
             type="submit"
-            className="w-full rounded-xl bg-accent py-3.5 font-sans text-sm font-semibold text-accent-foreground shadow-glow transition-all hover:opacity-90 active:scale-[0.99]"
+            className="min-h-11 w-full rounded-xl bg-accent py-3 font-sans text-sm font-semibold text-accent-foreground shadow-glow transition-all hover:opacity-90 active:scale-[0.99] sm:py-3.5"
           >
             Unlock Keepsake 🗝️
           </Button>
@@ -735,13 +734,13 @@ export function PasswordGate({ onUnlock, onClose }: { onUnlock: () => void; onCl
             type="button"
             variant="outline"
             onClick={handleNeedHintClick}
-            className="w-full rounded-xl border border-accent/40 bg-accent/10 py-3 font-sans text-xs font-semibold text-accent shadow-sm hover:bg-accent/20 transition-all flex items-center justify-center gap-2"
+            className="min-h-11 w-full whitespace-normal rounded-xl border border-accent/40 bg-accent/10 py-3 font-sans text-xs font-semibold text-accent shadow-sm transition-all hover:bg-accent/20"
           >
             <span>{butterfliesUnlocked ? "Catch Floating Butterflies 🦋✨" : "Need a Hint? Release Butterfly Riddles 🦋✨"}</span>
           </Button>
         </form>
 
-        <div className="mt-6 border-t border-border/50 pt-4 flex flex-col items-center gap-2 text-center">
+        <div className="mt-5 flex flex-col items-center gap-2 border-t border-border/50 pt-4 text-center sm:mt-6">
           {onClose && (
             <button
               type="button"
@@ -880,19 +879,19 @@ export function SectionHeading({ number, eyebrow, title, copy }: { number: strin
 
 export function HomeView() {
   const navigate = useNavigate();
-  return <section id="home" className="relative flex min-h-screen flex-col justify-center px-5 py-24 sm:px-10 lg:px-16 xl:px-24">
+  return <section id="home" className="relative flex min-h-dvh flex-col justify-center overflow-hidden px-5 pb-24 pt-28 sm:px-10 sm:py-24 lg:px-16 xl:px-24">
     <Constellation />
-    <div className="absolute top-4 left-5 sm:left-10 lg:left-16 xl:left-24 md:top-7 z-20 flex items-center h-14">
+    <div className="absolute left-5 top-4 z-20 hidden h-14 items-center lg:left-16 lg:flex xl:left-24">
       <p className="text-[11px] font-bold uppercase tracking-[.28em] text-accent">
         RELATIONSHIP PORTFOLIO — OUR DIGITAL KEEPSAKE
       </p>
     </div>
-    <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 md:grid-cols-[1.1fr_.9fr]">
+    <div className="relative z-10 mx-auto grid w-full max-w-6xl min-w-0 items-center gap-8 sm:gap-12 lg:grid-cols-[1.1fr_.9fr]">
       <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .8 }}>
-        <h1 className="font-display text-6xl font-bold leading-[.92] tracking-tight text-foreground sm:text-7xl xl:text-8xl">
+        <h1 className="font-display text-5xl font-bold leading-[.92] tracking-tight text-foreground sm:text-7xl xl:text-8xl">
           {content.couple.firstName}
           <span className="inline-block text-accent font-serif font-bold">&nbsp;&amp;&nbsp;</span>
-          <span className="block italic text-accent font-serif font-bold text-6xl sm:text-7xl xl:text-8xl mt-1.5">{content.couple.secondName}.</span>
+          <span className="mt-1.5 block text-5xl font-serif font-bold italic text-accent sm:text-7xl xl:text-8xl">{content.couple.secondName}.</span>
         </h1>
         <p className="mt-7 max-w-lg text-lg leading-relaxed text-muted-foreground font-serif italic border-l-2 border-accent/50 pl-4 py-1">
           "{content.couple.tagline}"
@@ -916,7 +915,7 @@ export function HomeView() {
           <button
             type="button"
             onClick={() => navigate({ to: "/timeline" })}
-            className="group inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/15 px-4 py-2 text-xs font-semibold text-amber-300 shadow-md backdrop-blur-md transition-all hover:border-amber-400 hover:bg-amber-500/25 hover:scale-105 active:scale-95"
+            className="group inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/15 px-4 py-2 text-xs font-semibold text-amber-900 shadow-md backdrop-blur-md transition-all hover:border-amber-400 hover:bg-amber-500/25 hover:scale-105 active:scale-95"
           >
             <span>Butterfly Riddles 🦋✨</span>
           </button>
@@ -1150,8 +1149,8 @@ export function MusicPlayer({ activeTrack, playing, setPlaying, selectTrack }: {
   }, []);
   const step = (amount: number) => selectTrack((activeTrack + amount + content.spotify.tracks.length) % content.spotify.tracks.length);
   return <>
-    <div className="fixed right-4 top-4 z-40 flex items-center gap-3 rounded-full border border-border/70 bg-surface/80 p-1.5 pr-4 shadow-panel backdrop-blur-xl md:right-7 md:top-7">
-      <Button size="icon" variant="ghost" aria-label="Open playlist" onClick={() => setOpen(true)} className="relative h-12 w-12 overflow-visible rounded-full p-0">
+    <div className="fixed right-3 top-3 z-40 flex items-center gap-1.5 rounded-full border border-border/70 bg-surface/90 p-1 pr-2 shadow-panel backdrop-blur-xl sm:right-7 sm:top-7 sm:gap-3 sm:p-1.5 sm:pr-4">
+      <Button size="icon" variant="ghost" aria-label="Open playlist" onClick={() => setOpen(true)} className="relative h-10 w-10 overflow-visible rounded-full p-0 sm:h-12 sm:w-12">
         <span className={`vinyl ${playing ? "animate-spin-vinyl" : ""}`}><img src={track.art} alt="" width={48} height={48} className="h-full w-full rounded-full object-cover opacity-65" /></span>
         {playing && ["♪", "♫"].map((note, i) => <motion.span key={note} className="absolute text-xs text-accent" animate={{ x: [0, i ? 15 : -12], y: [0, -34], opacity: [0, 1, 0] }} transition={{ duration: 2.2, repeat: Infinity, delay: i * .9 }}>{note}</motion.span>)}
       </Button>
