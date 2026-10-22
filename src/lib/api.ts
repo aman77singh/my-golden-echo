@@ -9,10 +9,10 @@ export function getApiBaseUrl(): string {
     }
   }
   const envUrl = import.meta.env.VITE_API_URL;
-  if (envUrl && !envUrl.includes("our-space-backend-8qkm") && !envUrl.includes("localhost")) {
+  if (envUrl && !envUrl.includes("our-space-backend-8qkm")) {
     return envUrl;
   }
-  return "https://clever-llamas-heal.loca.lt";
+  return "http://localhost:5001";
 }
 
 export const API_BASE_URL = getApiBaseUrl();
