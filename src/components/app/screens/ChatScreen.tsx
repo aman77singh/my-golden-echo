@@ -508,13 +508,13 @@ export function ChatScreen() {
   return (
     <div className="flex flex-col h-[calc(100dvh-9rem)] relative pb-1 sm:pb-2">
       {/* 1. Header Status Bar */}
-      <div className="shrink-0 rounded-2xl border border-white/5 bg-[#16161f]/80 p-3 mb-2 backdrop-blur-md flex items-center justify-between shadow-lg">
+      <div className="shrink-0 rounded-2xl border border-border/70 bg-card/90 p-3 mb-2 backdrop-blur-md flex items-center justify-between shadow-panel">
         <div className="flex items-center gap-2.5">
           <div className="relative">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-tr from-[#E5A962] to-[#E07A5F] text-xs font-bold text-[#0d0d12]">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-tr from-[#E5A962] to-[#E07A5F] text-xs font-bold text-white shadow-xs">
               {partnerName.charAt(0)}
             </div>
-            <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-[#16161f] bg-emerald-400 animate-pulse" />
+            <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-card bg-emerald-500 animate-pulse" />
           </div>
           <div>
             <h3 className="font-display text-sm font-semibold text-foreground">
@@ -526,7 +526,7 @@ export function ChatScreen() {
             </p>
           </div>
         </div>
-        <span className="text-sm rounded-full border border-accent/25 bg-accent/10 px-2.5 py-0.5 text-accent font-semibold flex items-center gap-1">
+        <span className="text-sm rounded-full border border-accent/30 bg-accent/15 px-2.5 py-0.5 text-accent font-semibold flex items-center gap-1 shadow-xs">
           <Heart className="h-3 w-3 fill-accent/30" />
           <span>Connected</span>
         </span>
@@ -537,7 +537,7 @@ export function ChatScreen() {
         <motion.div
           initial={{ opacity: 0, y: -6 }}
           animate={{ opacity: 1, y: 0 }}
-          className="shrink-0 mb-2 flex items-center justify-between rounded-xl border border-rose-500/25 bg-gradient-to-r from-rose-500/10 via-[#1c1622] to-accent/10 px-3 py-2 text-xs backdrop-blur-sm shadow-sm"
+          className="shrink-0 mb-2 flex items-center justify-between rounded-xl border border-rose-400/40 bg-gradient-to-r from-rose-500/15 via-card to-accent/10 px-3 py-2 text-xs backdrop-blur-sm shadow-panel"
         >
           <div className="flex items-center gap-2 overflow-hidden">
             <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-rose-500/20 text-rose-400">
@@ -570,7 +570,7 @@ export function ChatScreen() {
               type="button"
               disabled={isLoadingOlder}
               onClick={handleLoadOlder}
-              className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-medium text-muted-foreground hover:bg-white/10 hover:text-foreground active:scale-95 disabled:opacity-50 transition-all"
+              className="inline-flex items-center gap-1.5 rounded-full border border-border/70 bg-card/80 px-3 py-1 text-[11px] font-medium text-muted-foreground hover:bg-card hover:text-foreground active:scale-95 disabled:opacity-50 transition-all shadow-xs"
             >
               {isLoadingOlder ? (
                 <>
@@ -617,7 +617,7 @@ export function ChatScreen() {
           <div key={group.dateLabel} className="space-y-3">
             {/* Day Divider */}
             <div className="flex items-center justify-center my-3">
-              <span className="rounded-full border border-white/5 bg-[#121118]/80 px-3 py-0.5 font-display text-[11px] font-semibold text-muted-foreground shadow-sm">
+              <span className="rounded-full border border-border/60 bg-card/90 px-3 py-0.5 font-display text-[11px] font-semibold text-muted-foreground shadow-xs">
                 {group.dateLabel}
               </span>
             </div>
@@ -642,8 +642,8 @@ export function ChatScreen() {
                       <div
                         className={`mb-1 flex items-center gap-1.5 rounded-xl px-2.5 py-1 text-[11px] border ${
                           isMe
-                            ? "bg-black/10 border-black/15 text-[#0d0d12]/80"
-                            : "bg-white/5 border-white/10 text-muted-foreground"
+                            ? "bg-black/10 border-black/15 text-foreground/80"
+                            : "bg-muted/60 border-border/60 text-muted-foreground"
                         }`}
                       >
                         <Reply className="h-3 w-3 shrink-0" />
@@ -661,10 +661,10 @@ export function ChatScreen() {
                         e.preventDefault();
                         setActiveReactionId(activeReactionId === msg._id ? null : msg._id);
                       }}
-                      className={`relative rounded-3xl p-3 shadow-md transition-all ${
+                      className={`relative rounded-3xl p-3 shadow-panel transition-all ${
                         isMe
-                          ? "bg-gradient-to-br from-[#E5A962] to-[#E07A5F] text-[#0d0d12] rounded-br-sm"
-                          : "border border-white/10 bg-[#1a1924] text-foreground rounded-bl-sm"
+                          ? "bg-gradient-to-br from-[#E5A962] to-[#E07A5F] text-foreground font-medium rounded-br-sm shadow-sm"
+                          : "border border-border/70 bg-card text-foreground rounded-bl-sm"
                       }`}
                     >
                       {/* Image Message */}
@@ -694,7 +694,7 @@ export function ChatScreen() {
                       {/* Bottom Info: Time & Seen Status */}
                       <div
                         className={`mt-1 flex items-center gap-1 text-[10px] font-mono ${
-                          isMe ? "justify-end text-[#0d0d12]/75" : "justify-end text-muted-foreground"
+                          isMe ? "justify-end text-foreground/75" : "justify-end text-muted-foreground"
                         }`}
                       >
                         <span>{format(parseISO(msg.createdAt), "h:mm a")}</span>
@@ -705,7 +705,7 @@ export function ChatScreen() {
                             ) : msg.seenAt ? (
                               <CheckCheck
                                 title="Seen by partner"
-                                className="h-3.5 w-3.5 text-[#0d0d12] font-bold"
+                                className="h-3.5 w-3.5 text-foreground font-bold"
                               />
                             ) : (
                               <Check className="h-3 w-3" />
@@ -717,7 +717,7 @@ export function ChatScreen() {
                       {/* Reactions Pill Display */}
                       {msg.reactions && msg.reactions.length > 0 && (
                         <div
-                          className={`absolute -bottom-2.5 flex items-center gap-1 rounded-full border border-white/10 bg-[#16161f] px-2 py-0.5 text-xs shadow-md ${
+                          className={`absolute -bottom-2.5 flex items-center gap-1 rounded-full border border-border/70 bg-card px-2 py-0.5 text-xs shadow-panel ${
                             isMe ? "right-2" : "left-2"
                           }`}
                         >
@@ -766,7 +766,7 @@ export function ChatScreen() {
                             activeReactionId === msg._id ? null : msg._id
                           )
                         }
-                        className="flex h-6 w-6 items-center justify-center rounded-full bg-[#16161f] border border-white/10 text-muted-foreground hover:text-accent shadow-sm"
+                        className="flex h-6 w-6 items-center justify-center rounded-full bg-card border border-border/70 text-muted-foreground hover:text-accent shadow-xs"
                       >
                         <Smile className="h-3.5 w-3.5" />
                       </button>
@@ -774,7 +774,7 @@ export function ChatScreen() {
                         type="button"
                         title="Reply"
                         onClick={() => setReplyingTo(msg)}
-                        className="flex h-6 w-6 items-center justify-center rounded-full bg-[#16161f] border border-white/10 text-muted-foreground hover:text-accent shadow-sm"
+                        className="flex h-6 w-6 items-center justify-center rounded-full bg-card border border-border/70 text-muted-foreground hover:text-accent shadow-xs"
                       >
                         <Reply className="h-3.5 w-3.5" />
                       </button>
@@ -783,7 +783,7 @@ export function ChatScreen() {
                           type="button"
                           title="Delete message"
                           onClick={() => deleteMutation.mutate(msg._id)}
-                          className="flex h-6 w-6 items-center justify-center rounded-full bg-[#16161f] border border-white/10 text-muted-foreground hover:text-rose-400 shadow-sm"
+                          className="flex h-6 w-6 items-center justify-center rounded-full bg-card border border-border/70 text-muted-foreground hover:text-rose-500 shadow-xs"
                         >
                           <Trash2 className="h-3 w-3" />
                         </button>
@@ -799,7 +799,7 @@ export function ChatScreen() {
                           exit={{ opacity: 0, scale: 0.8, y: -4 }}
                           className={`absolute z-30 -top-10 ${
                             isMe ? "right-0" : "left-0"
-                          } flex items-center gap-1 rounded-full border border-white/15 bg-[#16161f] p-1 shadow-xl backdrop-blur-xl`}
+                          } flex items-center gap-1 rounded-full border border-border/70 bg-card/95 p-1 shadow-panel backdrop-blur-xl`}
                         >
                           {REACTION_EMOJIS.map((emoji) => (
                             <button
@@ -811,7 +811,7 @@ export function ChatScreen() {
                                   emoji,
                                 })
                               }
-                              className="flex h-7 w-7 items-center justify-center rounded-full hover:bg-white/10 active:scale-125 transition-transform text-sm"
+                              className="flex h-7 w-7 items-center justify-center rounded-full hover:bg-muted active:scale-125 transition-transform text-sm"
                             >
                               {emoji}
                             </button>
@@ -835,7 +835,7 @@ export function ChatScreen() {
               exit={{ opacity: 0, y: 6 }}
               className="flex items-center gap-2 py-1"
             >
-              <div className="flex items-center gap-1 rounded-2xl border border-white/10 bg-[#1a1924] px-3 py-2 text-xs text-foreground shadow-sm">
+              <div className="flex items-center gap-1 rounded-2xl border border-border/70 bg-card/90 px-3 py-2 text-xs text-foreground shadow-panel">
                 <span className="font-serif italic text-accent">{partnerName} is typing</span>
                 <span className="flex items-center gap-1 pl-1">
                   <span className="h-1.5 w-1.5 rounded-full bg-accent animate-bounce" />
@@ -857,7 +857,7 @@ export function ChatScreen() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 8 }}
-            className="shrink-0 mb-1 flex items-center justify-between rounded-2xl border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs text-foreground backdrop-blur-md"
+            className="shrink-0 mb-1 flex items-center justify-between rounded-2xl border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs text-foreground backdrop-blur-md shadow-xs"
           >
             <div className="flex items-center gap-2 truncate">
               <Reply className="h-3.5 w-3.5 text-accent shrink-0" />
@@ -872,7 +872,7 @@ export function ChatScreen() {
             <button
               type="button"
               onClick={() => setReplyingTo(null)}
-              className="rounded-full p-1 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+              className="rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
             >
               <X className="h-3.5 w-3.5" />
             </button>
@@ -881,7 +881,7 @@ export function ChatScreen() {
       </AnimatePresence>
 
       {/* 6. Composer Bar (Safe-Area aware & Sticky) */}
-      <div className="shrink-0 rounded-3xl border border-white/10 bg-[#16161f]/95 p-2 shadow-2xl backdrop-blur-xl">
+      <div className="shrink-0 rounded-3xl border border-border/70 bg-card/95 p-2 shadow-panel backdrop-blur-xl">
         {/* Hidden File Picker */}
         <input
           ref={fileInputRef}
@@ -896,7 +896,7 @@ export function ChatScreen() {
           <div className="flex items-center justify-between px-2 py-1">
             <div className="flex items-center gap-2">
               <span className="h-3 w-3 rounded-full bg-rose-500 animate-ping" />
-              <span className="font-mono text-xs font-bold text-rose-400">
+              <span className="font-mono text-xs font-bold text-rose-600">
                 Recording Voice Note · {formatRecSec(recordingSeconds)}
               </span>
             </div>
@@ -904,7 +904,7 @@ export function ChatScreen() {
               <button
                 type="button"
                 onClick={cancelRecording}
-                className="rounded-full px-3 py-1 text-xs font-semibold text-muted-foreground hover:bg-white/10 hover:text-foreground"
+                className="rounded-full px-3 py-1 text-xs font-semibold text-muted-foreground hover:bg-muted hover:text-foreground"
               >
                 Cancel
               </button>
@@ -912,12 +912,12 @@ export function ChatScreen() {
                 type="button"
                 disabled={isUploadingVoice}
                 onClick={stopAndSendRecording}
-                className="flex items-center gap-1 rounded-full bg-gradient-to-r from-[#E5A962] to-[#E07A5F] px-4 py-1.5 text-xs font-bold text-[#0d0d12] shadow-md active:scale-95 disabled:opacity-50"
+                className="flex items-center gap-1 rounded-full bg-gradient-to-r from-[#E5A962] to-[#E07A5F] px-4 py-1.5 text-xs font-bold text-white shadow-md active:scale-95 disabled:opacity-50"
               >
                 {isUploadingVoice ? (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 ) : (
-                  <Square className="h-3.5 w-3.5 fill-[#0d0d12]" />
+                  <Square className="h-3.5 w-3.5 fill-white" />
                 )}
                 <span>Send Memo</span>
               </button>
@@ -932,7 +932,7 @@ export function ChatScreen() {
               disabled={isUploadingMedia}
               onClick={() => fileInputRef.current?.click()}
               title="Attach photo"
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:bg-white/5 hover:text-foreground active:scale-95 transition-all disabled:opacity-50"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground active:scale-95 transition-all disabled:opacity-50"
             >
               {isUploadingMedia ? (
                 <Loader2 className="h-4 w-4 animate-spin text-accent" />
@@ -953,9 +953,9 @@ export function ChatScreen() {
                 });
               }}
               title="Send quick heart"
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-rose-400 hover:bg-rose-500/10 active:scale-95 transition-all"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-rose-500 hover:bg-rose-500/10 active:scale-95 transition-all"
             >
-              <Heart className="h-4 w-4 fill-rose-400" />
+              <Heart className="h-4 w-4 fill-rose-500" />
             </button>
 
             {/* Text Input */}
@@ -988,7 +988,7 @@ export function ChatScreen() {
               type="button"
               onClick={handleSendText}
               disabled={!text.trim() || sendMessageMutation.isPending}
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-[#E5A962] to-[#E07A5F] text-[#0d0d12] shadow-md transition-all active:scale-95 disabled:opacity-40 disabled:scale-100"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-[#E5A962] to-[#E07A5F] text-white shadow-md transition-all active:scale-95 disabled:opacity-40 disabled:scale-100"
             >
               {sendMessageMutation.isPending ? (
                 <Loader2 className="h-4 w-4 animate-spin" />

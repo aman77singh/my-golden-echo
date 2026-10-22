@@ -79,9 +79,9 @@ export function BadDaySheet({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md border-rose-500/30 bg-[#161320]/95 text-foreground backdrop-blur-2xl shadow-2xl p-6 sm:rounded-3xl">
-        <DialogTitle className="flex items-center gap-2.5 font-serif text-xl font-semibold text-rose-200">
-          <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-rose-500/20 text-rose-300 border border-rose-500/40">
+      <DialogContent className="max-w-md border-border/70 bg-card/95 text-foreground backdrop-blur-2xl shadow-panel p-6 sm:rounded-3xl">
+        <DialogTitle className="flex items-center gap-2.5 font-serif text-xl font-semibold text-foreground">
+          <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-rose-500/15 text-rose-600 border border-rose-500/30">
             <Heart className="h-5 w-5 fill-current" />
           </div>
           <span>Bad Day Comfort Signal</span>
@@ -105,8 +105,8 @@ export function BadDaySheet({
                     onClick={() => setSelectedNeed(item.label)}
                     className={`flex flex-col items-start rounded-2xl border p-3 text-left transition-all ${
                       isSelected
-                        ? "border-rose-400 bg-rose-500/20 text-rose-100 shadow-md shadow-rose-500/10"
-                        : "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+                        ? "border-rose-400 bg-rose-500/15 text-rose-900 shadow-md shadow-rose-500/10"
+                        : "border-border/70 bg-background/60 text-muted-foreground hover:bg-card hover:text-foreground"
                     }`}
                   >
                     <span className="text-2xl mb-1">{item.emoji}</span>
@@ -131,7 +131,7 @@ export function BadDaySheet({
               value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="e.g. Feeling overwhelmed with work, feeling crampy..."
-              className="mt-1.5 w-full rounded-2xl border border-white/10 bg-white/5 px-3.5 py-2 text-xs text-foreground placeholder:text-muted-foreground/50 focus:border-rose-400/50 focus:outline-none"
+              className="mt-1.5 w-full rounded-2xl border border-border/70 bg-background/60 px-3.5 py-2 text-xs text-foreground placeholder:text-muted-foreground/50 focus:border-rose-400 focus:outline-none"
             />
           </div>
 
@@ -139,7 +139,7 @@ export function BadDaySheet({
             <button
               type="button"
               onClick={() => onOpenChange(false)}
-              className="rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-white/10"
+              className="rounded-2xl border border-border/70 bg-background/60 px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-accent/10"
             >
               Cancel
             </button>

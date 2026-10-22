@@ -94,7 +94,7 @@ export function WeeklyCheckInScreen() {
               onChange(star);
             }}
             className={`p-1 transition-transform active:scale-90 ${
-              star <= value ? "text-[#E5A962]" : "text-white/20"
+              star <= value ? "text-[#E5A962]" : "text-muted-foreground/30"
             }`}
           >
             <Star className={`h-4 w-4 ${star <= value ? "fill-current" : ""}`} />
@@ -107,7 +107,7 @@ export function WeeklyCheckInScreen() {
   return (
     <div className="space-y-4 pb-24 text-foreground">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/5 pb-3">
+      <div className="flex items-center justify-between border-b border-border/60 pb-3">
         <div className="flex items-center gap-2">
           <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-accent/20 text-accent">
             <HeartHandshake className="h-4 w-4" />
@@ -124,19 +124,19 @@ export function WeeklyCheckInScreen() {
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="rounded-2xl border border-white/10 bg-[#16161f]/90 p-4 backdrop-blur-xl space-y-4">
+      <form onSubmit={handleSubmit} className="rounded-2xl border border-border/70 bg-card/90 p-4 shadow-panel backdrop-blur-xl space-y-4">
         <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
           How Was Our Week? (1 - 5)
         </h3>
 
-        <div className="divide-y divide-white/5 space-y-1">
+        <div className="divide-y divide-border/60 space-y-1">
           <RatingRow label="Communication" icon={MessageSquare} value={comm} onChange={setComm} />
           <RatingRow label="Closeness & Intimacy" icon={Sparkles} value={intimacy} onChange={setIntimacy} />
           <RatingRow label="Fun & Playfulness" icon={Smile} value={fun} onChange={setFun} />
           <RatingRow label="Mutual Support" icon={Shield} value={support} onChange={setSupport} />
         </div>
 
-        <div className="space-y-3 pt-2 border-t border-white/5">
+        <div className="space-y-3 pt-2 border-t border-border/60">
           <div>
             <label className="text-xs font-medium text-foreground">Highlight of the Week</label>
             <input
@@ -144,7 +144,7 @@ export function WeeklyCheckInScreen() {
               placeholder="e.g. Cooking together on Friday night"
               value={highlight}
               onChange={(e) => setHighlight(e.target.value)}
-              className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none"
+              className="mt-1 w-full rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none"
             />
           </div>
 
@@ -158,7 +158,7 @@ export function WeeklyCheckInScreen() {
               onChange={(e) => setOneThing(e.target.value)}
               rows={2}
               required
-              className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none resize-none"
+              className="mt-1 w-full rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none resize-none"
             />
           </div>
         </div>
@@ -166,7 +166,7 @@ export function WeeklyCheckInScreen() {
         <button
           type="submit"
           disabled={submitMutation.isPending}
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] py-2.5 text-xs font-semibold text-[#0d0d12] shadow-sm shadow-accent/20 transition-all hover:opacity-95 active:scale-95 disabled:opacity-50"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] py-2.5 text-xs font-semibold text-white shadow-sm shadow-accent/20 transition-all hover:opacity-95 active:scale-95 disabled:opacity-50"
         >
           <Send className="h-3.5 w-3.5" />
           <span>{submitMutation.isPending ? "Submitting..." : "Submit Weekly Reflection"}</span>
@@ -174,7 +174,7 @@ export function WeeklyCheckInScreen() {
       </form>
 
       {/* History */}
-      <div className="rounded-2xl border border-white/10 bg-[#16161f]/90 p-4 backdrop-blur-xl space-y-3">
+      <div className="rounded-2xl border border-border/70 bg-card/90 p-4 shadow-panel backdrop-blur-xl space-y-3">
         <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
           Past Reflections
         </h3>
@@ -199,7 +199,7 @@ export function WeeklyCheckInScreen() {
               return (
                 <div
                   key={item._id}
-                  className="rounded-xl border border-white/5 bg-white/[0.02] p-3 text-xs space-y-2 hover:border-white/15 transition-colors"
+                  className="rounded-xl border border-border/60 bg-background/50 p-3 text-xs space-y-2 hover:border-border/80 transition-colors"
                 >
                   <div className="flex items-center justify-between text-muted-foreground text-[10px]">
                     <span className="font-mono">Week of {item.weekStart}</span>

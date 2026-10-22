@@ -82,9 +82,9 @@ export function LogSymptomModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md max-h-[88vh] overflow-y-auto border-rose-500/20 bg-[#14121d]/95 text-foreground backdrop-blur-2xl shadow-2xl p-6 sm:rounded-3xl">
-        <DialogTitle className="flex items-center gap-2.5 font-serif text-xl font-semibold text-rose-200">
-          <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-rose-500/15 text-rose-300 border border-rose-500/30">
+      <DialogContent className="max-w-md max-h-[88vh] overflow-y-auto border-border/70 bg-card/95 text-foreground backdrop-blur-2xl shadow-panel p-6 sm:rounded-3xl">
+        <DialogTitle className="flex items-center gap-2.5 font-serif text-xl font-semibold text-foreground">
+          <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-rose-500/15 text-rose-600 border border-rose-500/30">
             <Heart className="h-5 w-5 fill-current" />
           </div>
           <span>Daily Symptoms & Feelings</span>
@@ -109,8 +109,8 @@ export function LogSymptomModal({
                     onClick={() => toggleSymptom(sym.id)}
                     className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-medium transition-all ${
                       isSelected
-                        ? "border-rose-400 bg-rose-400/20 text-rose-200 shadow-sm"
-                        : "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+                        ? "border-rose-400 bg-rose-400/20 text-rose-700 shadow-sm"
+                        : "border-border/70 bg-background/60 text-muted-foreground hover:bg-card hover:text-foreground"
                     }`}
                   >
                     <span>{sym.emoji}</span>
@@ -122,12 +122,12 @@ export function LogSymptomModal({
           </div>
 
           {/* Pain Level Slider (0-10) */}
-          <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-3.5 space-y-2">
+          <div className="rounded-2xl border border-border/60 bg-background/50 p-3.5 space-y-2">
             <div className="flex items-center justify-between text-xs">
               <span className="font-semibold text-muted-foreground uppercase text-[10px] tracking-wider">
                 Physical Discomfort / Pain Level
               </span>
-              <span className="font-mono font-bold text-rose-300 text-sm">
+              <span className="font-mono font-bold text-rose-600 text-sm">
                 {pain} / 10
               </span>
             </div>
@@ -138,7 +138,7 @@ export function LogSymptomModal({
               max="10"
               value={pain}
               onChange={(e) => setPain(Number(e.target.value))}
-              className="w-full accent-rose-400 h-2 bg-white/10 rounded-lg cursor-pointer"
+              className="w-full accent-rose-400 h-2 bg-border/60 rounded-lg cursor-pointer"
             />
 
             <div className="flex justify-between text-[10px] text-muted-foreground/70">
@@ -165,8 +165,8 @@ export function LogSymptomModal({
                     onClick={() => setSelectedMood(label)}
                     className={`flex items-center justify-center gap-1.5 rounded-xl border py-2 text-xs font-medium transition-all ${
                       isSelected
-                        ? "border-rose-400 bg-rose-400/20 text-rose-200 font-bold shadow-sm"
-                        : "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+                        ? "border-rose-400 bg-rose-400/20 text-rose-700 font-bold shadow-sm"
+                        : "border-border/70 bg-background/60 text-muted-foreground hover:bg-card hover:text-foreground"
                     }`}
                   >
                     <span>{m.emoji}</span>
@@ -182,7 +182,7 @@ export function LogSymptomModal({
             <button
               type="button"
               onClick={() => onOpenChange(false)}
-              className="rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-white/10"
+              className="rounded-2xl border border-border/70 bg-background/60 px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-accent/10"
             >
               Cancel
             </button>

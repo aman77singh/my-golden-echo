@@ -269,25 +269,25 @@ export function HomeScreen() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative overflow-hidden rounded-3xl border border-accent/25 bg-gradient-to-b from-[#1c1b29] via-[#16161f] to-[#121118] p-6 shadow-2xl"
+        className="relative overflow-hidden rounded-3xl border border-border/80 bg-gradient-to-b from-card via-card to-secondary/30 p-6 shadow-panel"
       >
         <div className="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-accent/15 blur-3xl pointer-events-none" />
         <div className="relative z-10">
           <div className="flex items-center justify-between">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-[11px] font-semibold text-accent shadow-sm">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-[11px] font-semibold text-accent shadow-xs">
               <Sparkles className="h-3 w-3" />
               <span>Our Space · Private Sanctuary</span>
             </span>
             <div className="flex -space-x-2">
               <div
                 title={userName}
-                className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#121118] bg-gradient-to-br from-[#E5A962] to-[#E07A5F] text-xs font-bold text-[#0d0d12]"
+                className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-card bg-gradient-to-br from-[#E5A962] to-[#E07A5F] text-xs font-bold text-white shadow-xs"
               >
                 {userName.charAt(0)}
               </div>
               <div
                 title={partnerName}
-                className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#121118] bg-gradient-to-br from-[#E07A5F] to-[#E5A962] text-xs font-bold text-[#0d0d12]"
+                className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-card bg-gradient-to-br from-[#E07A5F] to-[#E5A962] text-xs font-bold text-white shadow-xs"
               >
                 {partnerName.charAt(0)}
               </div>
@@ -304,22 +304,22 @@ export function HomeScreen() {
           </div>
 
           {/* Live "Time Together" Counter */}
-          <div className="mt-6 rounded-2xl border border-white/5 bg-white/[0.03] p-4 backdrop-blur-sm">
+          <div className="mt-6 rounded-2xl border border-border/70 bg-background/60 p-4 backdrop-blur-sm">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                 Time Together
               </span>
-              <span className="flex items-center gap-1.5 text-[11px] font-medium text-emerald-400">
-                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="flex items-center gap-1.5 text-[11px] font-medium text-emerald-600">
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                 Live Heartbeat
               </span>
             </div>
 
             {isLoadingCouple ? (
-              <div className="mt-2.5 h-8 w-full animate-pulse rounded-lg bg-white/5" />
+              <div className="mt-2.5 h-8 w-full animate-pulse rounded-lg bg-muted/40" />
             ) : (
               <div className="mt-2.5 grid grid-cols-4 gap-2 text-center">
-                <div className="rounded-xl border border-white/5 bg-white/[0.02] p-2">
+                <div className="rounded-xl border border-border/60 bg-card p-2 shadow-xs">
                   <div className="font-mono text-xl sm:text-2xl font-bold text-accent">
                     {days}
                   </div>
@@ -327,7 +327,7 @@ export function HomeScreen() {
                     Days
                   </div>
                 </div>
-                <div className="rounded-xl border border-white/5 bg-white/[0.02] p-2">
+                <div className="rounded-xl border border-border/60 bg-card p-2 shadow-xs">
                   <div className="font-mono text-xl sm:text-2xl font-bold text-foreground">
                     {hours.toString().padStart(2, "0")}
                   </div>
@@ -335,7 +335,7 @@ export function HomeScreen() {
                     Hours
                   </div>
                 </div>
-                <div className="rounded-xl border border-white/5 bg-white/[0.02] p-2">
+                <div className="rounded-xl border border-border/60 bg-card p-2 shadow-xs">
                   <div className="font-mono text-xl sm:text-2xl font-bold text-foreground">
                     {minutes.toString().padStart(2, "0")}
                   </div>
@@ -343,7 +343,7 @@ export function HomeScreen() {
                     Mins
                   </div>
                 </div>
-                <div className="rounded-xl border border-white/5 bg-white/[0.02] p-2">
+                <div className="rounded-xl border border-border/60 bg-card p-2 shadow-xs">
                   <div className="font-mono text-xl sm:text-2xl font-bold text-accent">
                     {seconds.toString().padStart(2, "0")}
                   </div>
@@ -362,19 +362,19 @@ export function HomeScreen() {
         <motion.div
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-3xl border border-rose-500/40 bg-gradient-to-r from-rose-500/20 via-[#201524] to-amber-500/10 p-4 shadow-xl"
+          className="rounded-3xl border border-rose-400/50 bg-gradient-to-r from-rose-500/15 via-card to-amber-500/10 p-4 shadow-panel"
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <span className="text-3xl">🫂</span>
               <div>
-                <span className="rounded-full bg-rose-500/20 px-2 py-0.5 text-[10px] font-bold text-rose-300 uppercase tracking-wider">
+                <span className="rounded-full bg-rose-500/20 px-2 py-0.5 text-[10px] font-bold text-rose-600 uppercase tracking-wider">
                   Comfort Needed Today
                 </span>
                 <h4 className="font-serif text-sm font-bold text-foreground mt-0.5">
                   {isHer ? "Your Bad Day Signal Active" : `${partnerName} is having a tough day`}
                 </h4>
-                <p className="text-xs text-rose-200/90 font-medium mt-0.5">
+                <p className="text-xs text-rose-700/90 font-medium mt-0.5">
                   "{latestBadDay.body}"
                 </p>
               </div>
@@ -413,8 +413,8 @@ export function HomeScreen() {
 
         {isLoadingMoods ? (
           <div className="grid grid-cols-2 gap-3">
-            <div className="h-44 rounded-3xl border border-border/40 bg-white/5 animate-pulse" />
-            <div className="h-44 rounded-3xl border border-border/40 bg-white/5 animate-pulse" />
+            <div className="h-44 rounded-3xl border border-border/60 bg-muted/30 animate-pulse" />
+            <div className="h-44 rounded-3xl border border-border/60 bg-muted/30 animate-pulse" />
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-3">
@@ -424,10 +424,10 @@ export function HomeScreen() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4 }}
               onClick={() => setIsMoodSheetOpen(true)}
-              className="group relative cursor-pointer overflow-hidden rounded-3xl border border-[#E5A962]/30 bg-gradient-to-b from-[#1b1a26] to-[#14131c] p-4 shadow-lg transition-all hover:border-[#E5A962]/60 hover:shadow-[#E5A962]/10 active:scale-98"
+              className="group relative cursor-pointer overflow-hidden rounded-3xl border border-border/80 bg-gradient-to-b from-card to-secondary/30 p-4 shadow-panel transition-all hover:border-accent/60 hover:shadow-glow active:scale-98"
             >
               <div className="flex items-center justify-between">
-                <span className="inline-flex items-center gap-1 rounded-full bg-[#E5A962]/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#E5A962]">
+                <span className="inline-flex items-center gap-1 rounded-full bg-[#E5A962]/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#9b6623]">
                   You
                 </span>
                 <span className="text-[10px] text-muted-foreground">
@@ -449,7 +449,7 @@ export function HomeScreen() {
                         className={`h-1.5 flex-1 rounded-full ${
                           lvl <= mineMood.energy
                             ? "bg-[#E5A962] shadow-[0_0_6px_rgba(229,169,98,0.7)]"
-                            : "bg-white/10"
+                            : "bg-muted"
                         }`}
                       />
                     ))}
@@ -461,7 +461,7 @@ export function HomeScreen() {
                 </div>
               ) : (
                 <div className="mt-4 flex flex-col items-center text-center py-2">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/5 text-muted-foreground group-hover:text-accent">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-muted/40 text-muted-foreground group-hover:text-accent">
                     <SmilePlus className="h-5 w-5" />
                   </div>
                   <span className="mt-2 font-display text-xs font-semibold text-foreground">
@@ -471,7 +471,7 @@ export function HomeScreen() {
                 </div>
               )}
 
-              <div className="mt-3 pt-2 border-t border-white/5 flex items-center justify-center text-[10px] font-medium text-accent">
+              <div className="mt-3 pt-2 border-t border-border/60 flex items-center justify-center text-[10px] font-medium text-accent">
                 <span>Update vibe</span>
                 <ChevronRight className="h-3 w-3" />
               </div>
@@ -482,10 +482,10 @@ export function HomeScreen() {
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4, delay: 0.05 }}
-              className="relative overflow-hidden rounded-3xl border border-[#E07A5F]/30 bg-gradient-to-b from-[#1b1a26] to-[#14131c] p-4 shadow-lg"
+              className="relative overflow-hidden rounded-3xl border border-border/80 bg-gradient-to-b from-card to-secondary/30 p-4 shadow-panel"
             >
               <div className="flex items-center justify-between">
-                <span className="inline-flex items-center gap-1 rounded-full bg-[#E07A5F]/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#E07A5F]">
+                <span className="inline-flex items-center gap-1 rounded-full bg-[#E07A5F]/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#b84825]">
                   {partnerName}
                 </span>
                 <span className="text-[10px] text-muted-foreground">
@@ -507,7 +507,7 @@ export function HomeScreen() {
                         className={`h-1.5 flex-1 rounded-full ${
                           lvl <= partnerMood.energy
                             ? "bg-[#E07A5F] shadow-[0_0_6px_rgba(224,122,95,0.7)]"
-                            : "bg-white/10"
+                            : "bg-muted"
                         }`}
                       />
                     ))}
@@ -519,7 +519,7 @@ export function HomeScreen() {
                 </div>
               ) : (
                 <div className="mt-4 flex flex-col items-center text-center py-2">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/5 text-muted-foreground">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-muted/40 text-muted-foreground">
                     <Clock className="h-5 w-5 opacity-60" />
                   </div>
                   <span className="mt-2 font-display text-xs font-semibold text-foreground">
@@ -531,7 +531,7 @@ export function HomeScreen() {
                 </div>
               )}
 
-              <div className="mt-3 pt-2 border-t border-white/5 flex items-center justify-center text-[10px] font-medium text-muted-foreground">
+              <div className="mt-3 pt-2 border-t border-border/60 flex items-center justify-center text-[10px] font-medium text-muted-foreground">
                 <Sparkles className="h-3 w-3 mr-1 text-[#E07A5F]" />
                 <span>Partner vibe</span>
               </div>
@@ -551,7 +551,7 @@ export function HomeScreen() {
             type="button"
             disabled={sendPingMutation.isPending}
             onClick={() => sendPingMutation.mutate()}
-            className="group flex flex-col items-center justify-center rounded-2xl border border-border/50 bg-[#16161f]/80 p-3 shadow-md transition-all hover:border-accent/40 hover:bg-accent/10 active:scale-95 disabled:opacity-50"
+            className="group flex flex-col items-center justify-center rounded-2xl border border-border/70 bg-card/90 p-3 shadow-panel transition-all hover:border-accent/40 hover:bg-accent/10 active:scale-95 disabled:opacity-50"
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#E5A962]/20 to-[#E07A5F]/20 text-accent transition-transform group-hover:scale-110">
               <Heart className="h-5 w-5 fill-accent/30" />
@@ -565,7 +565,7 @@ export function HomeScreen() {
           {/* Action 2: Open Chat */}
           <Link
             to="/app/chat"
-            className="group flex flex-col items-center justify-center rounded-2xl border border-border/50 bg-[#16161f]/80 p-3 shadow-md transition-all hover:border-accent/40 hover:bg-accent/10 active:scale-95"
+            className="group flex flex-col items-center justify-center rounded-2xl border border-border/70 bg-card/90 p-3 shadow-panel transition-all hover:border-accent/40 hover:bg-accent/10 active:scale-95"
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#E5A962]/20 to-[#E07A5F]/20 text-accent transition-transform group-hover:scale-110">
               <MessageCircle className="h-5 w-5" />
@@ -579,10 +579,10 @@ export function HomeScreen() {
           {/* Action 3: Post Progress */}
           <Link
             to="/app/progress"
-            className="group flex flex-col items-center justify-center rounded-2xl border border-border/50 bg-[#16161f]/80 p-3 shadow-md transition-all hover:border-accent/40 hover:bg-accent/10 active:scale-95"
+            className="group flex flex-col items-center justify-center rounded-2xl border border-border/70 bg-card/90 p-3 shadow-panel transition-all hover:border-accent/40 hover:bg-accent/10 active:scale-95"
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#E5A962]/20 to-[#E07A5F]/20 text-accent transition-transform group-hover:scale-110">
-              <Flame className="h-5 w-5 text-amber-400" />
+              <Flame className="h-5 w-5 text-amber-500" />
             </div>
             <span className="mt-2 font-display text-xs font-bold text-foreground">
               Post Progress
@@ -597,9 +597,9 @@ export function HomeScreen() {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-3xl border border-rose-500/30 bg-gradient-to-br from-rose-500/10 via-[#191524] to-[#121118] p-5 shadow-lg"
+          className="rounded-3xl border border-rose-400/40 bg-gradient-to-br from-rose-500/10 via-card to-secondary/30 p-5 shadow-panel"
         >
-          <div className="flex items-center justify-between border-b border-white/5 pb-3">
+          <div className="flex items-center justify-between border-b border-border/60 pb-3">
             <div className="flex items-center gap-2">
               <span className="text-xl">🌸</span>
               <div>
@@ -618,13 +618,13 @@ export function HomeScreen() {
               <button
                 type="button"
                 onClick={() => setIsBadDayOpen(true)}
-                className="rounded-xl border border-rose-400/40 bg-rose-500/20 px-3 py-1.5 text-xs font-bold text-rose-200 hover:bg-rose-500/30 active:scale-95 transition-all shadow-sm"
+                className="rounded-xl border border-rose-400/40 bg-rose-500/15 px-3 py-1.5 text-xs font-bold text-rose-600 hover:bg-rose-500/25 active:scale-95 transition-all shadow-xs"
               >
                 Bad Day Mode 🫂
               </button>
               <Link
                 to="/app/cycle"
-                className="text-xs font-semibold text-rose-300 hover:underline"
+                className="text-xs font-semibold text-rose-600 hover:underline"
               >
                 Tracker →
               </Link>
@@ -632,12 +632,12 @@ export function HomeScreen() {
           </div>
 
           <div className="mt-3.5 space-y-2">
-            <p className="text-[11px] font-semibold text-rose-300 uppercase tracking-wider">
+            <p className="text-[11px] font-semibold text-rose-700 uppercase tracking-wider">
               Suggestions For You Today:
             </p>
             {phaseTips.map((tip, idx) => (
               <div key={idx} className="flex items-start gap-2 text-xs text-foreground/90 font-sans leading-relaxed">
-                <span className="text-amber-400 font-bold">•</span>
+                <span className="text-amber-500 font-bold">•</span>
                 <span>{tip}</span>
               </div>
             ))}
@@ -650,9 +650,9 @@ export function HomeScreen() {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-3xl border border-white/10 bg-[#16161f]/80 p-5 shadow-lg backdrop-blur-md"
+          className="rounded-3xl border border-border/70 bg-card/90 p-5 shadow-panel backdrop-blur-md"
         >
-          <div className="flex items-center justify-between border-b border-white/5 pb-3">
+          <div className="flex items-center justify-between border-b border-border/60 pb-3">
             <div className="flex items-center gap-2">
               <span className="text-xl">🌸</span>
               <div>
@@ -670,7 +670,7 @@ export function HomeScreen() {
             </div>
             <Link
               to="/app/cycle"
-              className="text-xs text-rose-300 font-semibold hover:underline"
+              className="text-xs text-rose-600 font-semibold hover:underline"
             >
               View →
             </Link>
@@ -678,12 +678,12 @@ export function HomeScreen() {
 
           {partnerShared ? (
             <div className="mt-3.5 space-y-2">
-              <p className="text-[11px] font-semibold text-amber-300 uppercase tracking-wider">
+              <p className="text-[11px] font-semibold text-amber-700 uppercase tracking-wider">
                 Support Cards For Her Today:
               </p>
               {phaseTips.map((tip, idx) => (
                 <div key={idx} className="flex items-start gap-2 text-xs text-foreground/90 font-sans leading-relaxed">
-                  <span className="text-rose-400 font-bold">•</span>
+                  <span className="text-rose-500 font-bold">•</span>
                   <span>{tip}</span>
                 </div>
               ))}
@@ -701,9 +701,9 @@ export function HomeScreen() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1, duration: 0.5 }}
-        className="rounded-3xl border border-border/50 bg-[#16161f]/80 p-4 shadow-lg backdrop-blur-md"
+        className="rounded-3xl border border-border/70 bg-card/90 p-4 shadow-panel backdrop-blur-md"
       >
-        <div className="flex items-center justify-between border-b border-white/5 pb-2.5">
+        <div className="flex items-center justify-between border-b border-border/60 pb-2.5">
           <div className="flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-accent" />
             <h3 className="font-display text-sm font-bold text-foreground">
@@ -717,19 +717,19 @@ export function HomeScreen() {
 
         {isLoadingStatus ? (
           <div className="mt-3 space-y-2">
-            <div className="h-8 rounded-xl bg-white/5 animate-pulse" />
-            <div className="h-8 rounded-xl bg-white/5 animate-pulse" />
+            <div className="h-8 rounded-xl bg-muted/40 animate-pulse" />
+            <div className="h-8 rounded-xl bg-muted/40 animate-pulse" />
           </div>
         ) : (
           <div className="mt-3 space-y-2.5">
             {/* Row 1: Partner progress post */}
-            <div className="flex items-center justify-between rounded-2xl border border-white/5 bg-white/[0.02] p-2.5">
+            <div className="flex items-center justify-between rounded-2xl border border-border/60 bg-background/50 p-2.5">
               <div className="flex items-center gap-2.5">
                 <div
                   className={`flex h-7 w-7 items-center justify-center rounded-full text-xs ${
                     statusData?.partnerPostedToday
-                      ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                      : "bg-white/5 text-muted-foreground"
+                      ? "bg-emerald-500/20 text-emerald-600 border border-emerald-500/30"
+                      : "bg-muted/60 text-muted-foreground"
                   }`}
                 >
                   {statusData?.partnerPostedToday ? (
@@ -752,8 +752,8 @@ export function HomeScreen() {
               <span
                 className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                   statusData?.partnerPostedToday
-                    ? "bg-emerald-500/15 text-emerald-400"
-                    : "bg-white/5 text-muted-foreground"
+                    ? "bg-emerald-500/15 text-emerald-700"
+                    : "bg-muted text-muted-foreground"
                 }`}
               >
                 {statusData?.partnerPostedToday ? "Completed ✨" : "Pending"}
@@ -761,18 +761,18 @@ export function HomeScreen() {
             </div>
 
             {/* Row 2: Partner reaction to mine */}
-            <div className="flex items-center justify-between rounded-2xl border border-white/5 bg-white/[0.02] p-2.5">
+            <div className="flex items-center justify-between rounded-2xl border border-border/60 bg-background/50 p-2.5">
               <div className="flex items-center gap-2.5">
                 <div
                   className={`flex h-7 w-7 items-center justify-center rounded-full text-xs ${
                     statusData?.partnerReactedToMineToday
-                      ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
-                      : "bg-white/5 text-muted-foreground"
+                      ? "bg-rose-500/20 text-rose-500 border border-rose-500/30"
+                      : "bg-muted/60 text-muted-foreground"
                   }`}
                 >
                   <Heart
                     className={`h-4 w-4 ${
-                      statusData?.partnerReactedToMineToday ? "fill-rose-400" : ""
+                      statusData?.partnerReactedToMineToday ? "fill-rose-500" : ""
                     }`}
                   />
                 </div>
@@ -790,8 +790,8 @@ export function HomeScreen() {
               <span
                 className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                   statusData?.partnerReactedToMineToday
-                    ? "bg-rose-500/15 text-rose-400"
-                    : "bg-white/5 text-muted-foreground"
+                    ? "bg-rose-500/15 text-rose-600"
+                    : "bg-muted text-muted-foreground"
                 }`}
               >
                 {statusData?.partnerReactedToMineToday ? "Cheered ❤️" : "Waiting"}
@@ -806,7 +806,7 @@ export function HomeScreen() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.5 }}
-        className="relative overflow-hidden rounded-3xl border border-dashed border-accent/40 bg-gradient-to-br from-accent/10 via-[#181724] to-[#121118] p-5 shadow-lg text-center"
+        className="relative overflow-hidden rounded-3xl border border-dashed border-accent/50 bg-gradient-to-br from-accent/15 via-card to-secondary/40 p-5 shadow-panel text-center"
       >
         <div className="flex items-center justify-center gap-1.5 text-accent text-xs font-bold uppercase tracking-wider mb-1">
           <Sparkles className="h-3.5 w-3.5" />

@@ -98,9 +98,9 @@ export function SurprisePlannerScreen() {
   return (
     <div className="space-y-4 pb-24 text-foreground">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/5 pb-3">
+      <div className="flex items-center justify-between border-b border-border/60 pb-3">
         <div className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-500/20 text-purple-400">
+          <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-500/20 text-purple-600">
             <Gift className="h-4 w-4" />
           </span>
           <div>
@@ -129,10 +129,10 @@ export function SurprisePlannerScreen() {
       {/* Secret Vault Privacy Banner */}
       <div className="rounded-2xl border border-purple-500/30 bg-purple-500/10 p-3.5 backdrop-blur-xl">
         <div className="flex items-center gap-2.5">
-          <Lock className="h-4 w-4 text-purple-400 shrink-0" />
+          <Lock className="h-4 w-4 text-purple-600 shrink-0" />
           <div className="text-xs">
-            <span className="font-semibold text-purple-200">Strictly Private Vault: </span>
-            <span className="text-purple-300/80">
+            <span className="font-semibold text-purple-900">Strictly Private Vault: </span>
+            <span className="text-purple-800/80">
               Your partner will NEVER see these items. Enforced at the database and API level.
             </span>
           </div>
@@ -140,9 +140,9 @@ export function SurprisePlannerScreen() {
       </div>
 
       {/* Surprises List */}
-      <div className="rounded-2xl border border-white/10 bg-[#16161f]/90 p-4 backdrop-blur-xl space-y-3">
+      <div className="rounded-2xl border border-border/70 bg-card/90 p-4 shadow-panel backdrop-blur-xl space-y-3">
         <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-          <EyeOff className="h-3.5 w-3.5 text-purple-400" />
+          <EyeOff className="h-3.5 w-3.5 text-purple-600" />
           <span>Planned Surprises</span>
         </h3>
 
@@ -174,7 +174,7 @@ export function SurprisePlannerScreen() {
                     >
                       <CheckCircle2
                         className={`h-4 w-4 ${
-                          item.completed ? "text-emerald-400 fill-emerald-500/20" : "text-white/20"
+                          item.completed ? "text-emerald-500 fill-emerald-500/20" : "text-muted-foreground/30"
                         }`}
                       />
                     </button>
@@ -194,7 +194,7 @@ export function SurprisePlannerScreen() {
                   <div className="flex items-center gap-3 pl-6 text-[10px] text-muted-foreground font-mono pt-0.5">
                     {item.targetDate && (
                       <span className="flex items-center gap-1">
-                        <Calendar className="h-3 w-3 text-purple-400" />
+                        <Calendar className="h-3 w-3 text-purple-600" />
                         {new Date(item.targetDate).toLocaleDateString(undefined, {
                           month: "short",
                           day: "numeric",
@@ -202,7 +202,7 @@ export function SurprisePlannerScreen() {
                       </span>
                     )}
                     {item.budget && (
-                      <span className="flex items-center gap-1 text-emerald-400">
+                      <span className="flex items-center gap-1 text-emerald-600 font-semibold">
                         <DollarSign className="h-3 w-3" />
                         {item.budget}
                       </span>
@@ -213,7 +213,7 @@ export function SurprisePlannerScreen() {
                 <button
                   type="button"
                   onClick={() => deleteMutation.mutate(item._id)}
-                  className="text-muted-foreground/60 hover:text-red-400 p-1"
+                  className="text-muted-foreground/60 hover:text-red-500 p-1"
                   aria-label="Delete Surprise"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
@@ -226,7 +226,7 @@ export function SurprisePlannerScreen() {
 
       {/* Create Surprise Dialog */}
       <Dialog open={createOpen} onOpenChange={setCreateOpen}>
-        <DialogContent className="border-purple-500/30 bg-[#16161f]/95 text-foreground backdrop-blur-2xl sm:max-w-md">
+        <DialogContent className="border-border/70 bg-card/95 text-foreground backdrop-blur-2xl shadow-panel sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="font-display text-base font-bold text-foreground">
               Add Secret Surprise 🤫
@@ -245,7 +245,7 @@ export function SurprisePlannerScreen() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
-                className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-foreground focus:border-purple-400 focus:outline-none"
+                className="mt-1 w-full rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs text-foreground focus:border-purple-400 focus:outline-none"
               />
             </div>
 
@@ -256,7 +256,7 @@ export function SurprisePlannerScreen() {
                   type="date"
                   value={targetDate}
                   onChange={(e) => setTargetDate(e.target.value)}
-                  className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-foreground focus:border-purple-400 focus:outline-none"
+                  className="mt-1 w-full rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs text-foreground focus:border-purple-400 focus:outline-none"
                 />
               </div>
               <div>
@@ -266,7 +266,7 @@ export function SurprisePlannerScreen() {
                   placeholder="e.g. $100"
                   value={budget}
                   onChange={(e) => setBudget(e.target.value)}
-                  className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-foreground focus:border-purple-400 focus:outline-none"
+                  className="mt-1 w-full rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs text-foreground focus:border-purple-400 focus:outline-none"
                 />
               </div>
             </div>
@@ -278,7 +278,7 @@ export function SurprisePlannerScreen() {
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={2}
-                className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-foreground focus:border-purple-400 focus:outline-none resize-none"
+                className="mt-1 w-full rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs text-foreground focus:border-purple-400 focus:outline-none resize-none"
               />
             </div>
 
@@ -286,7 +286,7 @@ export function SurprisePlannerScreen() {
               <button
                 type="button"
                 onClick={() => setCreateOpen(false)}
-                className="rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-white/10"
+                className="rounded-xl border border-border/70 bg-background/60 px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-accent/10"
               >
                 Cancel
               </button>

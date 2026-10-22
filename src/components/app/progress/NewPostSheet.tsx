@@ -179,11 +179,11 @@ export function NewPostSheet({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="border-border/60 bg-[#16161f]/95 text-foreground backdrop-blur-2xl sm:max-w-lg max-h-[92vh] overflow-y-auto">
+      <DialogContent className="border-border/70 bg-card/95 text-foreground backdrop-blur-2xl sm:max-w-lg max-h-[92vh] overflow-y-auto shadow-panel">
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Header */}
-          <div className="flex items-center gap-2 border-b border-white/5 pb-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-[#E5A962] to-[#E07A5F] text-[#0d0d12]">
+          <div className="flex items-center gap-2 border-b border-border/60 pb-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-[#E5A962] to-[#E07A5F] text-white">
               <Sparkles className="h-5 w-5" />
             </div>
             <div>
@@ -209,8 +209,8 @@ export function NewPostSheet({
                   onClick={() => setCategory(cat)}
                   className={`rounded-xl px-3 py-1.5 text-xs font-semibold transition-all ${
                     category === cat
-                      ? "bg-gradient-to-r from-[#E5A962] to-[#E07A5F] text-[#0d0d12] shadow-sm"
-                      : "border border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+                      ? "bg-gradient-to-r from-[#E5A962] to-[#E07A5F] text-white shadow-sm"
+                      : "border border-border/70 bg-card/80 text-muted-foreground hover:bg-muted hover:text-foreground"
                   }`}
                 >
                   {cat}
@@ -228,11 +228,11 @@ export function NewPostSheet({
               <select
                 value={selectedGoalId}
                 onChange={(e) => setSelectedGoalId(e.target.value)}
-                className="w-full rounded-xl border border-white/10 bg-[#121118] p-2.5 text-xs text-foreground focus:border-accent focus:outline-none"
+                className="w-full rounded-xl border border-border/70 bg-background/60 p-2.5 text-xs text-foreground focus:border-accent focus:outline-none"
               >
-                <option value="">None (Independent Milestone)</option>
+                <option value="" className="bg-card text-foreground">None (Independent Milestone)</option>
                 {activeGoals.map((g) => (
-                  <option key={g._id} value={g._id}>
+                  <option key={g._id} value={g._id} className="bg-card text-foreground">
                     {g.title} ({g.currentCount || 0}/{g.targetCount || "?"} {g.unit || ""})
                   </option>
                 ))}
@@ -243,7 +243,7 @@ export function NewPostSheet({
           {/* Steppers: Count Done & Minutes Spent */}
           <div className="grid grid-cols-2 gap-3">
             {/* Count Done */}
-            <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-3">
+            <div className="rounded-2xl border border-border/60 bg-background/50 p-3">
               <span className="text-[10px] uppercase font-semibold text-muted-foreground">
                 {selectedGoal?.unit ? `Count (${selectedGoal.unit})` : "Count Done"}
               </span>
@@ -251,7 +251,7 @@ export function NewPostSheet({
                 <button
                   type="button"
                   onClick={() => setCountAdded((c) => Math.max(1, c - 1))}
-                  className="flex h-7 w-7 items-center justify-center rounded-full bg-white/5 text-muted-foreground hover:text-foreground active:scale-95"
+                  className="flex h-7 w-7 items-center justify-center rounded-full bg-muted text-muted-foreground hover:text-foreground active:scale-95"
                 >
                   <Minus className="h-3.5 w-3.5" />
                 </button>
@@ -261,7 +261,7 @@ export function NewPostSheet({
                 <button
                   type="button"
                   onClick={() => setCountAdded((c) => c + 1)}
-                  className="flex h-7 w-7 items-center justify-center rounded-full bg-white/5 text-muted-foreground hover:text-foreground active:scale-95"
+                  className="flex h-7 w-7 items-center justify-center rounded-full bg-muted text-muted-foreground hover:text-foreground active:scale-95"
                 >
                   <Plus className="h-3.5 w-3.5" />
                 </button>
@@ -269,7 +269,7 @@ export function NewPostSheet({
             </div>
 
             {/* Time Spent */}
-            <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-3">
+            <div className="rounded-2xl border border-border/60 bg-background/50 p-3">
               <span className="text-[10px] uppercase font-semibold text-muted-foreground">
                 Time Spent (Mins)
               </span>
@@ -277,7 +277,7 @@ export function NewPostSheet({
                 <button
                   type="button"
                   onClick={() => setMinutes((m) => Math.max(5, m - 15))}
-                  className="flex h-7 w-7 items-center justify-center rounded-full bg-white/5 text-muted-foreground hover:text-foreground active:scale-95"
+                  className="flex h-7 w-7 items-center justify-center rounded-full bg-muted text-muted-foreground hover:text-foreground active:scale-95"
                 >
                   <Minus className="h-3.5 w-3.5" />
                 </button>
@@ -287,7 +287,7 @@ export function NewPostSheet({
                 <button
                   type="button"
                   onClick={() => setMinutes((m) => m + 15)}
-                  className="flex h-7 w-7 items-center justify-center rounded-full bg-white/5 text-muted-foreground hover:text-foreground active:scale-95"
+                  className="flex h-7 w-7 items-center justify-center rounded-full bg-muted text-muted-foreground hover:text-foreground active:scale-95"
                 >
                   <Plus className="h-3.5 w-3.5" />
                 </button>
@@ -306,7 +306,7 @@ export function NewPostSheet({
               onChange={(e) => setBody(e.target.value)}
               placeholder="e.g. Finished chapter 2 of physics. Solved all practice exercises..."
               rows={3}
-              className="w-full rounded-2xl border border-white/10 bg-white/5 p-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-accent focus:outline-none"
+              className="w-full rounded-2xl border border-border/70 bg-background/60 p-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-accent focus:outline-none"
             />
           </div>
 
@@ -322,7 +322,7 @@ export function NewPostSheet({
 
             {/* Image Preview */}
             {selectedImage && (
-              <div className="relative overflow-hidden rounded-2xl border border-white/10 max-h-40">
+              <div className="relative overflow-hidden rounded-2xl border border-border/70 max-h-40">
                 <img src={selectedImage} alt="Attachment" className="h-40 w-full object-cover" />
                 <button
                   type="button"
@@ -344,7 +344,7 @@ export function NewPostSheet({
                 <button
                   type="button"
                   onClick={() => setVoiceUrl(null)}
-                  className="absolute top-2 right-2 rounded-full bg-white/10 p-1 text-muted-foreground hover:text-foreground"
+                  className="absolute top-2 right-2 rounded-full bg-muted p-1 text-muted-foreground hover:text-foreground"
                 >
                   <X className="h-3.5 w-3.5" />
                 </button>
@@ -357,7 +357,7 @@ export function NewPostSheet({
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-white/10"
+                  className="flex items-center gap-1.5 rounded-xl border border-border/70 bg-background/60 px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-card"
                 >
                   <ImageIcon className="h-3.5 w-3.5" />
                   <span>Attach Photo</span>
@@ -406,14 +406,14 @@ export function NewPostSheet({
             onClick={() => setStruggled((s) => !s)}
             className={`flex cursor-pointer items-center justify-between rounded-2xl border p-3 transition-colors ${
               struggled
-                ? "border-amber-500/40 bg-amber-500/10"
-                : "border-white/5 bg-white/[0.02] hover:bg-white/5"
+                ? "border-accent/40 bg-accent/10"
+                : "border-border/60 bg-background/50 hover:bg-card"
             }`}
           >
             <div className="flex items-center gap-2.5">
               <div
                 className={`flex h-8 w-8 items-center justify-center rounded-xl text-sm ${
-                  struggled ? "bg-amber-500/20 text-amber-300" : "bg-white/5 text-muted-foreground"
+                  struggled ? "bg-accent/20 text-accent font-bold" : "bg-muted text-muted-foreground"
                 }`}
               >
                 💪
@@ -427,11 +427,11 @@ export function NewPostSheet({
             </div>
             <div
               className={`h-5 w-9 rounded-full transition-colors relative ${
-                struggled ? "bg-amber-400" : "bg-white/20"
+                struggled ? "bg-accent" : "bg-muted"
               }`}
             >
               <div
-                className={`absolute top-0.5 h-4 w-4 rounded-full bg-[#0d0d12] transition-transform ${
+                className={`absolute top-0.5 h-4 w-4 rounded-full bg-card shadow-xs transition-transform ${
                   struggled ? "translate-x-4" : "translate-x-0.5"
                 }`}
               />
@@ -442,7 +442,7 @@ export function NewPostSheet({
           <button
             type="submit"
             disabled={!body.trim() || isSubmitting}
-            className="w-full rounded-2xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] py-3 text-sm font-semibold text-[#0d0d12] shadow-lg shadow-accent/25 transition-transform active:scale-98 disabled:opacity-50"
+            className="w-full rounded-2xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] py-3 text-sm font-semibold text-white shadow-lg shadow-accent/25 transition-transform active:scale-98 disabled:opacity-50"
           >
             {isSubmitting ? (
               <span className="flex items-center justify-center gap-2">

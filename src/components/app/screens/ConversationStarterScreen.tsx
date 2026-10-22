@@ -70,7 +70,7 @@ export function ConversationStarterScreen() {
   return (
     <div className="space-y-4 pb-24 text-foreground">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/5 pb-3">
+      <div className="flex items-center justify-between border-b border-border/60 pb-3">
         <div className="flex items-center gap-2">
           <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-accent/20 text-accent">
             <MessageSquare className="h-4 w-4" />
@@ -96,7 +96,7 @@ export function ConversationStarterScreen() {
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="relative overflow-hidden rounded-3xl border border-accent/30 bg-gradient-to-b from-[#E5A962]/15 via-[#181622] to-[#121118] p-5 shadow-xl backdrop-blur-2xl"
+            className="relative overflow-hidden rounded-3xl border border-border/80 bg-gradient-to-b from-card via-card to-secondary/30 p-5 shadow-panel backdrop-blur-2xl"
           >
             <div className="flex items-center justify-between text-[11px] font-mono text-accent/80 mb-2">
               <span className="flex items-center gap-1.5">
@@ -110,7 +110,7 @@ export function ConversationStarterScreen() {
               "{data.question}"
             </h3>
 
-            <div className="mt-4 flex items-center gap-2 border-t border-white/5 pt-3 text-[11px]">
+            <div className="mt-4 flex items-center gap-2 border-t border-border/60 pt-3 text-[11px]">
               {data.bothAnswered ? (
                 <div className="flex items-center gap-1.5 text-emerald-400 font-semibold">
                   <Unlock className="h-3.5 w-3.5" />
@@ -139,10 +139,10 @@ export function ConversationStarterScreen() {
               className="space-y-3"
             >
               {/* Partner Answer */}
-              <div className="rounded-2xl border border-accent/40 bg-[#1a1726]/90 p-4 shadow-lg backdrop-blur-xl">
+              <div className="rounded-2xl border border-accent/40 bg-card/95 p-4 shadow-panel backdrop-blur-xl">
                 <div className="flex items-center justify-between text-xs font-semibold text-accent mb-1.5">
                   <span>{data.partnerName}'s Answer 🤍</span>
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
                 </div>
                 <p className="font-serif text-sm leading-relaxed text-foreground italic">
                   "{data.partnerAnswer}"
@@ -150,10 +150,10 @@ export function ConversationStarterScreen() {
               </div>
 
               {/* My Answer */}
-              <div className="rounded-2xl border border-white/10 bg-[#16161f]/90 p-4 backdrop-blur-xl">
+              <div className="rounded-2xl border border-border/70 bg-card/90 p-4 shadow-panel backdrop-blur-xl">
                 <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground mb-1.5">
                   <span>Your Answer</span>
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
                 </div>
                 <p className="font-serif text-sm leading-relaxed text-foreground italic">
                   "{data.myAnswer}"
@@ -163,7 +163,7 @@ export function ConversationStarterScreen() {
           ) : data.myAnswer ? (
             /* User has answered, waiting for partner */
             <div className="space-y-3">
-              <div className="rounded-2xl border border-white/10 bg-[#16161f]/90 p-4 backdrop-blur-xl">
+              <div className="rounded-2xl border border-border/70 bg-card/90 p-4 shadow-panel backdrop-blur-xl">
                 <div className="flex items-center justify-between text-xs font-semibold text-accent mb-1.5">
                   <span>Your Answer (Saved)</span>
                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
@@ -188,7 +188,7 @@ export function ConversationStarterScreen() {
           ) : (
             /* User has not yet answered */
             <form onSubmit={handleSubmit} className="space-y-3">
-              <div className="rounded-2xl border border-white/10 bg-[#16161f]/90 p-4 backdrop-blur-xl space-y-2">
+              <div className="rounded-2xl border border-border/70 bg-card/90 p-4 shadow-panel space-y-2">
                 <label className="text-xs font-semibold text-foreground">
                   Your Answer
                 </label>
@@ -198,14 +198,14 @@ export function ConversationStarterScreen() {
                   onChange={(e) => setAnswer(e.target.value)}
                   rows={4}
                   required
-                  className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none resize-none leading-relaxed"
+                  className="w-full rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none resize-none leading-relaxed"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={submitMutation.isPending}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] py-2.5 text-xs font-semibold text-[#0d0d12] shadow-sm shadow-accent/20 transition-all hover:opacity-95 active:scale-95 disabled:opacity-50"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] py-2.5 text-xs font-semibold text-white shadow-sm shadow-accent/20 transition-all hover:opacity-95 active:scale-95 disabled:opacity-50"
               >
                 <Send className="h-3.5 w-3.5" />
                 <span>{submitMutation.isPending ? "Submitting..." : "Submit Private Answer"}</span>

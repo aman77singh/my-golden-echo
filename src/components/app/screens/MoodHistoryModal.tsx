@@ -86,10 +86,10 @@ export function MoodHistoryModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="border-border/60 bg-[#16161f]/95 text-foreground backdrop-blur-2xl sm:max-w-md max-h-[92vh] overflow-y-auto">
+      <DialogContent className="border-border/70 bg-card/95 text-foreground backdrop-blur-2xl sm:max-w-md max-h-[92vh] overflow-y-auto shadow-panel">
         <div className="space-y-4">
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-white/5 pb-3">
+          <div className="flex items-center justify-between border-b border-border/60 pb-3">
             <div className="flex items-center gap-2.5">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent/15 text-accent border border-accent/20">
                 <CalendarIcon className="h-5 w-5" />
@@ -122,7 +122,7 @@ export function MoodHistoryModal({
             <button
               type="button"
               onClick={prevMonth}
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground active:scale-95 transition-all"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-border/70 bg-background/60 text-muted-foreground hover:bg-card hover:text-foreground active:scale-95 transition-all"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -132,14 +132,14 @@ export function MoodHistoryModal({
             <button
               type="button"
               onClick={nextMonth}
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground active:scale-95 transition-all"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-border/70 bg-background/60 text-muted-foreground hover:bg-card hover:text-foreground active:scale-95 transition-all"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
           </div>
 
           {/* Calendar Table */}
-          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-3">
+          <div className="rounded-2xl border border-border/60 bg-background/50 p-3">
             {/* Day of Week Headers */}
             <div className="grid grid-cols-7 text-center mb-2">
               {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => (
@@ -185,8 +185,8 @@ export function MoodHistoryModal({
                         isSelected
                           ? "bg-accent/25 border border-accent font-bold text-foreground shadow-sm"
                           : isToday
-                          ? "border border-white/20 bg-white/5 text-accent"
-                          : "text-foreground/80 hover:bg-white/5"
+                          ? "border border-border/80 bg-card text-accent font-semibold"
+                          : "text-foreground/80 hover:bg-card/60"
                       }`}
                     >
                       <span className="text-xs leading-none">{format(day, "d")}</span>
@@ -214,8 +214,8 @@ export function MoodHistoryModal({
           </div>
 
           {/* Selected Date Details */}
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-            <div className="flex items-center justify-between border-b border-white/5 pb-2.5">
+          <div className="rounded-2xl border border-border/70 bg-card/90 shadow-panel p-4">
+            <div className="flex items-center justify-between border-b border-border/60 pb-2.5">
               <span className="font-display text-xs font-semibold text-foreground">
                 {format(selectedDate, "EEEE, MMMM d, yyyy")}
               </span>

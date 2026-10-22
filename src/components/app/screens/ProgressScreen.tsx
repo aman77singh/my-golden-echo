@@ -339,14 +339,14 @@ export function ProgressScreen() {
             type="button"
             onClick={() => setArchiveOpen(true)}
             title="View Archive Calendar"
-            className="flex h-9 w-9 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-muted-foreground transition-all hover:bg-white/10 hover:text-amber-300 active:scale-95"
+            className="flex h-9 w-9 items-center justify-center rounded-2xl border border-border/70 bg-card/80 text-muted-foreground transition-all hover:bg-card hover:text-accent active:scale-95 shadow-xs"
           >
             <Calendar className="h-4 w-4" />
           </button>
           <button
             type="button"
             onClick={() => setNewPostOpen(true)}
-            className="inline-flex items-center gap-1.5 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-500 to-rose-400 px-3.5 py-2 text-xs font-bold text-[#0e0d15] shadow-lg shadow-amber-500/20 transition-all hover:scale-[1.02] active:scale-95"
+            className="inline-flex items-center gap-1.5 rounded-2xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] px-3.5 py-2 text-xs font-bold text-white shadow-sm shadow-accent/20 transition-all hover:scale-[1.02] active:scale-95"
           >
             <Plus className="h-4 w-4" />
             <span>Post Today</span>
@@ -355,13 +355,13 @@ export function ProgressScreen() {
       </div>
 
       {/* View Switcher Tabs (Feed vs Goals) */}
-      <div className="grid grid-cols-2 rounded-2xl border border-white/10 bg-white/5 p-1 text-xs font-medium">
+      <div className="grid grid-cols-2 rounded-2xl border border-border/70 bg-card/80 p-1 text-xs font-medium">
         <button
           type="button"
           onClick={() => setActiveTab("feed")}
           className={`flex items-center justify-center gap-2 rounded-xl py-2 transition-all ${
             activeTab === "feed"
-              ? "bg-amber-400/20 font-bold text-amber-200 shadow-sm"
+              ? "bg-accent/15 font-bold text-accent shadow-xs"
               : "text-muted-foreground hover:text-foreground"
           }`}
         >
@@ -373,7 +373,7 @@ export function ProgressScreen() {
           onClick={() => setActiveTab("goals")}
           className={`flex items-center justify-center gap-2 rounded-xl py-2 transition-all ${
             activeTab === "goals"
-              ? "bg-amber-400/20 font-bold text-amber-200 shadow-sm"
+              ? "bg-accent/15 font-bold text-accent shadow-xs"
               : "text-muted-foreground hover:text-foreground"
           }`}
         >
@@ -389,8 +389,8 @@ export function ProgressScreen() {
           animate={{ opacity: 1, y: 0 }}
           className={`relative overflow-hidden rounded-3xl border ${
             isSunday
-              ? "border-amber-400/40 bg-gradient-to-br from-amber-500/20 via-[#1e1c2b] to-rose-500/10 shadow-xl shadow-amber-500/10"
-              : "border-white/10 bg-[#161522]/90"
+              ? "border-amber-400/50 bg-gradient-to-br from-amber-500/20 via-card to-rose-500/10 shadow-panel"
+              : "border-border/70 bg-card/90 shadow-panel"
           } p-4 text-foreground`}
         >
           <div className="flex items-center justify-between">
@@ -398,8 +398,8 @@ export function ProgressScreen() {
               <div
                 className={`flex h-9 w-9 items-center justify-center rounded-2xl ${
                   isSunday
-                    ? "bg-amber-400 text-[#0e0d15] shadow-md shadow-amber-400/30"
-                    : "bg-white/10 text-amber-300"
+                    ? "bg-amber-400 text-white shadow-md shadow-amber-400/30"
+                    : "bg-muted text-amber-600"
                 }`}
               >
                 <Sparkles className="h-4 w-4 fill-current" />
@@ -432,17 +432,17 @@ export function ProgressScreen() {
           </div>
 
           {showWeeklyCard && (
-            <div className="mt-4 grid grid-cols-3 gap-2 border-t border-white/10 pt-3 text-center">
-              <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-2.5">
+            <div className="mt-4 grid grid-cols-3 gap-2 border-t border-border/60 pt-3 text-center">
+              <div className="rounded-2xl border border-border/60 bg-background/50 p-2.5">
                 <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
                   Days Active
                 </span>
-                <p className="font-serif text-xl font-bold text-amber-300">
+                <p className="font-serif text-xl font-bold text-accent">
                   {weeklySummary.daysPosted}{" "}
                   <span className="text-xs font-normal text-muted-foreground">/ 7</span>
                 </p>
               </div>
-              <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-2.5">
+              <div className="rounded-2xl border border-border/60 bg-background/50 p-2.5">
                 <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
                   Count Done
                 </span>
@@ -450,11 +450,11 @@ export function ProgressScreen() {
                   +{weeklySummary.totalCount}
                 </p>
               </div>
-              <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-2.5">
+              <div className="rounded-2xl border border-border/60 bg-background/50 p-2.5">
                 <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
                   Cheers Given
                 </span>
-                <p className="font-serif text-xl font-bold text-rose-300">
+                <p className="font-serif text-xl font-bold text-rose-600">
                   {weeklySummary.cheersReceived} ❤️
                 </p>
               </div>
@@ -502,7 +502,7 @@ export function ProgressScreen() {
                   layout
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="rounded-3xl border border-white/10 bg-[#161522]/90 p-5 shadow-lg backdrop-blur-md"
+                  className="rounded-3xl border border-border/70 bg-card/90 p-5 shadow-panel backdrop-blur-md"
                 >
                   {/* Card Header */}
                   <div className="flex items-center justify-between">
@@ -523,11 +523,11 @@ export function ProgressScreen() {
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-[10px] font-medium text-foreground/80">
+                      <span className="rounded-full border border-border/70 bg-card/80 px-2.5 py-0.5 text-[10px] font-medium text-foreground/80">
                         {post.category}
                       </span>
                       {post.struggled && (
-                        <span className="inline-flex items-center gap-1 rounded-full border border-amber-400/30 bg-amber-400/10 px-2.5 py-0.5 text-[10px] font-semibold text-amber-300">
+                        <span className="inline-flex items-center gap-1 rounded-full border border-accent/30 bg-accent/10 px-2.5 py-0.5 text-[10px] font-semibold text-accent">
                           <Flame className="h-3 w-3 fill-current" />
                           Struggled today
                         </span>
@@ -542,7 +542,7 @@ export function ProgressScreen() {
 
                   {/* Optional Media Photo */}
                   {post.mediaUrls && post.mediaUrls.length > 0 && (
-                    <div className="mt-3 overflow-hidden rounded-2xl border border-white/10 bg-black/40">
+                    <div className="mt-3 overflow-hidden rounded-2xl border border-border/70 bg-black/5">
                       <img
                         src={post.mediaUrls[0]}
                         alt="Progress attachment"
@@ -562,19 +562,19 @@ export function ProgressScreen() {
                   {/* Metrics Row (Goal, Count, Minutes) */}
                   <div className="mt-3.5 flex flex-wrap items-center gap-2 text-xs">
                     {post.countAdded !== undefined && post.countAdded > 0 && (
-                      <span className="inline-flex items-center gap-1 rounded-xl border border-amber-400/20 bg-amber-400/10 px-2.5 py-1 font-semibold text-amber-300">
+                      <span className="inline-flex items-center gap-1 rounded-xl border border-accent/25 bg-accent/15 px-2.5 py-1 font-semibold text-accent">
                         <TrendingUp className="h-3 w-3" />+{post.countAdded}{" "}
                         {attachedGoal?.unit || "done"}
                       </span>
                     )}
                     {post.minutes !== undefined && post.minutes > 0 && (
-                      <span className="inline-flex items-center gap-1 rounded-xl border border-white/10 bg-white/5 px-2.5 py-1 text-muted-foreground">
+                      <span className="inline-flex items-center gap-1 rounded-xl border border-border/70 bg-background/60 px-2.5 py-1 text-muted-foreground">
                         <Clock className="h-3 w-3" />
                         {post.minutes} mins
                       </span>
                     )}
                     {attachedGoal && (
-                      <span className="inline-flex items-center gap-1 rounded-xl border border-rose-400/20 bg-rose-400/10 px-2.5 py-1 text-rose-300">
+                      <span className="inline-flex items-center gap-1 rounded-xl border border-rose-400/30 bg-rose-500/10 px-2.5 py-1 text-rose-700">
                         <Target className="h-3 w-3" />
                         {attachedGoal.title}
                       </span>
@@ -582,7 +582,7 @@ export function ProgressScreen() {
                   </div>
 
                   {/* Reaction Bar */}
-                  <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-3">
+                  <div className="mt-4 flex items-center justify-between border-t border-border/60 pt-3">
                     <div className="flex items-center gap-1.5 flex-wrap">
                       {REACTION_EMOJIS.map((emoji) => {
                         const count = post.reactions.filter((r) => r.emoji === emoji).length;
@@ -599,8 +599,8 @@ export function ProgressScreen() {
                             }
                             className={`flex h-8 items-center gap-1.5 rounded-full border px-2.5 text-xs transition-all active:scale-95 ${
                               hasReacted
-                                ? "border-amber-400 bg-amber-400/20 font-bold text-amber-200 shadow-sm"
-                                : "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+                                ? "border-accent bg-accent/20 font-bold text-accent shadow-sm"
+                                : "border-border/70 bg-card/80 text-muted-foreground hover:bg-card hover:text-foreground"
                             }`}
                           >
                             <span>{emoji}</span>
@@ -747,7 +747,7 @@ export function ProgressScreen() {
                               <button
                                 type="button"
                                 onClick={cancelVoiceReply}
-                                className="rounded-xl border border-white/10 bg-white/5 px-2.5 py-1 text-muted-foreground hover:bg-white/10"
+                                className="rounded-xl border border-border/70 bg-background/60 px-2.5 py-1 text-muted-foreground hover:bg-card"
                               >
                                 Cancel
                               </button>
@@ -785,14 +785,14 @@ export function ProgressScreen() {
                                 }
                               }}
                               placeholder="Write a heartfelt reply..."
-                              className="flex-1 rounded-2xl border border-white/10 bg-white/5 px-3.5 py-2 text-xs text-foreground placeholder:text-muted-foreground/50 focus:border-amber-400/50 focus:outline-none"
+                              className="flex-1 rounded-2xl border border-border/70 bg-background/60 px-3.5 py-2 text-xs text-foreground placeholder:text-muted-foreground/50 focus:border-accent focus:outline-none"
                             />
 
                             <button
                               type="button"
                               onClick={() => startVoiceReply(post._id)}
                               title="Send voice cheer"
-                              className="flex h-8 w-8 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-muted-foreground hover:text-amber-300 hover:bg-white/10 active:scale-95"
+                              className="flex h-8 w-8 items-center justify-center rounded-xl border border-border/70 bg-background/60 text-muted-foreground hover:text-accent hover:bg-card active:scale-95"
                             >
                               <Mic className="h-3.5 w-3.5" />
                             </button>
@@ -911,19 +911,19 @@ export function ProgressScreen() {
                   layout
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`rounded-3xl border p-5 shadow-lg backdrop-blur-md ${
+                  className={`rounded-3xl border p-5 shadow-panel backdrop-blur-md ${
                     isCompleted
-                      ? "border-amber-400/40 bg-gradient-to-br from-amber-500/15 via-[#181624] to-rose-500/10 shadow-amber-500/10"
-                      : "border-white/10 bg-[#161522]/90"
+                      ? "border-amber-400/50 bg-gradient-to-br from-amber-500/15 via-card to-rose-500/10 shadow-panel"
+                      : "border-border/70 bg-card/90"
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="rounded-lg border border-white/10 bg-white/5 px-2.5 py-0.5 text-[10px] font-semibold text-foreground/80">
+                      <span className="rounded-lg border border-border/70 bg-card/80 px-2.5 py-0.5 text-[10px] font-semibold text-foreground/80">
                         {goal.category}
                       </span>
                       {isCompleted && (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-amber-400/20 px-2.5 py-0.5 text-[10px] font-bold text-amber-300 border border-amber-400/40">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-accent/20 px-2.5 py-0.5 text-[10px] font-bold text-accent border border-accent/40">
                           <PartyPopper className="h-3 w-3" />
                           100% Completed
                         </span>
@@ -934,7 +934,7 @@ export function ProgressScreen() {
                       <button
                         type="button"
                         onClick={() => setCelebrateGoal(goal)}
-                        className="flex items-center gap-1 rounded-xl bg-amber-400/20 px-2.5 py-1 text-xs font-bold text-amber-300 border border-amber-400/40 hover:bg-amber-400/30"
+                        className="flex items-center gap-1 rounded-xl bg-accent/20 px-2.5 py-1 text-xs font-bold text-accent border border-accent/40 hover:bg-accent/30"
                       >
                         <Sparkles className="h-3 w-3 fill-current" />
                         <span>Celebrate!</span>
@@ -943,7 +943,7 @@ export function ProgressScreen() {
                       <button
                         type="button"
                         onClick={() => setNewPostOpen(true)}
-                        className="text-xs font-semibold text-amber-300 hover:underline"
+                        className="text-xs font-semibold text-accent hover:underline"
                       >
                         + Log progress
                       </button>
@@ -957,24 +957,24 @@ export function ProgressScreen() {
                   {/* Progress Bar & Numerical Target */}
                   <div className="mt-4 space-y-2">
                     <div className="flex items-center justify-between text-xs font-semibold">
-                      <span className="text-amber-300 font-mono text-sm">
+                      <span className="text-accent font-mono text-sm">
                         {current} / {target} {goal.unit || "units"}
                       </span>
                       <span className="text-muted-foreground">{percent}%</span>
                     </div>
 
-                    <div className="h-3 w-full overflow-hidden rounded-full bg-white/10 p-0.5">
+                    <div className="h-3 w-full overflow-hidden rounded-full bg-muted/60 p-0.5">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${percent}%` }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
-                        className="h-full rounded-full bg-gradient-to-r from-amber-400 via-amber-500 to-rose-400 shadow-[0_0_12px_rgba(251,191,36,0.5)]"
+                        className="h-full rounded-full bg-gradient-to-r from-[#E5A962] to-[#E07A5F] shadow-sm"
                       />
                     </div>
                   </div>
 
                   {/* Chart of Posts Over Time (Histogram) */}
-                  <div className="mt-4 border-t border-white/10 pt-3">
+                  <div className="mt-4 border-t border-border/60 pt-3">
                     <div className="flex items-center justify-between text-[11px] text-muted-foreground mb-2">
                       <span className="flex items-center gap-1">
                         <BarChart3 className="h-3 w-3 text-amber-400" />

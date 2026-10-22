@@ -287,13 +287,13 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
   return (
     <div className="space-y-4 pb-24 text-foreground">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/5 pb-3">
+      <div className="flex items-center justify-between border-b border-border/60 pb-3">
         <div className="flex items-center gap-2">
           {onBack && (
             <button
               type="button"
               onClick={onBack}
-              className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/5 text-muted-foreground hover:text-foreground"
+              className="flex h-8 w-8 items-center justify-center rounded-xl bg-card border border-border/70 text-muted-foreground hover:text-foreground"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -313,10 +313,10 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
       </div>
 
       {/* User Profile Card */}
-      <div className="rounded-2xl border border-white/10 bg-[#16161f]/90 p-4 backdrop-blur-xl">
+      <div className="rounded-2xl border border-border/70 bg-card/90 p-4 shadow-panel backdrop-blur-xl">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#E5A962] to-[#E07A5F] text-[#0d0d12] font-bold text-base shadow-sm">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#E5A962] to-[#E07A5F] text-white font-bold text-base shadow-sm">
               {currentUser?.name?.[0] || "U"}
             </div>
             <div>
@@ -337,7 +337,7 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
       </div>
 
       {/* Security & App Lock (WebAuthn Biometrics & PIN) */}
-      <div className="rounded-2xl border border-white/10 bg-[#16161f]/90 p-4 backdrop-blur-xl space-y-3">
+      <div className="rounded-2xl border border-border/70 bg-card/90 p-4 shadow-panel backdrop-blur-xl space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Lock className="h-4 w-4 text-[#E5A962]" />
@@ -355,14 +355,14 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
-            className="pt-2 border-t border-white/5 space-y-2"
+            className="pt-2 border-t border-border/60 space-y-2"
           >
             <div className="flex items-center justify-between">
               <span className="text-xs text-foreground">4-Digit Passcode</span>
               <button
                 type="button"
                 onClick={() => setPinModalOpen(true)}
-                className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] font-medium text-foreground hover:bg-white/10"
+                className="flex items-center gap-1.5 rounded-lg border border-border/70 bg-card/80 px-2.5 py-1 text-[11px] font-medium text-foreground hover:bg-card"
               >
                 <Key className="h-3 w-3 text-accent" />
                 <span>{getStoredPin() ? "Change PIN" : "Set PIN"}</span>
@@ -377,7 +377,7 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
                   onClick={handleSetupBiometrics}
                   className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-[11px] font-medium transition-colors ${
                     biometricActive
-                      ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+                      ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-700"
                       : "border-accent/30 bg-accent/10 text-accent hover:bg-accent/20"
                   }`}
                 >
@@ -391,7 +391,7 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
       </div>
 
       {/* Privacy Toggles */}
-      <div className="rounded-2xl border border-white/10 bg-[#16161f]/90 p-4 backdrop-blur-xl space-y-3">
+      <div className="rounded-2xl border border-border/70 bg-card/90 p-4 shadow-panel backdrop-blur-xl space-y-3">
         <div className="flex items-center gap-2">
           <ShieldCheck className="h-4 w-4 text-[#E07A5F]" />
           <div>
@@ -402,7 +402,7 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
           </div>
         </div>
 
-        <div className="flex items-center justify-between pt-1 border-t border-white/5">
+        <div className="flex items-center justify-between pt-1 border-t border-border/60">
           <span className="text-xs text-foreground">Share Cycle Tracker</span>
           <Switch
             checked={userProfile?.shareCycle ?? false}
@@ -412,7 +412,7 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
       </div>
 
       {/* Web Push Status */}
-      <div className="rounded-2xl border border-white/10 bg-[#16161f]/90 p-4 backdrop-blur-xl">
+      <div className="rounded-2xl border border-border/70 bg-card/90 p-4 shadow-panel backdrop-blur-xl">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div
@@ -446,8 +446,8 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
             disabled={pushLoading}
             className={`rounded-xl px-3 py-1.5 text-xs font-semibold transition-all ${
               isPushActive
-                ? "border border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10"
-                : "bg-gradient-to-r from-[#E5A962] to-[#E07A5F] text-[#0d0d12] shadow-sm shadow-accent/20"
+                ? "border border-border/70 bg-card/80 text-muted-foreground hover:bg-card"
+                : "bg-gradient-to-r from-[#E5A962] to-[#E07A5F] text-white shadow-sm shadow-accent/20"
             }`}
           >
             {pushLoading ? "Updating..." : isPushActive ? "Disable" : "Enable"}
@@ -455,7 +455,7 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
         </div>
 
         {isPushActive && (
-          <div className="mt-3 pt-3 border-t border-white/5 flex justify-end">
+          <div className="mt-3 pt-3 border-t border-border/60 flex justify-end">
             <button
               type="button"
               onClick={handleTestPush}
@@ -475,7 +475,7 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
       </div>
 
       {/* Notification Categories */}
-      <div className="rounded-2xl border border-white/10 bg-[#16161f]/90 p-4 backdrop-blur-xl space-y-3">
+      <div className="rounded-2xl border border-border/70 bg-card/90 p-4 shadow-panel backdrop-blur-xl space-y-3">
         <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
           Notification Types
         </h3>
@@ -539,7 +539,7 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
       </div>
 
       {/* Quiet Hours */}
-      <div className="rounded-2xl border border-white/10 bg-[#16161f]/90 p-4 backdrop-blur-xl space-y-3">
+      <div className="rounded-2xl border border-border/70 bg-card/90 p-4 shadow-panel backdrop-blur-xl space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Moon className="h-4 w-4 text-[#E5A962]" />
@@ -568,7 +568,7 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
                 type="time"
                 value={prefs?.quietHours?.start || "22:00"}
                 onChange={(e) => updateQuietHours("start", e.target.value)}
-                className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none"
+                className="mt-1 w-full rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none"
               />
             </div>
             <div>
@@ -577,7 +577,7 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
                 type="time"
                 value={prefs?.quietHours?.end || "08:00"}
                 onChange={(e) => updateQuietHours("end", e.target.value)}
-                className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none"
+                className="mt-1 w-full rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none"
               />
             </div>
           </motion.div>
@@ -585,7 +585,7 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
       </div>
 
       {/* Scheduled Reminders & Timezone */}
-      <div className="rounded-2xl border border-white/10 bg-[#16161f]/90 p-4 backdrop-blur-xl space-y-3">
+      <div className="rounded-2xl border border-border/70 bg-card/90 p-4 shadow-panel backdrop-blur-xl space-y-3">
         <div className="flex items-center gap-2">
           <Clock className="h-4 w-4 text-[#E07A5F]" />
           <div>
@@ -601,17 +601,17 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
           <select
             value={prefs?.reminders?.eveningProgressHour ?? 20}
             onChange={(e) => updateReminders("eveningProgressHour", Number(e.target.value))}
-            className="rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-foreground focus:border-accent focus:outline-none"
+            className="rounded-xl border border-border/70 bg-background/60 px-3 py-1.5 text-xs text-foreground focus:border-accent focus:outline-none"
           >
             {Array.from({ length: 24 }).map((_, i) => (
-              <option key={i} value={i} className="bg-[#16161f] text-foreground">
+              <option key={i} value={i} className="bg-card text-foreground">
                 {i === 0 ? "12:00 AM" : i < 12 ? `${i}:00 AM` : i === 12 ? "12:00 PM" : `${i - 12}:00 PM`}
               </option>
             ))}
           </select>
         </div>
 
-        <div className="flex items-center justify-between pt-2 border-t border-white/5">
+        <div className="flex items-center justify-between pt-2 border-t border-border/60">
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <Globe className="h-3.5 w-3.5" />
             <span>Timezone</span>
@@ -623,7 +623,7 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
       </div>
 
       {/* Data Export & Account Deletion */}
-      <div className="rounded-2xl border border-white/10 bg-[#16161f]/90 p-4 backdrop-blur-xl space-y-3">
+      <div className="rounded-2xl border border-border/70 bg-card/90 p-4 shadow-panel backdrop-blur-xl space-y-3">
         <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
           Data & Privacy Freedom
         </h3>
@@ -632,7 +632,7 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
           <button
             type="button"
             onClick={handleExportData}
-            className="flex w-full items-center justify-between rounded-xl border border-white/5 bg-white/[0.02] p-3 text-left transition-colors hover:border-white/15"
+            className="flex w-full items-center justify-between rounded-xl border border-border/60 bg-background/50 p-3 text-left transition-colors hover:border-border/80"
           >
             <div className="flex items-center gap-2.5">
               <Download className="h-4 w-4 text-accent" />
@@ -649,7 +649,7 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
           <button
             type="button"
             onClick={logoutUser}
-            className="flex w-full items-center justify-between rounded-xl border border-white/10 bg-white/[0.04] p-3 text-left transition-colors hover:border-accent/40 hover:bg-accent/10"
+            className="flex w-full items-center justify-between rounded-xl border border-border/70 bg-card/80 p-3 text-left transition-colors hover:border-accent/40 hover:bg-accent/10"
           >
             <div className="flex items-center gap-2.5">
               <LogOut className="h-4 w-4 text-accent" />
@@ -684,12 +684,12 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
 
       {/* PIN Setup Dialog */}
       <Dialog open={pinModalOpen} onOpenChange={setPinModalOpen}>
-        <DialogContent className="border-border/60 bg-[#16161f]/95 text-foreground backdrop-blur-2xl sm:max-w-md">
+        <DialogContent className="border-border/70 bg-card/95 text-foreground backdrop-blur-2xl sm:max-w-md shadow-panel">
           <DialogHeader>
             <DialogTitle className="font-display text-base font-bold text-foreground">
               Set 4-Digit Passcode 🔒
             </DialogTitle>
-            <DialogDescription className="text-xs text-muted-foreground">
+            <DialogDescription className="text-xs text-muted-foreground font-serif italic">
               Enter a 4-digit PIN to lock your sanctuary.
             </DialogDescription>
           </DialogHeader>
@@ -703,7 +703,7 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
               placeholder="••••"
               value={pinValue}
               onChange={(e) => setPinValue(e.target.value.replace(/\D/g, ""))}
-              className="w-full text-center tracking-[1em] text-2xl font-mono rounded-xl border border-white/10 bg-white/5 py-3 text-foreground focus:border-accent focus:outline-none"
+              className="w-full text-center tracking-[1em] text-2xl font-mono rounded-xl border border-border/70 bg-background/60 py-3 text-foreground focus:border-accent focus:outline-none"
               autoFocus
             />
 
@@ -711,14 +711,14 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
               <button
                 type="button"
                 onClick={() => setPinModalOpen(false)}
-                className="rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-white/10"
+                className="rounded-xl border border-border/70 bg-muted/40 px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-muted"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={pinValue.length !== 4}
-                className="rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] px-4 py-1.5 text-xs font-semibold text-[#0d0d12] shadow-sm shadow-accent/20 transition-all disabled:opacity-40"
+                className="rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] px-4 py-1.5 text-xs font-semibold text-white shadow-sm shadow-accent/20 transition-all disabled:opacity-40"
               >
                 Save PIN
               </button>
@@ -729,7 +729,7 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
 
       {/* Delete Account Confirmation Dialog */}
       <Dialog open={deleteModalOpen} onOpenChange={setDeleteModalOpen}>
-        <DialogContent className="border-red-500/30 bg-[#16161f]/95 text-foreground backdrop-blur-2xl sm:max-w-md">
+        <DialogContent className="border-red-500/30 bg-card/95 text-foreground backdrop-blur-2xl sm:max-w-md shadow-panel">
           <DialogHeader>
             <DialogTitle className="font-display text-base font-bold text-red-400">
               Delete Account & Records?
@@ -743,7 +743,7 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
             <button
               type="button"
               onClick={() => setDeleteModalOpen(false)}
-              className="rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-white/10"
+              className="rounded-xl border border-border/70 bg-background/60 px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-accent/10"
             >
               Cancel
             </button>

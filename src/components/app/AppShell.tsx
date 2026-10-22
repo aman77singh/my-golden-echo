@@ -72,7 +72,7 @@ export function AppShell({ children }: AppShellProps) {
 
   if (!currentUser) {
     return (
-      <div className="min-h-screen bg-[#0d0d12] text-foreground">
+      <div className="min-h-screen bg-background text-foreground">
         <PhoneAuthScreen
           onSuccess={(user) => {
             setCurrentUser(user);
@@ -84,20 +84,20 @@ export function AppShell({ children }: AppShellProps) {
   }
 
   return (
-    <div className="min-h-screen bg-[#0d0d12] text-foreground flex flex-col font-sans antialiased selection:bg-accent/30 selection:text-accent">
-      {/* Background Ambience & Film Grain */}
+    <div className="min-h-screen bg-background text-foreground flex flex-col font-sans antialiased selection:bg-accent/30 selection:text-accent">
+      {/* Background Ambience & Warm Glow */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[340px] h-[300px] bg-gradient-to-b from-[#E5A962]/10 via-[#E07A5F]/5 to-transparent blur-[80px]" />
-        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 w-[300px] h-[240px] bg-gradient-to-t from-accent/5 to-transparent blur-[70px]" />
-        <div className="absolute inset-0 opacity-[0.035] film-grain mix-blend-overlay pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[340px] h-[300px] bg-gradient-to-b from-[#E5A962]/20 via-[#E07A5F]/10 to-transparent blur-[80px]" />
+        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 w-[300px] h-[240px] bg-gradient-to-t from-accent/10 to-transparent blur-[70px]" />
+        <div className="absolute inset-0 opacity-[0.035] film-grain mix-blend-multiply pointer-events-none" />
       </div>
 
       {/* Mobile Shell Wrapper */}
       <div className="relative z-10 mx-auto flex w-full max-w-md flex-1 flex-col">
         {/* Top Header */}
-        <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-white/5 bg-[#0d0d12]/80 px-4 backdrop-blur-xl">
+        <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-border/70 bg-background/90 px-4 backdrop-blur-xl shadow-xs">
           <Link to="/app" className="flex items-center gap-2">
-            <span className="flex h-7 w-7 items-center justify-center rounded-xl bg-gradient-to-tr from-[#E5A962] to-[#E07A5F] text-[#0d0d12] shadow-sm shadow-accent/30">
+            <span className="flex h-7 w-7 items-center justify-center rounded-xl bg-gradient-to-tr from-[#E5A962] to-[#E07A5F] text-white shadow-sm shadow-accent/30">
               <Heart className="h-4 w-4 fill-current" />
             </span>
             <span className="font-display text-base font-bold tracking-tight text-foreground">
@@ -106,14 +106,14 @@ export function AppShell({ children }: AppShellProps) {
           </Link>
 
           <div className="flex items-center gap-1.5">
-            <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] font-semibold text-accent flex items-center gap-1">
+            <span className="rounded-full border border-border/80 bg-card/90 px-2.5 py-1 text-[11px] font-semibold text-accent flex items-center gap-1 shadow-xs">
               <span>{currentUser.name || (currentUser.role === "her" ? "Aditi" : "Aman")}</span>
               <span>{currentUser.role === "her" ? "💖" : "💙"}</span>
             </span>
 
             <Link
               to="/app/settings"
-              className={`flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors hover:border-accent/40 hover:bg-accent/10 hover:text-foreground active:scale-95 ${
+              className={`flex h-9 w-9 items-center justify-center rounded-full border border-border/80 bg-card/80 transition-colors hover:border-accent/40 hover:bg-accent/10 hover:text-foreground active:scale-95 shadow-xs ${
                 pathname === "/app/settings" ? "text-accent border-accent/40 bg-accent/10" : "text-muted-foreground"
               }`}
               aria-label="Notifications and Settings"
@@ -124,7 +124,7 @@ export function AppShell({ children }: AppShellProps) {
             <button
               type="button"
               onClick={() => setMoreOpen(true)}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-muted-foreground transition-colors hover:border-accent/40 hover:bg-accent/10 hover:text-foreground active:scale-95"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-border/80 bg-card/80 text-muted-foreground transition-colors hover:border-accent/40 hover:bg-accent/10 hover:text-foreground active:scale-95 shadow-xs"
               aria-label="Open More Menu"
             >
               <MoreHorizontal className="h-4 w-4" />
@@ -153,7 +153,7 @@ export function AppShell({ children }: AppShellProps) {
         {/* Bottom Tab Bar */}
         <nav
           aria-label="App Navigation"
-          className="fixed bottom-0 inset-x-0 z-40 mx-auto max-w-md border-t border-white/10 bg-[#121118]/90 px-3 py-2 backdrop-blur-2xl"
+          className="fixed bottom-0 inset-x-0 z-40 mx-auto max-w-md border-t border-border/80 bg-card/95 px-3 py-2 backdrop-blur-2xl shadow-panel"
         >
           <div className="flex items-center justify-between">
             {tabs.map((tab) => {
@@ -167,7 +167,7 @@ export function AppShell({ children }: AppShellProps) {
                   key={tab.to}
                   to={tab.to}
                   className={`group relative flex flex-1 flex-col items-center justify-center py-1 transition-all ${
-                    isActive ? "text-accent" : "text-muted-foreground hover:text-foreground"
+                    isActive ? "text-accent font-semibold" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   <div
@@ -184,7 +184,7 @@ export function AppShell({ children }: AppShellProps) {
                       />
                     )}
                   </div>
-                  <span className="mt-1 text-[10px] font-medium tracking-tight">
+                  <span className="mt-1 text-[10px] tracking-tight">
                     {tab.label}
                   </span>
                 </Link>

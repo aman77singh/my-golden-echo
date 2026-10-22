@@ -28,10 +28,10 @@ export function DoctorReportModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto border-white/10 bg-[#12111a] text-foreground p-6 sm:rounded-3xl shadow-2xl print:border-none print:bg-white print:text-black print:max-h-none print:shadow-none">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto border-border/70 bg-card/95 text-foreground backdrop-blur-2xl shadow-panel p-6 sm:rounded-3xl print:border-none print:bg-white print:text-black print:max-h-none print:shadow-none">
         {/* Modal Header & Print CTA */}
-        <div className="flex items-center justify-between border-b border-white/10 pb-4 print:hidden">
-          <div className="flex items-center gap-2 text-rose-300">
+        <div className="flex items-center justify-between border-b border-border/60 pb-4 print:hidden">
+          <div className="flex items-center gap-2 text-rose-600">
             <FileText className="h-5 w-5" />
             <DialogTitle className="font-serif text-lg font-bold text-foreground">
               Doctor Visit Cycle History Report
@@ -53,7 +53,7 @@ export function DoctorReportModal({
         {/* Printable Document Body */}
         <div className="mt-4 space-y-6 text-foreground print:text-black">
           {/* Document Header */}
-          <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-4 print:border-gray-300 print:bg-transparent">
+          <div className="rounded-2xl border border-border/70 bg-background/50 p-4 print:border-gray-300 print:bg-transparent">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-serif text-xl font-bold tracking-tight text-foreground print:text-black">
@@ -70,12 +70,12 @@ export function DoctorReportModal({
             </div>
 
             {/* Quick Metrics */}
-            <div className="mt-4 grid grid-cols-3 gap-3 border-t border-white/10 pt-3 text-center print:border-gray-200">
+            <div className="mt-4 grid grid-cols-3 gap-3 border-t border-border/60 pt-3 text-center print:border-gray-200">
               <div>
                 <span className="text-[10px] text-muted-foreground uppercase tracking-wider print:text-gray-500">
                   Avg. Cycle Length
                 </span>
-                <p className="font-serif text-lg font-bold text-rose-400 print:text-rose-700">
+                <p className="font-serif text-lg font-bold text-rose-600 print:text-rose-700">
                   {stats.avgCycleLength} Days
                 </p>
               </div>
@@ -83,7 +83,7 @@ export function DoctorReportModal({
                 <span className="text-[10px] text-muted-foreground uppercase tracking-wider print:text-gray-500">
                   Regularity (± Std Dev)
                 </span>
-                <p className="font-serif text-lg font-bold text-amber-300 print:text-amber-700">
+                <p className="font-serif text-lg font-bold text-amber-600 print:text-amber-700">
                   ±{stats.stdDev} Days
                 </p>
               </div>
@@ -101,16 +101,16 @@ export function DoctorReportModal({
           {/* Cycles Table */}
           <div>
             <h4 className="font-serif text-sm font-bold text-foreground mb-2 flex items-center gap-1.5 print:text-black">
-              <Calendar className="h-4 w-4 text-rose-400" />
+              <Calendar className="h-4 w-4 text-rose-600" />
               <span>Recorded Menstrual Cycles</span>
             </h4>
 
             {cycles.length === 0 ? (
               <p className="text-xs italic text-muted-foreground">No cycle data recorded yet.</p>
             ) : (
-              <div className="overflow-x-auto rounded-xl border border-white/10 print:border-gray-300">
+              <div className="overflow-x-auto rounded-xl border border-border/60 print:border-gray-300">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-white/5 uppercase text-[10px] tracking-wider text-muted-foreground print:bg-gray-100 print:text-gray-700">
+                  <thead className="bg-muted/40 uppercase text-[10px] tracking-wider text-muted-foreground print:bg-gray-100 print:text-gray-700">
                     <tr>
                       <th className="px-3 py-2">Start Date</th>
                       <th className="px-3 py-2">End Date</th>
@@ -119,14 +119,14 @@ export function DoctorReportModal({
                       <th className="px-3 py-2">Notes</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-white/5 print:divide-gray-200">
+                  <tbody className="divide-y divide-border/40 print:divide-gray-200">
                     {cycles.map((c, idx) => {
                       const start = new Date(c.startDate);
                       const end = c.endDate ? new Date(c.endDate) : null;
                       const duration = end ? differenceInDays(end, start) + 1 : "Ongoing";
 
                       return (
-                        <tr key={c._id || idx} className="hover:bg-white/[0.02]">
+                        <tr key={c._id || idx} className="hover:bg-muted/30">
                           <td className="px-3 py-2 font-medium text-foreground print:text-black">
                             {format(start, "MMM d, yyyy")}
                           </td>
@@ -136,7 +136,7 @@ export function DoctorReportModal({
                           <td className="px-3 py-2 text-muted-foreground print:text-gray-700">
                             {duration} {typeof duration === "number" ? "days" : ""}
                           </td>
-                          <td className="px-3 py-2 capitalize text-rose-300 print:text-rose-800">
+                          <td className="px-3 py-2 capitalize text-rose-700 print:text-rose-800">
                             {c.flow || "Normal"}
                           </td>
                           <td className="px-3 py-2 text-muted-foreground print:text-gray-600 truncate max-w-[150px]">
@@ -160,9 +160,9 @@ export function DoctorReportModal({
             {symptomLogs.length === 0 ? (
               <p className="text-xs italic text-muted-foreground">No symptom logs recorded yet.</p>
             ) : (
-              <div className="overflow-x-auto rounded-xl border border-white/10 print:border-gray-300 max-h-56">
+              <div className="overflow-x-auto rounded-xl border border-border/60 print:border-gray-300 max-h-56">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-white/5 uppercase text-[10px] tracking-wider text-muted-foreground print:bg-gray-100 print:text-gray-700 sticky top-0">
+                  <thead className="bg-muted/40 uppercase text-[10px] tracking-wider text-muted-foreground print:bg-gray-100 print:text-gray-700 sticky top-0">
                     <tr>
                       <th className="px-3 py-2">Date</th>
                       <th className="px-3 py-2">Symptoms Reported</th>
@@ -170,9 +170,9 @@ export function DoctorReportModal({
                       <th className="px-3 py-2">Mood</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-white/5 print:divide-gray-200">
+                  <tbody className="divide-y divide-border/40 print:divide-gray-200">
                     {symptomLogs.slice(-15).map((log, idx) => (
-                      <tr key={log._id || idx} className="hover:bg-white/[0.02]">
+                      <tr key={log._id || idx} className="hover:bg-muted/30">
                         <td className="px-3 py-2 font-medium text-foreground print:text-black">
                           {log.date}
                         </td>
@@ -196,7 +196,7 @@ export function DoctorReportModal({
           </div>
 
           {/* Disclaimer Footer */}
-          <div className="rounded-xl border border-white/5 bg-white/[0.02] p-3 text-[11px] text-muted-foreground print:border-gray-200 print:text-gray-600">
+          <div className="rounded-xl border border-border/60 bg-background/50 p-3 text-[11px] text-muted-foreground print:border-gray-200 print:text-gray-600">
             <p className="font-semibold text-foreground/80 print:text-black">Notice for Healthcare Provider:</p>
             <p className="mt-0.5">
               This summary is self-reported by the patient via the "Our Space" wellness tracker.

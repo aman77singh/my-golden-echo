@@ -88,7 +88,7 @@ export function VoiceNotePlayer({ voiceUrl, isMe }: VoiceNotePlayerProps) {
         onClick={togglePlay}
         className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-all active:scale-90 ${
           isMe
-            ? "bg-[#0d0d12]/20 text-[#0d0d12] hover:bg-[#0d0d12]/30"
+            ? "bg-foreground/15 text-foreground hover:bg-foreground/25"
             : "bg-accent/20 text-accent hover:bg-accent/30"
         }`}
       >
@@ -117,11 +117,11 @@ export function VoiceNotePlayer({ voiceUrl, isMe }: VoiceNotePlayerProps) {
                 className={`w-1 rounded-full transition-colors ${
                   isFilled
                     ? isMe
-                      ? "bg-[#0d0d12]"
+                      ? "bg-foreground"
                       : "bg-accent shadow-sm"
                     : isMe
-                    ? "bg-[#0d0d12]/25"
-                    : "bg-white/20"
+                    ? "bg-foreground/25"
+                    : "bg-muted-foreground/30"
                 }`}
               />
             );
@@ -130,7 +130,7 @@ export function VoiceNotePlayer({ voiceUrl, isMe }: VoiceNotePlayerProps) {
 
         <div
           className={`flex items-center justify-between text-[10px] font-mono ${
-            isMe ? "text-[#0d0d12]/80" : "text-muted-foreground"
+            isMe ? "text-foreground/80" : "text-muted-foreground"
           }`}
         >
           <span>{formatSec(currentTime)}</span>

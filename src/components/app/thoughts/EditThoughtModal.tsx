@@ -68,11 +68,7 @@ export function EditThoughtModal({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className={`max-w-md ${
-          isInsecurity
-            ? "border-purple-400/20 bg-[#161322]/95"
-            : "border-amber-400/20 bg-[#161622]/95"
-        } text-foreground backdrop-blur-2xl shadow-2xl p-6 sm:rounded-3xl`}
+        className="max-w-md border-border/70 bg-card/95 text-foreground backdrop-blur-2xl shadow-panel p-6 sm:rounded-3xl"
       >
         <DialogTitle className="flex items-center gap-2 font-serif text-lg font-bold text-foreground">
           <span>Edit {isInsecurity ? "Vulnerability" : "Thought"}</span>
@@ -87,16 +83,16 @@ export function EditThoughtModal({
             value={body}
             onChange={(e) => setBody(e.target.value)}
             placeholder="Edit your words..."
-            className="w-full rounded-2xl border border-white/10 bg-white/5 p-3.5 text-xs text-foreground placeholder:text-muted-foreground/50 focus:border-accent/50 focus:outline-none"
+            className="w-full rounded-2xl border border-border/70 bg-background/60 p-3.5 text-xs text-foreground placeholder:text-muted-foreground/50 focus:border-accent focus:outline-none"
           />
 
           {/* Visibility toggle */}
-          <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.02] p-3 text-xs">
+          <div className="flex items-center justify-between rounded-2xl border border-border/60 bg-background/50 p-3 text-xs">
             <div className="flex items-center gap-2">
               {isShared ? (
-                <Globe className="h-4 w-4 text-emerald-400" />
+                <Globe className="h-4 w-4 text-emerald-500" />
               ) : (
-                <Lock className="h-4 w-4 text-amber-400" />
+                <Lock className="h-4 w-4 text-amber-500" />
               )}
               <div>
                 <p className="font-semibold text-foreground">
@@ -114,7 +110,7 @@ export function EditThoughtModal({
               type="button"
               onClick={() => setIsShared(!isShared)}
               className={`relative h-6 w-11 rounded-full transition-colors ${
-                isShared ? "bg-emerald-500" : "bg-white/20"
+                isShared ? "bg-emerald-500" : "bg-muted"
               }`}
             >
               <span
@@ -127,9 +123,9 @@ export function EditThoughtModal({
 
           {/* Just venting flag (for thoughts) */}
           {!isInsecurity && (
-            <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.02] p-3 text-xs">
+            <div className="flex items-center justify-between rounded-2xl border border-border/60 bg-background/50 p-3 text-xs">
               <div className="flex items-center gap-2">
-                <Coffee className="h-4 w-4 text-amber-300" />
+                <Coffee className="h-4 w-4 text-amber-500" />
                 <div>
                   <p className="font-semibold text-foreground">
                     Just venting, don't fix it
@@ -144,7 +140,7 @@ export function EditThoughtModal({
                 type="button"
                 onClick={() => setJustVenting(!justVenting)}
                 className={`relative h-6 w-11 rounded-full transition-colors ${
-                  justVenting ? "bg-amber-400" : "bg-white/20"
+                  justVenting ? "bg-amber-500" : "bg-muted"
                 }`}
               >
                 <span
@@ -160,7 +156,7 @@ export function EditThoughtModal({
             <button
               type="button"
               onClick={() => onOpenChange(false)}
-              className="rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-white/10"
+              className="rounded-2xl border border-border/70 bg-background/60 px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-accent/10"
             >
               Cancel
             </button>
@@ -170,7 +166,7 @@ export function EditThoughtModal({
               className={`rounded-2xl px-5 py-2 text-xs font-bold text-white shadow-md transition-all active:scale-95 disabled:opacity-50 ${
                 isInsecurity
                   ? "bg-gradient-to-r from-purple-500 to-rose-500"
-                  : "bg-gradient-to-r from-amber-400 to-rose-400 text-[#0e0d15]"
+                  : "bg-gradient-to-r from-[#E5A962] to-[#E07A5F]"
               }`}
             >
               {editMutation.isPending ? "Saving..." : "Save Changes"}

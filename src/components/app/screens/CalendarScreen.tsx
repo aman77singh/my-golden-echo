@@ -116,7 +116,7 @@ export function CalendarScreen() {
   return (
     <div className="space-y-4 pb-24 text-foreground">
       {/* Top Header */}
-      <div className="flex items-center justify-between border-b border-white/5 pb-3">
+      <div className="flex items-center justify-between border-b border-border/60 pb-3">
         <div className="flex items-center gap-2">
           <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-accent/20 text-accent">
             <CalendarIcon className="h-4 w-4" />
@@ -137,7 +137,7 @@ export function CalendarScreen() {
             triggerHaptic("selection");
             setCreateOpen(true);
           }}
-          className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] px-3 py-1.5 text-xs font-semibold text-[#0d0d12] shadow-sm shadow-accent/20 transition-transform active:scale-95"
+          className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] px-3 py-1.5 text-xs font-semibold text-white shadow-sm shadow-accent/20 transition-transform active:scale-95"
         >
           <Plus className="h-3.5 w-3.5" />
           <span>Add</span>
@@ -157,7 +157,7 @@ export function CalendarScreen() {
               <motion.div
                 key={cd._id}
                 whileHover={{ scale: 1.02 }}
-                className="min-w-[240px] snap-start rounded-2xl border border-accent/30 bg-gradient-to-br from-[#E5A962]/15 via-[#1a1824] to-[#121118] p-3.5 shadow-lg shadow-black/40 backdrop-blur-xl relative overflow-hidden"
+                className="min-w-[240px] snap-start rounded-2xl border border-border/80 bg-gradient-to-br from-card via-card to-secondary/30 p-3.5 shadow-panel relative overflow-hidden"
               >
                 <div className="absolute top-0 right-0 -mr-6 -mt-6 h-20 w-20 rounded-full bg-accent/10 blur-xl pointer-events-none" />
                 <div className="flex items-center justify-between mb-1.5">
@@ -188,7 +188,7 @@ export function CalendarScreen() {
       )}
 
       {/* Events List */}
-      <div className="rounded-2xl border border-white/10 bg-[#16161f]/90 p-4 backdrop-blur-xl space-y-3">
+      <div className="rounded-2xl border border-border/70 bg-card/90 p-4 shadow-panel space-y-3">
         <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
           All Events & Rhythms
         </h3>
@@ -208,8 +208,8 @@ export function CalendarScreen() {
                   key={evt._id}
                   className={`flex items-start justify-between rounded-xl border p-3 transition-colors ${
                     isVirtual
-                      ? "border-pink-500/20 bg-pink-500/5"
-                      : "border-white/5 bg-white/[0.02] hover:border-white/15"
+                      ? "border-pink-500/30 bg-pink-500/10"
+                      : "border-border/60 bg-background/50 hover:border-accent/40"
                   }`}
                 >
                   <div className="space-y-1">
@@ -218,8 +218,8 @@ export function CalendarScreen() {
                       <span
                         className={`rounded-full px-2 py-0.5 text-[9px] font-medium uppercase ${
                           isVirtual
-                            ? "bg-pink-500/20 text-pink-300"
-                            : "bg-white/10 text-muted-foreground"
+                            ? "bg-pink-500/20 text-pink-600"
+                            : "bg-muted text-muted-foreground"
                         }`}
                       >
                         {evt.category || "Event"}
@@ -228,7 +228,7 @@ export function CalendarScreen() {
                     {evt.description && (
                       <p className="text-[11px] text-muted-foreground">{evt.description}</p>
                     )}
-                    <p className="text-[10px] text-accent/80 font-mono">
+                    <p className="text-[10px] text-accent font-mono font-semibold">
                       📅{" "}
                       {new Date(evt.date).toLocaleDateString(undefined, {
                         weekday: "short",
@@ -243,7 +243,7 @@ export function CalendarScreen() {
                     <button
                       type="button"
                       onClick={() => deleteMutation.mutate(evt._id)}
-                      className="text-muted-foreground/60 hover:text-red-400 p-1"
+                      className="text-muted-foreground/60 hover:text-red-500 p-1"
                       aria-label="Delete Event"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
@@ -258,12 +258,12 @@ export function CalendarScreen() {
 
       {/* Create Event Dialog */}
       <Dialog open={createOpen} onOpenChange={setCreateOpen}>
-        <DialogContent className="border-border/60 bg-[#16161f]/95 text-foreground backdrop-blur-2xl sm:max-w-md">
+        <DialogContent className="border-border/70 bg-card/95 text-foreground backdrop-blur-2xl sm:max-w-md shadow-panel">
           <DialogHeader>
             <DialogTitle className="font-display text-base font-bold text-foreground">
               Add Event or Countdown
             </DialogTitle>
-            <DialogDescription className="text-xs text-muted-foreground">
+            <DialogDescription className="text-xs text-muted-foreground font-serif italic">
               Set reminders and live countdown cards together.
             </DialogDescription>
           </DialogHeader>
@@ -277,7 +277,7 @@ export function CalendarScreen() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
-                className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none"
+                className="mt-1 w-full rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground/50 focus:border-accent focus:outline-none"
               />
             </div>
 
@@ -288,7 +288,7 @@ export function CalendarScreen() {
                 value={eventDate}
                 onChange={(e) => setEventDate(e.target.value)}
                 required
-                className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none"
+                className="mt-1 w-full rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none"
               />
             </div>
 
@@ -297,13 +297,13 @@ export function CalendarScreen() {
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none"
+                className="mt-1 w-full rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none"
               >
-                <option value="anniversary" className="bg-[#16161f]">Anniversary</option>
-                <option value="date" className="bg-[#16161f]">Date Night</option>
-                <option value="trip" className="bg-[#16161f]">Trip / Vacation</option>
-                <option value="milestone" className="bg-[#16161f]">Goal Milestone</option>
-                <option value="custom" className="bg-[#16161f]">Custom Event</option>
+                <option value="anniversary" className="bg-card">Anniversary</option>
+                <option value="date" className="bg-card">Date Night</option>
+                <option value="trip" className="bg-card">Trip / Vacation</option>
+                <option value="milestone" className="bg-card">Goal Milestone</option>
+                <option value="custom" className="bg-card">Custom Event</option>
               </select>
             </div>
 
@@ -314,7 +314,7 @@ export function CalendarScreen() {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows={2}
-                className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none resize-none"
+                className="mt-1 w-full rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground/50 focus:border-accent focus:outline-none resize-none"
               />
             </div>
 
@@ -324,7 +324,7 @@ export function CalendarScreen() {
                 id="isCountdown"
                 checked={isCountdown}
                 onChange={(e) => setIsCountdown(e.target.checked)}
-                className="rounded border-white/10 text-accent focus:ring-accent"
+                className="rounded border-border text-accent focus:ring-accent"
               />
               <label htmlFor="isCountdown" className="text-xs text-foreground">
                 Display as live countdown card
@@ -335,14 +335,14 @@ export function CalendarScreen() {
               <button
                 type="button"
                 onClick={() => setCreateOpen(false)}
-                className="rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-white/10"
+                className="rounded-xl border border-border/70 bg-muted/40 px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-muted"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={createMutation.isPending}
-                className="rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] px-4 py-1.5 text-xs font-semibold text-[#0d0d12] shadow-sm shadow-accent/20 transition-all hover:opacity-95 disabled:opacity-50"
+                className="rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] px-4 py-1.5 text-xs font-semibold text-white shadow-sm shadow-accent/20 transition-all hover:opacity-95 disabled:opacity-50"
               >
                 {createMutation.isPending ? "Saving..." : "Save Event"}
               </button>

@@ -236,7 +236,7 @@ export function ThoughtsScreen() {
       </div>
 
       {/* Primary Tabs (Thoughts vs Insecurities) */}
-      <div className="grid grid-cols-2 rounded-2xl border border-white/10 bg-white/5 p-1 text-xs font-semibold">
+      <div className="grid grid-cols-2 rounded-2xl border border-border/70 bg-card/80 p-1 text-xs font-semibold">
         <button
           type="button"
           onClick={() => {
@@ -245,7 +245,7 @@ export function ThoughtsScreen() {
           }}
           className={`flex items-center justify-center gap-2 rounded-xl py-2.5 transition-all ${
             activeTab === "thought"
-              ? "bg-gradient-to-r from-amber-400/20 to-rose-400/20 font-bold text-amber-200 shadow-sm border border-amber-400/30"
+              ? "bg-accent/15 font-bold text-accent shadow-xs border border-accent/30"
               : "text-muted-foreground hover:text-foreground"
           }`}
         >
@@ -261,7 +261,7 @@ export function ThoughtsScreen() {
           }}
           className={`flex items-center justify-center gap-2 rounded-xl py-2.5 transition-all ${
             activeTab === "insecurity"
-              ? "bg-purple-500/20 font-bold text-purple-200 shadow-sm border border-purple-400/30"
+              ? "bg-purple-500/15 font-bold text-purple-700 shadow-xs border border-purple-400/30"
               : "text-muted-foreground hover:text-foreground"
           }`}
         >
@@ -277,25 +277,25 @@ export function ThoughtsScreen() {
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-3xl border border-amber-500/30 bg-gradient-to-br from-amber-500/10 via-[#181624] to-[#121118] p-5 shadow-xl"
+            className="rounded-3xl border border-amber-400/40 bg-gradient-to-br from-amber-500/15 via-card to-secondary/30 p-5 shadow-panel"
           >
             <textarea
               rows={3}
               value={thoughtBody}
               onChange={(e) => setThoughtBody(e.target.value)}
               placeholder="Say it without a second thought..."
-              className="w-full resize-none rounded-2xl border border-white/10 bg-white/5 p-3.5 text-xs text-foreground placeholder:text-muted-foreground/50 focus:border-amber-400/60 focus:outline-none"
+              className="w-full resize-none rounded-2xl border border-border/70 bg-background/60 p-3.5 text-xs text-foreground placeholder:text-muted-foreground/60 focus:border-amber-400/60 focus:outline-none"
             />
 
-            <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-white/10 pt-3">
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-border/60 pt-3">
               {/* "Just venting, don't fix it" toggle */}
               <button
                 type="button"
                 onClick={() => setThoughtJustVenting(!thoughtJustVenting)}
                 className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs transition-all ${
                   thoughtJustVenting
-                    ? "border-amber-400 bg-amber-400/20 font-bold text-amber-200 shadow-sm"
-                    : "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+                    ? "border-accent bg-accent/20 font-bold text-accent shadow-sm"
+                    : "border-border/70 bg-card/80 text-muted-foreground hover:bg-card hover:text-foreground"
                 }`}
               >
                 <Coffee className="h-3.5 w-3.5" />
@@ -342,8 +342,8 @@ export function ThoughtsScreen() {
                   onClick={() => setFilter(tab)}
                   className={`rounded-xl border px-3 py-1 capitalize transition-all ${
                     filter === tab
-                      ? "border-amber-400 bg-amber-400/20 font-bold text-amber-200"
-                      : "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10"
+                      ? "border-accent bg-accent/20 font-bold text-accent"
+                      : "border-border/70 bg-card/80 text-muted-foreground hover:bg-card"
                   }`}
                 >
                   {tab}
@@ -359,7 +359,7 @@ export function ThoughtsScreen() {
               <p className="text-xs">Gathering thoughts...</p>
             </div>
           ) : filteredEntries.length === 0 ? (
-            <div className="rounded-3xl border border-dashed border-white/15 bg-white/[0.02] p-10 text-center">
+            <div className="rounded-3xl border border-dashed border-border/80 bg-background/50 p-10 text-center">
               <Sparkles className="mx-auto h-8 w-8 text-amber-400/60" />
               <h4 className="mt-3 font-serif text-base font-semibold text-foreground">
                 No thoughts logged yet
@@ -379,7 +379,7 @@ export function ThoughtsScreen() {
                   layout
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="rounded-3xl border border-white/10 bg-[#161522]/90 p-5 shadow-lg backdrop-blur-md"
+                  className="rounded-3xl border border-border/70 bg-card/90 p-5 shadow-panel backdrop-blur-md"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
@@ -439,7 +439,7 @@ export function ThoughtsScreen() {
                   </p>
 
                   {/* Emoji Reactions Section (Partner can react with an emoji, NO prompt to reply) */}
-                  <div className="mt-4 flex items-center justify-between border-t border-white/5 pt-3">
+                  <div className="mt-4 flex items-center justify-between border-t border-border/60 pt-3">
                     <div className="flex flex-wrap items-center gap-1.5">
                       {THOUGHT_REACTIONS.map((emoji) => {
                         const count = thought.responses.filter((r) => r.emoji === emoji).length;
@@ -460,11 +460,11 @@ export function ThoughtsScreen() {
                             }
                             className={`flex h-7 items-center gap-1 rounded-full border px-2.5 text-xs transition-all active:scale-95 ${
                               hasReacted
-                                ? "border-amber-400 bg-amber-400/20 font-bold text-amber-200 shadow-sm"
+                                ? "border-accent bg-accent/20 font-bold text-accent shadow-sm"
                                 : count > 0
-                                ? "border-white/10 bg-white/5 text-foreground/80"
+                                ? "border-border/70 bg-card/80 text-foreground/80"
                                 : partnerCanReact
-                                ? "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+                                ? "border-border/70 bg-card/80 text-muted-foreground hover:bg-card hover:text-foreground"
                                 : "hidden"
                             }`}
                           >
@@ -505,9 +505,9 @@ export function ThoughtsScreen() {
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-3xl border border-purple-400/25 bg-gradient-to-br from-[#1c182c] via-[#151220] to-[#100f18] p-5 shadow-xl"
+            className="rounded-3xl border border-purple-400/30 bg-gradient-to-br from-purple-500/15 via-card to-secondary/30 p-5 shadow-panel"
           >
-            <div className="flex items-center gap-2 text-purple-200 text-xs font-semibold mb-2">
+            <div className="flex items-center gap-2 text-purple-700 text-xs font-semibold mb-2">
               <span className="text-base">🕊️</span>
               <span>A Tender Space to Exhale</span>
             </div>
@@ -517,10 +517,10 @@ export function ThoughtsScreen() {
               value={insecurityBody}
               onChange={(e) => setInsecurityBody(e.target.value)}
               placeholder="What feels tender, quiet, or heavy on your heart right now?"
-              className="w-full resize-none rounded-2xl border border-purple-500/20 bg-white/[0.03] p-3.5 text-xs text-purple-100 placeholder:text-muted-foreground/50 focus:border-purple-400/60 focus:outline-none"
+              className="w-full resize-none rounded-2xl border border-border/70 bg-background/60 p-3.5 text-xs text-foreground placeholder:text-muted-foreground/60 focus:border-purple-400/60 focus:outline-none"
             />
 
-            <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-white/5 pt-3">
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-border/60 pt-3">
               {/* Default Private + "Share with my partner" Toggle */}
               <div className="flex items-center gap-2">
                 <button
@@ -530,18 +530,18 @@ export function ThoughtsScreen() {
                   }
                   className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-medium transition-all ${
                     insecurityShareWithPartner
-                      ? "border-purple-400 bg-purple-400/20 text-purple-100 shadow-sm"
-                      : "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10"
+                      ? "border-purple-400 bg-purple-400/20 text-purple-800 shadow-sm"
+                      : "border-border/70 bg-card/80 text-muted-foreground hover:bg-card"
                   }`}
                 >
                   {insecurityShareWithPartner ? (
                     <>
-                      <Globe className="h-3.5 w-3.5 text-purple-300" />
+                      <Globe className="h-3.5 w-3.5 text-purple-600" />
                       <span>Share with my partner</span>
                     </>
                   ) : (
                     <>
-                      <Lock className="h-3.5 w-3.5 text-amber-300" />
+                      <Lock className="h-3.5 w-3.5 text-accent" />
                       <span>Keep private to me</span>
                     </>
                   )}
@@ -594,8 +594,8 @@ export function ThoughtsScreen() {
                   onClick={() => setFilter(tab)}
                   className={`rounded-xl border px-3 py-1 capitalize transition-all ${
                     filter === tab
-                      ? "border-purple-400 bg-purple-400/20 font-bold text-purple-200"
-                      : "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10"
+                      ? "border-purple-400 bg-purple-400/20 font-bold text-purple-800"
+                      : "border-border/70 bg-card/80 text-muted-foreground hover:bg-card"
                   }`}
                 >
                   {tab}
@@ -641,7 +641,7 @@ export function ThoughtsScreen() {
                   layout
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="rounded-3xl border border-purple-400/20 bg-gradient-to-b from-[#181526]/90 via-[#14121f]/90 to-[#100f18]/90 p-5 shadow-lg backdrop-blur-md"
+                  className="rounded-3xl border border-purple-400/30 bg-gradient-to-b from-card via-card to-secondary/30 p-5 shadow-panel backdrop-blur-md"
                 >
                   {/* Card Header */}
                   <div className="flex items-center justify-between">
@@ -751,14 +751,14 @@ export function ThoughtsScreen() {
 
                   {/* Partner Responses List (No threads, no debate) */}
                   {thought.responses && thought.responses.length > 0 && (
-                    <div className="mt-4 space-y-2 border-t border-white/5 pt-3">
+                    <div className="mt-4 space-y-2 border-t border-border/60 pt-3">
                       {thought.responses.map((resp, rIdx) => (
                         <div
                           key={rIdx}
-                          className="rounded-2xl border border-purple-500/20 bg-purple-500/[0.04] p-3 text-xs"
+                          className="rounded-2xl border border-purple-400/30 bg-purple-500/[0.08] p-3 text-xs"
                         >
                           <div className="flex items-center justify-between">
-                            <span className="font-semibold text-purple-300 flex items-center gap-1.5">
+                            <span className="font-semibold text-purple-700 flex items-center gap-1.5">
                               <span>🤍</span>
                               <span>Supportive Reassurance</span>
                             </span>
@@ -779,10 +779,10 @@ export function ThoughtsScreen() {
                   {/* Partner Response Section: Only 🤍 or short supportive note (max 200 chars).
                       Hint: "Listen first. You don't need to fix anything." */}
                   {isPartner && thought.visibility === "shared" && (
-                    <div className="mt-4 border-t border-white/10 pt-3 space-y-2.5">
+                    <div className="mt-4 border-t border-border/60 pt-3 space-y-2.5">
                       {/* Hint above response box */}
-                      <div className="flex items-center gap-1.5 text-[11px] text-purple-300 font-medium italic">
-                        <Info className="h-3.5 w-3.5 text-purple-400" />
+                      <div className="flex items-center gap-1.5 text-[11px] text-purple-700 font-medium italic">
+                        <Info className="h-3.5 w-3.5 text-purple-600" />
                         <span>Listen first. You don't need to fix anything.</span>
                       </div>
 
@@ -797,7 +797,7 @@ export function ThoughtsScreen() {
                               emoji: "🤍",
                             })
                           }
-                          className="flex h-9 items-center gap-1 rounded-2xl border border-purple-400/30 bg-purple-400/15 px-3 text-xs font-bold text-purple-200 shadow-sm hover:bg-purple-400/25 active:scale-95 transition-all"
+                          className="flex h-9 items-center gap-1 rounded-2xl border border-purple-400/30 bg-purple-500/10 px-3 text-xs font-bold text-purple-800 shadow-sm hover:bg-purple-500/20 active:scale-95 transition-all"
                         >
                           <span>🤍</span>
                           <span>Send Reassurance</span>

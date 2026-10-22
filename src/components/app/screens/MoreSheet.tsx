@@ -76,8 +76,8 @@ export function MoreSheet({ open, onOpenChange, onInstallApp, isInstallable }: M
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="border-border/60 bg-[#16161f]/95 text-foreground backdrop-blur-2xl sm:max-w-md">
-        <div className="flex items-center justify-between border-b border-white/5 pb-3">
+      <DialogContent className="border-border/70 bg-card/95 text-foreground backdrop-blur-2xl sm:max-w-md shadow-panel">
+        <div className="flex items-center justify-between border-b border-border/60 pb-3">
           <div className="flex items-center gap-2">
             <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-accent/20 text-accent">
               <Sparkles className="h-4 w-4" />
@@ -86,7 +86,7 @@ export function MoreSheet({ open, onOpenChange, onInstallApp, isInstallable }: M
               <DialogTitle className="font-display text-base font-bold text-foreground">
                 More Features
               </DialogTitle>
-              <DialogDescription className="text-xs text-muted-foreground">
+              <DialogDescription className="text-xs text-muted-foreground font-serif italic">
                 Our Space Couple Toolkit
               </DialogDescription>
             </div>
@@ -99,7 +99,7 @@ export function MoreSheet({ open, onOpenChange, onInstallApp, isInstallable }: M
             const Icon = item.icon;
             const content = (
               <div
-                className="group flex items-center justify-between rounded-2xl border border-white/5 bg-white/[0.02] p-3 transition-colors hover:border-accent/40 hover:bg-accent/5 cursor-pointer"
+                className="group flex items-center justify-between rounded-2xl border border-border/60 bg-background/50 p-3 transition-colors hover:border-accent/40 hover:bg-accent/5 cursor-pointer shadow-xs"
               >
                 <div className="flex items-center gap-3">
                   <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent/15 text-accent">
@@ -110,7 +110,7 @@ export function MoreSheet({ open, onOpenChange, onInstallApp, isInstallable }: M
                     <p className="text-[11px] text-muted-foreground">{item.desc}</p>
                   </div>
                 </div>
-                <span className="rounded-full bg-white/5 px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                <span className="rounded-full bg-card border border-border/60 px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
                   {item.badge}
                 </span>
               </div>
@@ -134,7 +134,7 @@ export function MoreSheet({ open, onOpenChange, onInstallApp, isInstallable }: M
         </div>
 
         {/* Actions & Utilities */}
-        <div className="mt-4 space-y-2 border-t border-white/5 pt-4">
+        <div className="mt-4 space-y-2 border-t border-border/60 pt-4">
           {isInstallable && (
             <button
               type="button"
@@ -142,7 +142,7 @@ export function MoreSheet({ open, onOpenChange, onInstallApp, isInstallable }: M
                 onOpenChange(false);
                 onInstallApp();
               }}
-              className="flex w-full items-center justify-between rounded-2xl border border-accent/40 bg-gradient-to-r from-[#E5A962]/10 to-[#E07A5F]/10 p-3 text-left transition-colors hover:bg-accent/15"
+              className="flex w-full items-center justify-between rounded-2xl border border-accent/40 bg-gradient-to-r from-[#E5A962]/15 to-[#E07A5F]/15 p-3 text-left transition-colors hover:bg-accent/20 shadow-xs"
             >
               <div className="flex items-center gap-3">
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent/20 text-accent">
@@ -159,10 +159,10 @@ export function MoreSheet({ open, onOpenChange, onInstallApp, isInstallable }: M
 
           <a
             href="/"
-            className="flex w-full items-center justify-between rounded-2xl border border-white/5 bg-white/[0.02] p-3 text-left transition-colors hover:border-white/20 hover:bg-white/5"
+            className="flex w-full items-center justify-between rounded-2xl border border-border/60 bg-background/50 p-3 text-left transition-colors hover:border-accent/40 hover:bg-accent/5 shadow-xs"
           >
             <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-muted-foreground">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-card border border-border/60 text-muted-foreground">
                 <Laptop className="h-4 w-4" />
               </div>
               <div>
@@ -179,18 +179,18 @@ export function MoreSheet({ open, onOpenChange, onInstallApp, isInstallable }: M
               onOpenChange(false);
               logoutUser();
             }}
-            className="flex w-full items-center justify-between rounded-2xl border border-red-500/20 bg-red-500/5 p-3 text-left transition-colors hover:bg-red-500/10"
+            className="flex w-full items-center justify-between rounded-2xl border border-red-500/30 bg-red-500/10 p-3 text-left transition-colors hover:bg-red-500/15 shadow-xs"
           >
             <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-red-500/15 text-red-400">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-red-500/15 text-red-500">
                 <LogOut className="h-4 w-4" />
               </div>
               <div>
-                <h4 className="text-xs font-semibold text-red-400">Switch Profile / Log Out</h4>
+                <h4 className="text-xs font-semibold text-red-500">Switch Profile / Log Out</h4>
                 <p className="text-[11px] text-muted-foreground">Sign in as Aditi or Aman</p>
               </div>
             </div>
-            <span className="text-xs font-bold text-red-400">Log Out →</span>
+            <span className="text-xs font-bold text-red-500">Log Out →</span>
           </button>
         </div>
       </DialogContent>

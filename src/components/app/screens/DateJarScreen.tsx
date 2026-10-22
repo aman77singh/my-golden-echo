@@ -135,7 +135,7 @@ export function DateJarScreen() {
   return (
     <div className="space-y-4 pb-24 text-foreground">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/5 pb-3">
+      <div className="flex items-center justify-between border-b border-border/60 pb-3">
         <div className="flex items-center gap-2">
           <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-accent/20 text-accent">
             <Sparkles className="h-4 w-4" />
@@ -154,7 +154,7 @@ export function DateJarScreen() {
             triggerHaptic("selection");
             setCreateOpen(true);
           }}
-          className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] px-3 py-1.5 text-xs font-semibold text-[#0d0d12] shadow-sm shadow-accent/20 transition-transform active:scale-95"
+          className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] px-3 py-1.5 text-xs font-semibold text-white shadow-sm shadow-accent/20 transition-transform active:scale-95"
         >
           <Plus className="h-3.5 w-3.5" />
           <span>Add Idea</span>
@@ -162,7 +162,7 @@ export function DateJarScreen() {
       </div>
 
       {/* Hero Jar Card */}
-      <div className="rounded-3xl border border-accent/25 bg-gradient-to-b from-[#E5A962]/15 via-[#181622] to-[#121118] p-6 text-center shadow-xl backdrop-blur-2xl">
+      <div className="rounded-3xl border border-border/80 bg-gradient-to-b from-card via-card to-secondary/30 p-6 text-center shadow-panel backdrop-blur-2xl">
         <h3 className="font-display text-sm font-bold text-foreground">
           What should we do tonight? 🍷
         </h3>
@@ -176,7 +176,7 @@ export function DateJarScreen() {
             type="button"
             disabled={isPulling || ideas.length === 0}
             onClick={handlePullRandom}
-            className="flex items-center gap-2 rounded-2xl bg-gradient-to-r from-[#E5A962] via-[#E07A5F] to-[#E5A962] px-5 py-2.5 text-xs font-bold text-[#0d0d12] shadow-lg shadow-accent/25 transition-all hover:opacity-95 disabled:opacity-40"
+            className="flex items-center gap-2 rounded-2xl bg-gradient-to-r from-[#E5A962] via-[#E07A5F] to-[#E5A962] px-5 py-2.5 text-xs font-bold text-white shadow-lg shadow-accent/25 transition-all hover:opacity-95 disabled:opacity-40"
           >
             <Shuffle className={`h-4 w-4 ${isPulling ? "animate-spin" : ""}`} />
             <span>{isPulling ? "Picking an idea..." : "Pick a Random Date! 🎲"}</span>
@@ -198,8 +198,8 @@ export function DateJarScreen() {
               }}
               className={`rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap transition-colors ${
                 isSelected
-                  ? "bg-accent text-[#0d0d12] font-semibold"
-                  : "border border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10"
+                  ? "bg-accent text-white font-semibold"
+                  : "border border-border/70 bg-card/80 text-muted-foreground hover:bg-card"
               }`}
             >
               {c.label}
@@ -209,7 +209,7 @@ export function DateJarScreen() {
       </div>
 
       {/* Ideas List */}
-      <div className="rounded-2xl border border-white/10 bg-[#16161f]/90 p-4 backdrop-blur-xl space-y-3">
+      <div className="rounded-2xl border border-border/70 bg-card/90 p-4 shadow-panel backdrop-blur-xl space-y-3">
         <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
           Date Ideas ({filtered.length})
         </h3>
@@ -228,7 +228,7 @@ export function DateJarScreen() {
                 className={`flex items-start justify-between rounded-xl border p-3 transition-colors ${
                   item.completed
                     ? "border-emerald-500/20 bg-emerald-500/5 opacity-70"
-                    : "border-white/5 bg-white/[0.02] hover:border-white/15"
+                    : "border-border/60 bg-background/50 hover:border-border/80"
                 }`}
               >
                 <div className="space-y-1">
@@ -240,7 +240,7 @@ export function DateJarScreen() {
                     >
                       <CheckCircle2
                         className={`h-4 w-4 ${
-                          item.completed ? "text-emerald-400 fill-emerald-500/20" : "text-white/20"
+                          item.completed ? "text-emerald-500 fill-emerald-500/20" : "text-muted-foreground/30"
                         }`}
                       />
                     </button>
@@ -254,11 +254,11 @@ export function DateJarScreen() {
                   </div>
 
                   <div className="flex items-center gap-2 pl-6 text-[10px] text-muted-foreground">
-                    <span className="rounded-full bg-white/10 px-2 py-0.5 uppercase font-medium">
+                    <span className="rounded-full bg-accent/15 px-2 py-0.5 uppercase font-medium text-accent">
                       {item.category}
                     </span>
                     {item.vibe && <span>• {item.vibe}</span>}
-                    <span className="text-emerald-400 font-mono">• {item.estimatedCost}</span>
+                    <span className="text-emerald-600 font-mono">• {item.estimatedCost}</span>
                     {item.pulledCount > 0 && <span>• Picked {item.pulledCount}x</span>}
                   </div>
                 </div>
@@ -266,7 +266,7 @@ export function DateJarScreen() {
                 <button
                   type="button"
                   onClick={() => deleteMutation.mutate(item._id)}
-                  className="text-muted-foreground/60 hover:text-red-400 p-1"
+                  className="text-muted-foreground/60 hover:text-red-500 p-1"
                   aria-label="Delete Date Idea"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
@@ -279,7 +279,7 @@ export function DateJarScreen() {
 
       {/* Add Date Idea Dialog */}
       <Dialog open={createOpen} onOpenChange={setCreateOpen}>
-        <DialogContent className="border-border/60 bg-[#16161f]/95 text-foreground backdrop-blur-2xl sm:max-w-md">
+        <DialogContent className="border-border/70 bg-card/95 text-foreground backdrop-blur-2xl shadow-panel sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="font-display text-base font-bold text-foreground">
               Add Date Idea
@@ -298,7 +298,7 @@ export function DateJarScreen() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
-                className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none"
+                className="mt-1 w-full rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none"
               />
             </div>
 
@@ -308,13 +308,13 @@ export function DateJarScreen() {
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value as any)}
-                  className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none"
+                  className="mt-1 w-full rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none"
                 >
-                  <option value="chill" className="bg-[#16161f]">Chill</option>
-                  <option value="food" className="bg-[#16161f]">Food & Dining</option>
-                  <option value="outdoor" className="bg-[#16161f]">Outdoor</option>
-                  <option value="indoor" className="bg-[#16161f]">Indoor</option>
-                  <option value="adventure" className="bg-[#16161f]">Adventure</option>
+                  <option value="chill" className="bg-card text-foreground">Chill</option>
+                  <option value="food" className="bg-card text-foreground">Food & Dining</option>
+                  <option value="outdoor" className="bg-card text-foreground">Outdoor</option>
+                  <option value="indoor" className="bg-card text-foreground">Indoor</option>
+                  <option value="adventure" className="bg-card text-foreground">Adventure</option>
                 </select>
               </div>
               <div>
@@ -322,12 +322,12 @@ export function DateJarScreen() {
                 <select
                   value={cost}
                   onChange={(e) => setCost(e.target.value as any)}
-                  className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none"
+                  className="mt-1 w-full rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none"
                 >
-                  <option value="free" className="bg-[#16161f]">Free</option>
-                  <option value="$" className="bg-[#16161f]">$ (Inexpensive)</option>
-                  <option value="$$" className="bg-[#16161f]">$$ (Moderate)</option>
-                  <option value="$$$" className="bg-[#16161f]">$$$ (Special)</option>
+                  <option value="free" className="bg-card text-foreground">Free</option>
+                  <option value="$" className="bg-card text-foreground">$ (Inexpensive)</option>
+                  <option value="$$" className="bg-card text-foreground">$$ (Moderate)</option>
+                  <option value="$$$" className="bg-card text-foreground">$$$ (Special)</option>
                 </select>
               </div>
             </div>
@@ -339,7 +339,7 @@ export function DateJarScreen() {
                 placeholder="e.g. cozy & quiet, spontaneous"
                 value={vibe}
                 onChange={(e) => setVibe(e.target.value)}
-                className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none"
+                className="mt-1 w-full rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none"
               />
             </div>
 
@@ -347,14 +347,14 @@ export function DateJarScreen() {
               <button
                 type="button"
                 onClick={() => setCreateOpen(false)}
-                className="rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-white/10"
+                className="rounded-xl border border-border/70 bg-background/60 px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-accent/10"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={createMutation.isPending}
-                className="rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] px-4 py-1.5 text-xs font-semibold text-[#0d0d12] shadow-sm shadow-accent/20 transition-all hover:opacity-95 disabled:opacity-50"
+                className="rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] px-4 py-1.5 text-xs font-semibold text-white shadow-sm shadow-accent/20 transition-all hover:opacity-95 disabled:opacity-50"
               >
                 {createMutation.isPending ? "Dropping in..." : "Drop in Jar"}
               </button>
@@ -365,7 +365,7 @@ export function DateJarScreen() {
 
       {/* Random Pick Reveal Modal */}
       <Dialog open={!!pulledIdea} onOpenChange={(open) => !open && setPulledIdea(null)}>
-        <DialogContent className="border-accent/40 bg-gradient-to-b from-[#1c1926] to-[#121118] text-foreground backdrop-blur-2xl sm:max-w-md text-center p-6">
+        <DialogContent className="border-accent/40 bg-card/95 text-foreground backdrop-blur-2xl shadow-panel sm:max-w-md text-center p-6">
           <div className="flex justify-center mb-3">
             <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent/20 text-accent animate-bounce">
               <Sparkles className="h-6 w-6" />
@@ -374,7 +374,7 @@ export function DateJarScreen() {
           <DialogTitle className="font-display text-base font-bold text-foreground">
             Tonight's Selected Date! ✨
           </DialogTitle>
-          <div className="my-4 rounded-2xl border border-accent/20 bg-accent/5 p-5 text-center space-y-2">
+          <div className="my-4 rounded-2xl border border-border/70 bg-background/60 p-5 text-center space-y-2">
             <h4 className="font-display text-base font-bold text-foreground">
               {pulledIdea?.title}
             </h4>
@@ -383,7 +383,7 @@ export function DateJarScreen() {
                 {pulledIdea?.category}
               </span>
               <span>•</span>
-              <span className="text-emerald-400 font-mono">{pulledIdea?.estimatedCost}</span>
+              <span className="text-emerald-600 font-mono">{pulledIdea?.estimatedCost}</span>
               {pulledIdea?.vibe && (
                 <>
                   <span>•</span>
@@ -395,7 +395,7 @@ export function DateJarScreen() {
           <button
             type="button"
             onClick={() => setPulledIdea(null)}
-            className="w-full rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] py-2 text-xs font-semibold text-[#0d0d12] shadow-md shadow-accent/20"
+            className="w-full rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] py-2 text-xs font-semibold text-white shadow-md shadow-accent/20"
           >
             Let's do this! 🍷
           </button>

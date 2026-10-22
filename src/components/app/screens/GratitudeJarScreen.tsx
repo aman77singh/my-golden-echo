@@ -97,7 +97,7 @@ export function GratitudeJarScreen() {
   return (
     <div className="space-y-4 pb-24 text-foreground">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/5 pb-3">
+      <div className="flex items-center justify-between border-b border-border/60 pb-3">
         <div className="flex items-center gap-2">
           <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-accent/20 text-accent">
             <Sparkles className="h-4 w-4" />
@@ -116,7 +116,7 @@ export function GratitudeJarScreen() {
             triggerHaptic("selection");
             setAddOpen(true);
           }}
-          className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] px-3 py-1.5 text-xs font-semibold text-[#0d0d12] shadow-sm shadow-accent/20 transition-transform active:scale-95"
+          className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] px-3 py-1.5 text-xs font-semibold text-white shadow-sm shadow-accent/20 transition-transform active:scale-95"
         >
           <Plus className="h-3.5 w-3.5" />
           <span>Add Note</span>
@@ -124,7 +124,7 @@ export function GratitudeJarScreen() {
       </div>
 
       {/* Interactive Jar Card */}
-      <div className="relative overflow-hidden rounded-3xl border border-accent/25 bg-gradient-to-b from-[#E5A962]/10 via-[#16161f] to-[#121118] p-6 text-center shadow-xl backdrop-blur-2xl">
+      <div className="relative overflow-hidden rounded-3xl border border-border/80 bg-gradient-to-b from-card via-card to-secondary/30 p-6 text-center shadow-panel backdrop-blur-2xl">
         <div className="mx-auto flex h-28 w-24 flex-col items-center justify-between rounded-2xl border-2 border-accent/40 bg-accent/5 p-3 shadow-inner shadow-accent/20 backdrop-blur-md relative">
           <div className="h-3 w-16 rounded-full bg-accent/30 border border-accent/40" />
           <motion.div
@@ -148,7 +148,7 @@ export function GratitudeJarScreen() {
             type="button"
             disabled={isPulling || slips.length === 0}
             onClick={handlePullRandom}
-            className="flex items-center gap-2 rounded-2xl bg-gradient-to-r from-[#E5A962] via-[#E07A5F] to-[#E5A962] bg-[length:200%_auto] px-5 py-2.5 text-xs font-bold text-[#0d0d12] shadow-lg shadow-accent/25 transition-all hover:opacity-95 disabled:opacity-40"
+            className="flex items-center gap-2 rounded-2xl bg-gradient-to-r from-[#E5A962] via-[#E07A5F] to-[#E5A962] bg-[length:200%_auto] px-5 py-2.5 text-xs font-bold text-white shadow-lg shadow-accent/25 transition-all hover:opacity-95 disabled:opacity-40"
           >
             <Shuffle className={`h-4 w-4 ${isPulling ? "animate-spin" : ""}`} />
             <span>{isPulling ? "Opening Jar..." : "Pull a Random Note ✨"}</span>
@@ -157,7 +157,7 @@ export function GratitudeJarScreen() {
       </div>
 
       {/* Notes Stream */}
-      <div className="rounded-2xl border border-white/10 bg-[#16161f]/90 p-4 backdrop-blur-xl space-y-3">
+      <div className="rounded-2xl border border-border/70 bg-card/90 p-4 shadow-panel space-y-3">
         <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
           Notes in the Jar
         </h3>
@@ -175,12 +175,12 @@ export function GratitudeJarScreen() {
                 key={slip._id}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="rounded-xl border border-white/5 bg-white/[0.02] p-3 text-xs space-y-1.5 hover:border-white/15 transition-colors"
+                className="rounded-xl border border-border/60 bg-background/50 p-3 text-xs space-y-1.5 hover:border-border/80 transition-colors"
               >
                 <p className="text-foreground leading-relaxed font-serif text-sm">
                   "{slip.body}"
                 </p>
-                <div className="flex items-center justify-between text-[10px] text-muted-foreground pt-1 border-t border-white/5">
+                <div className="flex items-center justify-between text-[10px] text-muted-foreground pt-1 border-t border-border/60">
                   <span className="font-semibold text-accent">
                     — {slip.userId?.name || "Partner"}
                   </span>
@@ -199,7 +199,7 @@ export function GratitudeJarScreen() {
 
       {/* Add Gratitude Dialog */}
       <Dialog open={addOpen} onOpenChange={setAddOpen}>
-        <DialogContent className="border-border/60 bg-[#16161f]/95 text-foreground backdrop-blur-2xl sm:max-w-md">
+        <DialogContent className="border-border/70 bg-card/95 text-foreground backdrop-blur-2xl sm:max-w-md shadow-panel">
           <DialogHeader>
             <DialogTitle className="font-display text-base font-bold text-foreground">
               Drop a Gratitude Note
@@ -216,21 +216,21 @@ export function GratitudeJarScreen() {
               onChange={(e) => setNoteBody(e.target.value)}
               rows={3}
               required
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none resize-none leading-relaxed"
+              className="w-full rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs text-foreground focus:border-accent focus:outline-none resize-none leading-relaxed"
             />
 
             <div className="flex justify-end gap-2 pt-2">
               <button
                 type="button"
                 onClick={() => setAddOpen(false)}
-                className="rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-white/10"
+                className="rounded-xl border border-border/70 bg-muted/40 px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-muted"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={addMutation.isPending}
-                className="rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] px-4 py-1.5 text-xs font-semibold text-[#0d0d12] shadow-sm shadow-accent/20 transition-all hover:opacity-95 disabled:opacity-50"
+                className="rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] px-4 py-1.5 text-xs font-semibold text-white shadow-sm shadow-accent/20 transition-all hover:opacity-95 disabled:opacity-50"
               >
                 {addMutation.isPending ? "Dropping in..." : "Fold & Drop In"}
               </button>
@@ -241,7 +241,7 @@ export function GratitudeJarScreen() {
 
       {/* Pulled Random Note Dialog */}
       <Dialog open={!!pulledNote} onOpenChange={(open) => !open && setPulledNote(null)}>
-        <DialogContent className="border-accent/40 bg-gradient-to-b from-[#1c1926] to-[#121118] text-foreground backdrop-blur-2xl sm:max-w-md text-center p-6">
+        <DialogContent className="border-border/70 bg-card/95 text-foreground backdrop-blur-2xl sm:max-w-md text-center p-6 shadow-panel">
           <div className="flex justify-center mb-3">
             <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent/20 text-accent animate-bounce">
               <Quote className="h-6 w-6" />
@@ -261,7 +261,7 @@ export function GratitudeJarScreen() {
           <button
             type="button"
             onClick={() => setPulledNote(null)}
-            className="w-full rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] py-2 text-xs font-semibold text-[#0d0d12] shadow-md shadow-accent/20"
+            className="w-full rounded-xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] py-2 text-xs font-semibold text-white shadow-md shadow-accent/20"
           >
             Fold it back into the jar
           </button>

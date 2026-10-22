@@ -66,11 +66,11 @@ export function SetMoodSheet({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="border-border/60 bg-[#16161f]/95 text-foreground backdrop-blur-2xl sm:max-w-md max-h-[90vh] overflow-y-auto">
+      <DialogContent className="border-border/70 bg-card/95 text-foreground backdrop-blur-2xl sm:max-w-md max-h-[90vh] overflow-y-auto shadow-panel">
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Header */}
-          <div className="flex items-center gap-2 border-b border-white/5 pb-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-[#E5A962] to-[#E07A5F] text-[#0d0d12]">
+          <div className="flex items-center gap-2 border-b border-border/60 pb-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-[#E5A962] to-[#E07A5F] text-white">
               <Sparkles className="h-5 w-5" />
             </div>
             <div>
@@ -99,7 +99,7 @@ export function SetMoodSheet({
                     className={`flex flex-col items-center justify-center rounded-2xl border p-2.5 transition-all ${
                       isSelected
                         ? "border-accent bg-accent/20 shadow-md shadow-accent/20 scale-105"
-                        : "border-white/5 bg-white/[0.02] hover:border-white/20 hover:bg-white/5"
+                        : "border-border/70 bg-card/80 hover:border-accent/40 hover:bg-card"
                     }`}
                   >
                     <span className="text-2xl">{item.emoji}</span>
@@ -163,7 +163,7 @@ export function SetMoodSheet({
               placeholder="e.g. Sipping my coffee thinking of you, can't wait for dinner..."
               rows={3}
               maxLength={140}
-              className="w-full rounded-2xl border border-white/10 bg-white/5 p-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+              className="w-full rounded-2xl border border-border/70 bg-background/60 p-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
             />
           </div>
 
@@ -171,7 +171,7 @@ export function SetMoodSheet({
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full rounded-2xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] py-3 text-sm font-semibold text-[#0d0d12] shadow-lg shadow-accent/25 transition-transform active:scale-98 disabled:opacity-50"
+            className="w-full rounded-2xl bg-gradient-to-r from-[#E5A962] to-[#E07A5F] py-3 text-sm font-semibold text-white shadow-lg shadow-accent/25 transition-transform active:scale-98 disabled:opacity-50"
           >
             {isSubmitting ? "Saving Vibe..." : "Share My Vibe Instantly ✨"}
           </button>

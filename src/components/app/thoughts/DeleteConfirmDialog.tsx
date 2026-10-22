@@ -40,9 +40,9 @@ export function DeleteConfirmDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-sm border-rose-500/30 bg-[#16121d]/95 text-foreground backdrop-blur-2xl shadow-2xl p-6 sm:rounded-3xl">
+      <DialogContent className="max-w-sm border-border/70 bg-card/95 text-foreground backdrop-blur-2xl shadow-panel p-6 sm:rounded-3xl">
         <DialogTitle className="flex items-center gap-2.5 font-serif text-lg font-bold text-foreground">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-rose-500/20 text-rose-300">
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-rose-500/15 text-rose-600">
             <Trash2 className="h-4 w-4" />
           </div>
           <span>Delete Entry?</span>
@@ -51,7 +51,7 @@ export function DeleteConfirmDialog({
           Are you sure you want to permanently delete this {thought.kind}? This action cannot be undone.
         </DialogDescription>
 
-        <div className="mt-4 rounded-xl border border-white/5 bg-white/[0.02] p-3 text-xs italic text-muted-foreground line-clamp-2">
+        <div className="mt-4 rounded-xl border border-border/60 bg-background/50 p-3 text-xs italic text-muted-foreground line-clamp-2">
           "{thought.body}"
         </div>
 
@@ -59,7 +59,7 @@ export function DeleteConfirmDialog({
           <button
             type="button"
             onClick={() => onOpenChange(false)}
-            className="rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-white/10"
+            className="rounded-2xl border border-border/70 bg-background/60 px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-accent/10"
           >
             Cancel
           </button>

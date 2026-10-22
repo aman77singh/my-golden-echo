@@ -248,30 +248,30 @@ export function CycleScreen() {
         return {
           title: "Menstrual Phase",
           emoji: "🌸",
-          accentColor: "from-rose-500/20 via-[#26151e] to-rose-900/10",
-          textColor: "text-rose-300",
-          borderColor: "border-rose-500/30",
-          badgeBg: "bg-rose-500/15 border-rose-400/30 text-rose-300",
+          accentColor: "from-rose-500/15 via-card to-rose-500/5",
+          textColor: "text-rose-600",
+          borderColor: "border-rose-400/40",
+          badgeBg: "bg-rose-500/15 border-rose-400/30 text-rose-600",
           vibe: "Restorative nesting, quiet comfort, warm broths & snuggles",
         };
       case "follicular":
         return {
           title: "Follicular Phase",
           emoji: "🌱",
-          accentColor: "from-emerald-500/20 via-[#18241d] to-teal-900/10",
-          textColor: "text-emerald-300",
-          borderColor: "border-emerald-500/30",
-          badgeBg: "bg-emerald-500/15 border-emerald-400/30 text-emerald-300",
+          accentColor: "from-emerald-500/15 via-card to-teal-500/5",
+          textColor: "text-emerald-700",
+          borderColor: "border-emerald-500/40",
+          badgeBg: "bg-emerald-500/15 border-emerald-400/30 text-emerald-700",
           vibe: "Rising vitality, creative clarity, adventurous energy & fresh starts",
         };
       case "ovulatory":
         return {
           title: "Ovulatory Phase",
           emoji: "✨",
-          accentColor: "from-amber-500/20 via-[#251f15] to-orange-900/10",
-          textColor: "text-amber-300",
-          borderColor: "border-amber-500/30",
-          badgeBg: "bg-amber-500/15 border-amber-400/30 text-amber-300",
+          accentColor: "from-amber-500/15 via-card to-orange-500/5",
+          textColor: "text-amber-700",
+          borderColor: "border-amber-500/40",
+          badgeBg: "bg-amber-500/15 border-amber-400/30 text-amber-700",
           vibe: "Peak radiance, confidence, social magnetism & deep romance",
         };
       case "luteal":
@@ -279,10 +279,10 @@ export function CycleScreen() {
         return {
           title: "Luteal Phase",
           emoji: "🌙",
-          accentColor: "from-purple-500/20 via-[#201526] to-pink-900/10",
-          textColor: "text-purple-300",
-          borderColor: "border-purple-500/30",
-          badgeBg: "bg-purple-500/15 border-purple-400/30 text-purple-300",
+          accentColor: "from-purple-500/15 via-card to-pink-500/5",
+          textColor: "text-purple-700",
+          borderColor: "border-purple-400/40",
+          badgeBg: "bg-purple-500/15 border-purple-400/30 text-purple-700",
           vibe: "Gentle inward reflection, cozy movie nights, sweet comfort treats",
         };
     }
@@ -314,7 +314,7 @@ export function CycleScreen() {
               Understanding her natural rhythms with care
             </p>
           </div>
-          <div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-muted-foreground">
+          <div className="flex items-center gap-1.5 rounded-full border border-border/70 bg-card/80 px-3 py-1 text-xs text-muted-foreground">
             <Lock className="h-3.5 w-3.5" />
             <span>Private</span>
           </div>
@@ -323,9 +323,9 @@ export function CycleScreen() {
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-[#1c1926] via-[#14121c] to-[#121118] p-8 text-center shadow-xl"
+          className="relative overflow-hidden rounded-3xl border border-border/70 bg-card/90 p-8 text-center shadow-panel"
         >
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-3xl bg-rose-500/15 text-rose-300 border border-rose-500/30 shadow-lg shadow-rose-500/10">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-3xl bg-rose-500/15 text-rose-600 border border-rose-500/30 shadow-lg shadow-rose-500/10">
             <Heart className="h-8 w-8 fill-current" />
           </div>
 
@@ -403,9 +403,9 @@ export function CycleScreen() {
             type="button"
             onClick={() => setDoctorReportOpen(true)}
             title="Export Doctor Visit PDF"
-            className="flex h-9 w-9 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground active:scale-95 transition-all"
+            className="flex h-9 w-9 items-center justify-center rounded-2xl border border-border/70 bg-card/80 text-muted-foreground hover:bg-card hover:text-foreground active:scale-95 transition-all shadow-xs"
           >
-            <FileText className="h-4 w-4 text-rose-300" />
+            <FileText className="h-4 w-4 text-rose-600" />
           </button>
 
           {/* If Her: Sharing Privacy Toggle */}
@@ -418,8 +418,8 @@ export function CycleScreen() {
               title={myShareCycle ? "Shared with partner" : "Private"}
               className={`flex items-center gap-1.5 rounded-2xl border px-3 py-1.5 text-xs font-semibold transition-all active:scale-95 ${
                 myShareCycle
-                  ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300 shadow-sm"
-                  : "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10"
+                  ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 shadow-sm"
+                  : "border-border/70 bg-card/80 text-muted-foreground hover:bg-card"
               }`}
             >
               {myShareCycle ? (
@@ -497,7 +497,7 @@ export function CycleScreen() {
           </div>
 
           {/* Circular Phase Centerpiece */}
-          <div className="my-5 relative flex h-36 w-36 items-center justify-center rounded-full border-4 border-white/10 bg-black/20 shadow-inner">
+          <div className="my-5 relative flex h-36 w-36 items-center justify-center rounded-full border-4 border-border/70 bg-background/50 shadow-inner">
             <div className="flex flex-col items-center">
               <span className="text-4xl">{phaseInfo.emoji}</span>
               <h3 className="mt-1 font-serif text-lg font-bold text-foreground">
@@ -518,11 +518,11 @@ export function CycleScreen() {
           {/* Predictions Summary Pill */}
           {prediction && (
             <div className="mt-4 flex flex-wrap justify-center gap-2 text-[11px] text-muted-foreground/90">
-              <span className="rounded-xl border border-white/10 bg-white/5 px-2.5 py-1">
+              <span className="rounded-xl border border-border/70 bg-background/60 px-2.5 py-1">
                 📅 Next Period: {format(prediction.expectedNextStart, "MMM d")} (±
                 {prediction.stdDev}d)
               </span>
-              <span className="rounded-xl border border-white/10 bg-white/5 px-2.5 py-1">
+              <span className="rounded-xl border border-border/70 bg-background/60 px-2.5 py-1">
                 🌸 Ovulation ~ {format(prediction.ovulationDate, "MMM d")}
               </span>
             </div>
@@ -537,7 +537,7 @@ export function CycleScreen() {
 
       {/* Period Logging Quick Actions (For Her) */}
       {isHer && (
-        <div className="rounded-3xl border border-white/10 bg-[#161522]/90 p-4">
+        <div className="rounded-3xl border border-border/70 bg-card/90 p-4 shadow-panel">
           <div className="flex items-center justify-between mb-3">
             <h4 className="font-serif text-sm font-bold text-foreground flex items-center gap-1.5">
               <Droplet className="h-4 w-4 text-rose-400" />
@@ -596,7 +596,7 @@ export function CycleScreen() {
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
-                  className="rounded-2xl border border-white/10 bg-white/[0.03] p-3 space-y-2.5"
+                  className="rounded-2xl border border-border/70 bg-background/50 p-3 space-y-2.5"
                 >
                   <label className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
                     Select Today's Flow
@@ -609,8 +609,8 @@ export function CycleScreen() {
                         onClick={() => setSelectedFlow(f.id)}
                         className={`flex flex-col items-center justify-center rounded-xl border py-2 text-xs transition-all ${
                           selectedFlow === f.id
-                            ? "border-rose-400 bg-rose-400/20 font-bold text-rose-200 shadow-sm"
-                            : "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10"
+                            ? "border-rose-400 bg-rose-400/20 font-bold text-rose-700 shadow-sm"
+                            : "border-border/70 bg-card/80 text-muted-foreground hover:bg-card"
                         }`}
                       >
                         <span className="text-base">{f.icon}</span>
@@ -623,7 +623,7 @@ export function CycleScreen() {
                     <button
                       type="button"
                       onClick={() => setIsLoggingFlow(false)}
-                      className="rounded-xl border border-white/10 px-3 py-1 text-xs text-muted-foreground hover:bg-white/10"
+                      className="rounded-xl border border-border/70 bg-card/80 px-3 py-1 text-xs text-muted-foreground hover:bg-card"
                     >
                       Cancel
                     </button>
@@ -648,7 +648,7 @@ export function CycleScreen() {
       )}
 
       {/* Interactive Calendar with Period, Prediction, Fertile, & Ovulation Days */}
-      <div className="rounded-3xl border border-white/10 bg-[#161522]/90 p-5 shadow-lg">
+      <div className="rounded-3xl border border-border/70 bg-card/90 p-5 shadow-panel">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <CalendarIcon className="h-4 w-4 text-rose-400" />
@@ -661,14 +661,14 @@ export function CycleScreen() {
             <button
               type="button"
               onClick={() => setCurrentMonth((prev) => subMonths(prev, 1))}
-              className="flex h-7 w-7 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+              className="flex h-7 w-7 items-center justify-center rounded-lg border border-border/70 bg-background/60 text-muted-foreground hover:bg-card hover:text-foreground"
             >
               <ChevronLeft className="h-3.5 w-3.5" />
             </button>
             <button
               type="button"
               onClick={() => setCurrentMonth((prev) => addMonths(prev, 1))}
-              className="flex h-7 w-7 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+              className="flex h-7 w-7 items-center justify-center rounded-lg border border-border/70 bg-background/60 text-muted-foreground hover:bg-card hover:text-foreground"
             >
               <ChevronRight className="h-3.5 w-3.5" />
             </button>
@@ -775,7 +775,7 @@ export function CycleScreen() {
         </div>
 
         {/* Selected Date Details */}
-        <div className="mt-4 border-t border-white/10 pt-3">
+        <div className="mt-4 border-t border-border/60 pt-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-foreground">
               {format(selectedCalendarDate, "EEEE, MMMM d, yyyy")}
@@ -784,7 +784,7 @@ export function CycleScreen() {
               <button
                 type="button"
                 onClick={() => setLogSymptomOpen(true)}
-                className="text-[11px] font-semibold text-rose-300 hover:underline"
+                className="text-[11px] font-semibold text-rose-600 hover:underline"
               >
                 + Log symptoms for this day
               </button>
@@ -792,9 +792,9 @@ export function CycleScreen() {
           </div>
 
           {selectedDateLog ? (
-            <div className="mt-2.5 rounded-2xl border border-white/10 bg-white/[0.03] p-3 text-xs space-y-2">
+            <div className="mt-2.5 rounded-2xl border border-border/70 bg-background/50 p-3 text-xs space-y-2">
               <div className="flex items-center justify-between">
-                <span className="font-semibold text-rose-300">
+                <span className="font-semibold text-rose-600">
                   Mood: {selectedDateLog.mood || "Not specified"}
                 </span>
                 {selectedDateLog.pain !== undefined && (
@@ -807,7 +807,7 @@ export function CycleScreen() {
                 {selectedDateLog.symptoms.map((s) => (
                   <span
                     key={s}
-                    className="rounded-lg border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-foreground/80"
+                    className="rounded-lg border border-border/70 bg-card/80 px-2 py-0.5 text-[10px] text-foreground/80"
                   >
                     {s}
                   </span>
@@ -823,7 +823,7 @@ export function CycleScreen() {
       </div>
 
       {/* Phase Suggestions Cards (from suggestions.json) */}
-      <div className="rounded-3xl border border-white/10 bg-[#161522]/90 p-5 shadow-lg">
+      <div className="rounded-3xl border border-border/70 bg-card/90 p-5 shadow-panel">
         <div className="flex items-center gap-2 mb-3">
           <Sparkles className="h-4 w-4 text-amber-400" />
           <h4 className="font-serif text-sm font-bold text-foreground">
@@ -848,7 +848,7 @@ export function CycleScreen() {
 
       {/* Symptom Insights after 3+ Cycles */}
       {insights.length > 0 && (
-        <div className="rounded-3xl border border-white/10 bg-[#161522]/90 p-5 shadow-lg">
+        <div className="rounded-3xl border border-border/70 bg-card/90 p-5 shadow-panel">
           <div className="flex items-center gap-2 mb-3">
             <TrendingUp className="h-4 w-4 text-rose-400" />
             <h4 className="font-serif text-sm font-bold text-foreground">
