@@ -276,6 +276,8 @@ export function PasswordGate({ onUnlock, onClose }: { onUnlock: () => void; onCl
 
     if (
       inputClean === correctPasscode ||
+      inputClean === "aditi14" ||
+      normalized === "aditi14" ||
       inputClean === "14/27" ||
       normalized === "1427" ||
       inputClean === "14-27" ||
@@ -782,7 +784,7 @@ export function Sidebar({
     <nav aria-label="Story sections" className="flex flex-col gap-1">
       {navItems.map((item, index) => {
         const isHome = item.id === "home";
-        const displayLabel = !authenticated && !isHome ? "???" : item.label;
+        const displayLabel = !authenticated && !isHome ? "????" : item.label;
         const isBonusLocked = item.id === "bonus" && !unlocked;
         const isItemLocked = !authenticated ? !isHome : isBonusLocked;
         const isActive = activePath === item.path;

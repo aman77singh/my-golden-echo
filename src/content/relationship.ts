@@ -22,8 +22,8 @@ export const relationshipContent = {
   },
   security: {
     enabled: true,
-    password: "14/27",
-    passcodePlaceholder: "Enter password...",
+    password: "ADITI14",
+    passcodePlaceholder: "Enter password (e.g. ADITI14)...",
     puzzleQuestion: "The date of 1st Hi",
     puzzleAnswer: "4",
     puzzlePlaceholder: "Enter the date (e.g. 18)...",
