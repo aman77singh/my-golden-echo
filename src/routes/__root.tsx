@@ -167,8 +167,10 @@ function RootComponent() {
   useEffect(() => {
     try {
       if (typeof window !== "undefined") {
-        sessionStorage.removeItem("is-authenticated");
-        localStorage.removeItem("is-authenticated");
+        const isAuth = sessionStorage.getItem("is-authenticated") === "true";
+        if (isAuth) {
+          setAuthenticated(true);
+        }
         if (!sessionStorage.getItem("has-seen-intro")) {
           setIntro(true);
         }
@@ -182,9 +184,7 @@ function RootComponent() {
 
   const unlocked = requiredSections.every((id) => visited.has(id));
   const ourSong = content.spotify.tracks[activeTrack]?.isOurSong && playing;
-  const [showGateOnHome, setShowGateOnHome] = useState(false);
-  const isHome = pathname === "/";
-  const shouldShowGate = !authenticated && (!isHome || showGateOnHome);
+  const shouldShowGate = isSecurityEnabled && !authenticated;
 
   useEffect(() => {
     const sectionId = pathToId[pathname];
@@ -206,12 +206,20 @@ function RootComponent() {
 
   const handleUnlock = () => {
     setAuthenticated(true);
-    setShowGateOnHome(false);
+    try {
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("is-authenticated", "true");
+      }
+    } catch {}
   };
 
   const handleLock = () => {
     setAuthenticated(false);
-    setShowGateOnHome(true);
+    try {
+      if (typeof window !== "undefined") {
+        sessionStorage.removeItem("is-authenticated");
+      }
+    } catch {}
   };
 
   const handleDoneIntro = () => {
@@ -232,6 +240,17 @@ function RootComponent() {
     );
   }
 
+  // If not authenticated, lock the entire Keepsake behind the Password & Butterfly Gate
+  if (shouldShowGate) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <HeartCursor />
+        <PasswordGate onUnlock={handleUnlock} />
+        <div className="pointer-events-none fixed inset-0 z-[80] opacity-[.035] mix-blend-multiply film-grain" aria-hidden="true" />
+      </QueryClientProvider>
+    );
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
       <div className={ourSong ? "our-song" : ""}>
@@ -245,7 +264,6 @@ function RootComponent() {
         <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-border/60 bg-background/85 p-7 backdrop-blur-xl lg:flex lg:flex-col">
           <Link
             to="/"
-            onClick={() => setShowGateOnHome(false)}
             className="mb-14 text-left"
           >
             <span className="font-display text-2xl font-bold tracking-tight text-foreground">
@@ -261,7 +279,6 @@ function RootComponent() {
             unlocked={unlocked}
             authenticated={authenticated}
             onLock={handleLock}
-            onHomeClick={() => setShowGateOnHome(false)}
           />
           <p className="mt-auto text-[9px] uppercase tracking-[.24em] text-muted-foreground font-sans">
             Made for one person only
@@ -291,10 +308,6 @@ function RootComponent() {
                   setMenuOpen(false);
                   handleLock();
                 }}
-                onHomeClick={() => {
-                  setMenuOpen(false);
-                  setShowGateOnHome(false);
-                }}
               />
             </SheetContent>
           </Sheet>
@@ -305,14 +318,7 @@ function RootComponent() {
 
         {/* Main Content View Container */}
         <main className="min-h-screen overflow-hidden lg:pl-64">
-          {shouldShowGate ? (
-            <PasswordGate
-              onUnlock={handleUnlock}
-              onClose={() => setShowGateOnHome(false)}
-            />
-          ) : (
-            <Outlet />
-          )}
+          <Outlet />
         </main>
 
         <div className="pointer-events-none fixed inset-0 z-[80] opacity-[.035] mix-blend-multiply film-grain" aria-hidden="true" />

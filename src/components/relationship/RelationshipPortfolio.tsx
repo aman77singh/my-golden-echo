@@ -739,14 +739,22 @@ export function PasswordGate({ onUnlock, onClose }: { onUnlock: () => void; onCl
           </Button>
         </form>
 
-        <div className="mt-6 border-t border-border/50 pt-4 text-center">
-          <Link
-            to="/"
-            onClick={onClose}
-            className="font-sans text-xs text-muted-foreground hover:text-accent underline transition-colors"
+        <div className="mt-6 border-t border-border/50 pt-4 flex flex-col items-center gap-2 text-center">
+          {onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              className="font-sans text-xs text-muted-foreground hover:text-accent underline transition-colors"
+            >
+              ← Back to Home / Us
+            </button>
+          )}
+          <a
+            href="/app"
+            className="font-sans text-xs font-semibold text-accent hover:underline transition-colors flex items-center gap-1.5"
           >
-            ← Back to Home / Us
-          </Link>
+            <span>Going to Our Couple Phone App? Open App 📱 ↗</span>
+          </a>
         </div>
       </motion.div>
     </motion.div>
