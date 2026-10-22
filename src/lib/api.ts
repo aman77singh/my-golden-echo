@@ -1,4 +1,7 @@
 export function getApiBaseUrl(): string {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
   if (typeof window !== "undefined") {
     const host = window.location.hostname;
     if (host === "localhost" || host === "127.0.0.1") {
@@ -7,10 +10,6 @@ export function getApiBaseUrl(): string {
     if (host.startsWith("192.168.") || host.startsWith("10.") || host.startsWith("172.")) {
       return `http://${host}:5001`;
     }
-  }
-  const envUrl = import.meta.env.VITE_API_URL;
-  if (envUrl && !envUrl.includes("our-space-backend-8qkm")) {
-    return envUrl;
   }
   return "http://localhost:5001";
 }
@@ -60,12 +59,58 @@ export function setStoredUser(user: CurrentUser | null) {
   window.dispatchEvent(new Event("our_space_auth_changed"));
 }
 
+let isRefreshing = false;
+let refreshPromise: Promise<string | null> | null = null;
+
+export async function refreshToken(): Promise<string | null> {
+  if (isRefreshing && refreshPromise) {
+    return refreshPromise;
+  }
+
+  isRefreshing = true;
+  refreshPromise = (async () => {
+    try {
+      const baseUrl = getApiBaseUrl();
+      const res = await fetch(`${baseUrl}/auth/refresh`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        setStoredToken(null);
+        setStoredUser(null);
+        return null;
+      }
+
+      const data = await res.json();
+      if (data.accessToken) {
+        setStoredToken(data.accessToken);
+        if (data.user) {
+          setStoredUser(data.user);
+        }
+        return data.accessToken;
+      }
+      return null;
+    } catch (err) {
+      console.warn("Token refresh failed:", err);
+      return null;
+    } finally {
+      isRefreshing = false;
+      refreshPromise = null;
+    }
+  })();
+
+  return refreshPromise;
+}
+
 /**
- * Perform authenticated API request to backend
+ * Perform authenticated API request to backend with automatic 401 refresh
  */
 export async function apiFetch<T = any>(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
+  isRetry = false
 ): Promise<T> {
   let token = getStoredToken();
   if (token === "demo-token") {
@@ -83,12 +128,14 @@ export async function apiFetch<T = any>(
     headers.set("Authorization", `Bearer ${token}`);
   }
 
-  headers.set("Bypass-Tunnel-Reminder", "true");
-
   const baseUrl = getApiBaseUrl();
   const url = endpoint.startsWith("http")
     ? endpoint
     : `${baseUrl}${endpoint.startsWith("/") ? "" : "/"}${endpoint}`;
+
+  if (url.includes("loca.lt")) {
+    headers.set("Bypass-Tunnel-Reminder", "true");
+  }
 
   let response = await fetch(url, {
     ...options,
@@ -96,9 +143,15 @@ export async function apiFetch<T = any>(
     credentials: "include",
   });
 
-  if (response.status === 401 && !endpoint.includes("/auth/")) {
-    setStoredToken(null);
-    setStoredUser(null);
+  // Handle 401 with automatic token refresh and single retry
+  if (response.status === 401 && !endpoint.includes("/auth/") && !isRetry) {
+    const newToken = await refreshToken();
+    if (newToken) {
+      return apiFetch<T>(endpoint, options, true);
+    } else {
+      setStoredToken(null);
+      setStoredUser(null);
+    }
   }
 
   if (!response.ok) {

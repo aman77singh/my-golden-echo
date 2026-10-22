@@ -1,9 +1,10 @@
 import { io, Socket } from "socket.io-client";
 import { QueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { getApiBaseUrl, getStoredToken } from "./api";
+import { getApiBaseUrl, getStoredToken, getStoredUser, refreshToken } from "./api";
 
 let socket: Socket | null = null;
+let registeredQueryClient: QueryClient | null = null;
 
 export function getSocket(): Socket | null {
   return socket;
@@ -12,6 +13,7 @@ export function getSocket(): Socket | null {
 export function connectSocket(queryClient: QueryClient): Socket | null {
   if (typeof window === "undefined") return null;
 
+  registeredQueryClient = queryClient;
   const token = getStoredToken();
   if (!token) return null;
 
@@ -24,11 +26,17 @@ export function connectSocket(queryClient: QueryClient): Socket | null {
     socket.disconnect();
   }
 
-  socket = io(getApiBaseUrl(), {
-    auth: { token },
-    extraHeaders: {
-      "Bypass-Tunnel-Reminder": "true",
+  const baseUrl = getApiBaseUrl();
+  const extraHeaders: Record<string, string> = {};
+  if (baseUrl.includes("loca.lt")) {
+    extraHeaders["Bypass-Tunnel-Reminder"] = "true";
+  }
+
+  socket = io(baseUrl, {
+    auth: (cb) => {
+      cb({ token: getStoredToken() });
     },
+    extraHeaders,
     transports: ["websocket", "polling"],
     reconnection: true,
     reconnectionAttempts: Infinity,
@@ -39,14 +47,26 @@ export function connectSocket(queryClient: QueryClient): Socket | null {
 
   socket.on("connect", () => {
     console.log("🌟 Connected to Our Space real-time gateway:", socket?.id);
+    queryClient.invalidateQueries({ queryKey: ["moods"] });
+    queryClient.invalidateQueries({ queryKey: ["notes"] });
+    queryClient.invalidateQueries({ queryKey: ["progress"] });
+    queryClient.invalidateQueries({ queryKey: ["messages"] });
+    queryClient.invalidateQueries({ queryKey: ["thoughts"] });
   });
 
   socket.on("disconnect", (reason) => {
     console.log("Real-time gateway disconnected:", reason);
   });
 
-  socket.on("connect_error", (error) => {
+  socket.on("connect_error", async (error) => {
     console.warn("Socket connection error:", error.message);
+    const msg = error.message?.toLowerCase() || "";
+    if (msg.includes("jwt") || msg.includes("auth") || msg.includes("unauthorized") || msg.includes("token")) {
+      const refreshed = await refreshToken();
+      if (refreshed && socket) {
+        socket.connect();
+      }
+    }
   });
 
   // 1. Real-time Mood Update (instant 0ms cache update)
@@ -67,7 +87,7 @@ export function connectSocket(queryClient: QueryClient): Socket | null {
       return {
         ...prev,
         mine: isMine ? data.mood : prev.mine,
-        partner: !isMine ? data.mood : data.mood,
+        partner: !isMine ? data.mood : prev.partner,
         partnerName: !isMine && data.userName ? data.userName : prev.partnerName,
       };
     });
@@ -212,3 +232,24 @@ export function disconnectSocket() {
     socket = null;
   }
 }
+
+if (typeof window !== "undefined") {
+  const handleForegroundOrOnline = () => {
+    if (document.visibilityState === "visible" || navigator.onLine) {
+      if (socket && !socket.connected) {
+        socket.connect();
+      }
+      if (registeredQueryClient) {
+        registeredQueryClient.invalidateQueries({ queryKey: ["moods"] });
+        registeredQueryClient.invalidateQueries({ queryKey: ["notes"] });
+        registeredQueryClient.invalidateQueries({ queryKey: ["progress"] });
+        registeredQueryClient.invalidateQueries({ queryKey: ["messages"] });
+        registeredQueryClient.invalidateQueries({ queryKey: ["thoughts"] });
+      }
+    }
+  };
+
+  window.addEventListener("visibilitychange", handleForegroundOrOnline);
+  window.addEventListener("online", handleForegroundOrOnline);
+}
+

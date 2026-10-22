@@ -65,7 +65,7 @@ export function createApp() {
       },
       credentials: true,
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-      allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "X-Jobs-Secret", "X-Cron-Secret"],
+      allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "X-Jobs-Secret", "X-Cron-Secret", "Bypass-Tunnel-Reminder"],
     })
   );
 

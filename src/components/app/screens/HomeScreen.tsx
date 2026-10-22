@@ -150,27 +150,13 @@ export function HomeScreen() {
     return hoursAgo < 24 ? note : null;
   }, [badDayNotes]);
 
-  // Fetch Latest Moods with offline-resilient local cache fallback and 2.5s fast polling
+  // Fetch Latest Moods with backup 5s polling without swallowing errors or wiping partner
   const { data: moodsData, isLoading: isLoadingMoods } = useQuery<LatestMoodsResponse>({
     queryKey: ["moods", "latest"],
-    refetchInterval: 2500,
-    refetchIntervalInBackground: true,
+    refetchInterval: 5000,
+    refetchIntervalInBackground: false,
     queryFn: async () => {
-      try {
-        const res = await apiFetch<LatestMoodsResponse>("/moods/latest");
-        if (res?.mine) {
-          localStorage.setItem("our_space_cached_mine_mood", JSON.stringify(res.mine));
-        }
-        return res;
-      } catch (err) {
-        const cached = localStorage.getItem("our_space_cached_mine_mood");
-        if (cached) {
-          try {
-            return { mine: JSON.parse(cached), partner: null };
-          } catch {}
-        }
-        return { mine: null, partner: null };
-      }
+      return await apiFetch<LatestMoodsResponse>("/moods/latest");
     },
   });
 
@@ -180,29 +166,13 @@ export function HomeScreen() {
     queryFn: () => apiFetch("/progress/status"),
   });
 
-  // Mutation to set mood with local persistence and offline resilience
+  // Mutation to set mood with optimistic UI and clean error rollback
   const setMoodMutation = useMutation({
     mutationFn: async (newMood: { emoji: string; energy: number; note?: string }) => {
-      const optimisticMood: Mood = {
-        _id: "local-" + Date.now(),
-        coupleId: storedUser?.coupleId || "couple-1",
-        userId: storedUser?.id || "user-1",
-        emoji: newMood.emoji,
-        energy: newMood.energy,
-        note: newMood.note,
-        createdAt: new Date().toISOString(),
-      };
-      localStorage.setItem("our_space_cached_mine_mood", JSON.stringify(optimisticMood));
-
-      try {
-        return await apiFetch<any>("/moods", {
-          method: "POST",
-          body: JSON.stringify(newMood),
-        });
-      } catch (err) {
-        console.warn("Backend sync offline, stored locally on device:", err);
-        return { mood: optimisticMood, offline: true };
-      }
+      return await apiFetch<any>("/moods", {
+        method: "POST",
+        body: JSON.stringify(newMood),
+      });
     },
     onMutate: async (newMood) => {
       await queryClient.cancelQueries({ queryKey: ["moods", "latest"] });
@@ -217,24 +187,18 @@ export function HomeScreen() {
         createdAt: new Date().toISOString(),
       };
 
-      if (prev) {
-        queryClient.setQueryData<LatestMoodsResponse>(["moods", "latest"], {
-          ...prev,
-          mine: optimisticMood,
-        });
-      } else {
-        queryClient.setQueryData<LatestMoodsResponse>(["moods", "latest"], {
-          mine: optimisticMood,
-          partner: null,
-        });
-      }
+      queryClient.setQueryData<LatestMoodsResponse>(["moods", "latest"], {
+        mine: optimisticMood,
+        partner: prev?.partner || null,
+        partnerName: prev?.partnerName,
+      });
       return { prev };
     },
-    onError: (_err: any, _newMood, context) => {
+    onError: (err: any, _newMood, context) => {
       if (context?.prev) {
         queryClient.setQueryData(["moods", "latest"], context.prev);
       }
-      toast.info("Vibe saved on device! Will sync with cloud 💕");
+      toast.error(err?.message || "Failed to share vibe. Please check your connection.");
     },
     onSuccess: (data: any) => {
       const savedMood: Mood = data?.mood || data;
@@ -245,6 +209,7 @@ export function HomeScreen() {
           mine: savedMood,
         };
       });
+      queryClient.invalidateQueries({ queryKey: ["moods", "latest"] });
       queryClient.invalidateQueries({ queryKey: ["moods", "history"] });
       toast.success("Vibe shared with " + (partnerName || "your partner") + " 💕");
     },
