@@ -45,7 +45,16 @@ export function createApp() {
         if (!origin && env.NODE_ENV !== "production") {
           return callback(null, true);
         }
-        if (!origin || allowedOrigins.includes(origin)) {
+        if (
+          !origin ||
+          allowedOrigins.includes("*") ||
+          allowedOrigins.includes(origin) ||
+          origin.startsWith("http://localhost:") ||
+          origin.startsWith("http://127.0.0.1:") ||
+          origin.startsWith("http://192.168.") ||
+          origin.endsWith(".lovable.app") ||
+          origin.endsWith(".lovableproject.com")
+        ) {
           return callback(null, true);
         }
         callback(new Error(`CORS blocked for origin: ${origin}`));
