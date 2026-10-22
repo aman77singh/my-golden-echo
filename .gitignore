@@ -21,8 +21,9 @@ dist-ssr
 server/dist
 server/node_modules
 
-# Wrangler / Cloudflare
+# Wrangler / Cloudflare / Vercel
 .wrangler/
+.vercel/
 .dev.vars
 
 # Editor directories and files
