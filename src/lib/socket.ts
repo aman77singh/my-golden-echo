@@ -1,7 +1,7 @@
 import { io, Socket } from "socket.io-client";
 import { QueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { API_BASE_URL, getStoredToken } from "./api";
+import { getApiBaseUrl, getStoredToken } from "./api";
 
 let socket: Socket | null = null;
 
@@ -24,7 +24,7 @@ export function connectSocket(queryClient: QueryClient): Socket | null {
     socket.disconnect();
   }
 
-  socket = io(API_BASE_URL, {
+  socket = io(getApiBaseUrl(), {
     auth: { token },
     transports: ["websocket", "polling"],
     reconnection: true,

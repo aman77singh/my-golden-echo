@@ -165,41 +165,50 @@ export function HomeScreen() {
   // Mutation to set mood
   const setMoodMutation = useMutation({
     mutationFn: (newMood: { emoji: string; energy: number; note?: string }) =>
-      apiFetch<{ mood: Mood }>("/moods", {
+      apiFetch<any>("/moods", {
         method: "POST",
         body: JSON.stringify(newMood),
       }),
     onMutate: async (newMood) => {
       await queryClient.cancelQueries({ queryKey: ["moods", "latest"] });
       const prev = queryClient.getQueryData<LatestMoodsResponse>(["moods", "latest"]);
+      const optimisticMood: Mood = {
+        _id: "temp-" + Date.now(),
+        coupleId: storedUser?.coupleId || "",
+        userId: storedUser?.id || "",
+        emoji: newMood.emoji,
+        energy: newMood.energy,
+        note: newMood.note,
+        createdAt: new Date().toISOString(),
+      };
+
       if (prev) {
         queryClient.setQueryData<LatestMoodsResponse>(["moods", "latest"], {
           ...prev,
-          mine: {
-            _id: "temp-" + Date.now(),
-            coupleId: storedUser?.coupleId || "",
-            userId: storedUser?.id || "",
-            emoji: newMood.emoji,
-            energy: newMood.energy,
-            note: newMood.note,
-            createdAt: new Date().toISOString(),
-          },
+          mine: optimisticMood,
+        });
+      } else {
+        queryClient.setQueryData<LatestMoodsResponse>(["moods", "latest"], {
+          mine: optimisticMood,
+          partner: null,
         });
       }
       return { prev };
     },
-    onError: (_err, _newMood, context) => {
+    onError: (err: any, _newMood, context) => {
       if (context?.prev) {
         queryClient.setQueryData(["moods", "latest"], context.prev);
       }
-      toast.error("Failed to save vibe. Please try again.");
+      const message = err?.message || "Failed to save vibe. Please try again.";
+      toast.error(message);
     },
     onSuccess: (data) => {
+      const savedMood: Mood = data?.mood || data;
       queryClient.setQueryData<LatestMoodsResponse>(["moods", "latest"], (prev) => {
-        if (!prev) return prev;
+        if (!prev) return { mine: savedMood, partner: null };
         return {
           ...prev,
-          mine: data.mood,
+          mine: savedMood,
         };
       });
       queryClient.invalidateQueries({ queryKey: ["moods", "history"] });

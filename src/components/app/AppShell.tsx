@@ -35,6 +35,16 @@ export function AppShell({ children }: AppShellProps) {
   const [currentUser, setCurrentUser] = React.useState<CurrentUser | null>(() => getAuthenticatedUser());
 
   React.useEffect(() => {
+    const handleAuthChange = () => {
+      setCurrentUser(getAuthenticatedUser());
+    };
+    window.addEventListener("our_space_auth_changed", handleAuthChange);
+    return () => {
+      window.removeEventListener("our_space_auth_changed", handleAuthChange);
+    };
+  }, []);
+
+  React.useEffect(() => {
     if (currentUser) {
       connectSocket(queryClient);
 

@@ -1,5 +1,21 @@
-export const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5001";
+export function getApiBaseUrl(): string {
+  if (typeof window !== "undefined") {
+    const host = window.location.hostname;
+    if (host === "localhost" || host === "127.0.0.1") {
+      return "http://localhost:5001";
+    }
+    if (host.startsWith("192.168.") || host.startsWith("10.") || host.startsWith("172.")) {
+      return `http://${host}:5001`;
+    }
+  }
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl && !envUrl.includes("our-space-backend-8qkm")) {
+    return envUrl;
+  }
+  return "http://localhost:5001";
+}
+
+export const API_BASE_URL = getApiBaseUrl();
 
 const TOKEN_KEY = "our_space_token";
 const USER_KEY = "our_space_user";
@@ -25,6 +41,7 @@ export function setStoredToken(token: string | null) {
   } else {
     localStorage.removeItem(TOKEN_KEY);
   }
+  window.dispatchEvent(new Event("our_space_auth_changed"));
 }
 
 export function getStoredUser(): CurrentUser | null {
@@ -40,6 +57,7 @@ export function setStoredUser(user: CurrentUser | null) {
   } else {
     localStorage.removeItem(USER_KEY);
   }
+  window.dispatchEvent(new Event("our_space_auth_changed"));
 }
 
 /**
@@ -65,9 +83,10 @@ export async function apiFetch<T = any>(
     headers.set("Authorization", `Bearer ${token}`);
   }
 
+  const baseUrl = getApiBaseUrl();
   const url = endpoint.startsWith("http")
     ? endpoint
-    : `${API_BASE_URL}${endpoint.startsWith("/") ? "" : "/"}${endpoint}`;
+    : `${baseUrl}${endpoint.startsWith("/") ? "" : "/"}${endpoint}`;
 
   let response = await fetch(url, {
     ...options,
