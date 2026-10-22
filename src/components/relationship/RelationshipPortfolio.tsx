@@ -252,8 +252,13 @@ export function PasswordGate({ onUnlock, onClose }: { onUnlock: () => void; onCl
   const [showHardHintModal, setShowHardHintModal] = useState(false);
 
   const security = content.security;
-  const correctPasscode = "ADITI14";
   const butterflyHints = security?.butterflyHints || [];
+  const correctPasscode = butterflyHints
+    .map((hint) => hint.passcodePiece)
+    .filter(Boolean)
+    .join("")
+    .replace(/[^a-z0-9]/gi, "")
+    .toLowerCase();
 
   const handleAbortScare = () => {
     setScareStage("prank");
@@ -264,7 +269,8 @@ export function PasswordGate({ onUnlock, onClose }: { onUnlock: () => void; onCl
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (passcode === correctPasscode) {
+    const normalizedPasscode = passcode.replace(/[^a-z0-9]/gi, "").toLowerCase();
+    if (normalizedPasscode === correctPasscode) {
       onUnlock();
     } else {
       setError(true);

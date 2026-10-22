@@ -22,8 +22,7 @@ export const relationshipContent = {
   },
   security: {
     enabled: true,
-    password: "ADITI14",
-    passcodePlaceholder: "Enter password (e.g. ADITI14)...",
+    passcodePlaceholder: "Enter the riddle answers in order...",
     puzzleQuestion: "The date of 1st Hi",
     puzzleAnswer: "4",
     puzzlePlaceholder: "Enter the date (e.g. 18)...",
