@@ -809,6 +809,19 @@ export function Sidebar({
         );
       })}
 
+      {/* Link to Phone App */}
+      <a
+        href="/app"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group mt-2.5 flex items-center justify-between rounded-xl border border-accent/40 bg-gradient-to-r from-[#E5A962]/15 via-[#E07A5F]/15 to-[#E5A962]/15 px-3.5 py-2.5 text-left text-xs font-semibold text-accent shadow-sm transition-all hover:bg-accent/25 hover:border-accent active:scale-98"
+      >
+        <span className="flex items-center gap-2 font-sans font-medium text-foreground">
+          <span>Our Phone App 📱</span>
+        </span>
+        <span className="font-mono text-[10px] text-accent font-bold">OPEN ↗</span>
+      </a>
+
       {onLock && (
         <button
           type="button"
@@ -850,9 +863,21 @@ export function HomeView() {
         <p className="mt-7 max-w-lg text-lg leading-relaxed text-muted-foreground font-serif italic border-l-2 border-accent/50 pl-4 py-1">
           "{content.couple.tagline}"
         </p>
-        <div className="mt-6 inline-flex items-center gap-2.5 rounded-full border border-emerald-900/10 bg-[#D8EEDC] px-4 py-2 text-xs font-semibold text-[#0D7A46] shadow-xs">
-          <span className="h-2 w-2 rounded-full bg-[#0D7A46] animate-pulse" />
-          <span>{content.couple.firstName} &amp; {content.couple.secondName} · Writing Our Forever</span>
+        <div className="mt-6 flex flex-wrap items-center gap-3">
+          <div className="inline-flex items-center gap-2.5 rounded-full border border-emerald-900/10 bg-[#D8EEDC] px-4 py-2 text-xs font-semibold text-[#0D7A46] shadow-xs">
+            <span className="h-2 w-2 rounded-full bg-[#0D7A46] animate-pulse" />
+            <span>{content.couple.firstName} &amp; {content.couple.secondName} · Writing Our Forever</span>
+          </div>
+
+          <a
+            href="/app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-2 rounded-full border border-accent/40 bg-gradient-to-r from-[#E5A962]/20 to-[#E07A5F]/20 px-4 py-2 text-xs font-semibold text-accent shadow-md backdrop-blur-md transition-all hover:border-accent hover:bg-accent/30 hover:scale-105 active:scale-95"
+          >
+            <span>Our Phone App 📱</span>
+            <span className="text-[10px] font-mono opacity-80 group-hover:translate-x-0.5 transition-transform">↗</span>
+          </a>
         </div>
         <TimeTogether />
       </motion.div>

@@ -25,6 +25,7 @@ import {
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { MobileBanner } from "@/components/pwa/MobileBanner";
 
 const pathToId: Record<string, string> = {
   "/": "home",
@@ -101,7 +102,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" },
+      { name: "theme-color", content: "#0d0d12" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+      { name: "apple-mobile-web-app-title", content: "Our Space" },
       { title: "Aman & Aditi — Our Little Universe" },
       { name: "description", content: "A cinematic relationship portfolio for Aman & Aditi." },
       { name: "author", content: "Aman & Aditi" },
@@ -114,6 +119,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
+      { rel: "manifest", href: "/manifest.webmanifest" },
+      { rel: "apple-touch-icon", href: "/icons/icon-192.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&family=Italiana&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,400..700;1,400..700&display=swap" },
@@ -216,9 +223,21 @@ function RootComponent() {
     } catch {}
   };
 
+  // If user is inside the mobile app (/app), isolate layout completely
+  if (pathname.startsWith("/app")) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <Outlet />
+      </QueryClientProvider>
+    );
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
       <div className={ourSong ? "our-song" : ""}>
+        {/* Mobile visitor banner offering to open Phone App */}
+        <MobileBanner />
+
         <AnimatePresence>{intro && <Intro onDone={handleDoneIntro} />}</AnimatePresence>
         <HeartCursor />
 

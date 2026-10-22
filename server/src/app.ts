@@ -1,0 +1,94 @@
+import express from "express";
+import helmet from "helmet";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import { pinoHttp } from "pino-http";
+import { env } from "./config/env.js";
+import { logger } from "./logger.js";
+import { generalLimiter } from "./middleware/rateLimiter.js";
+import { errorHandler } from "./middleware/errorHandler.js";
+import { apiRouter } from "./routes/index.js";
+import { healthRouter } from "./routes/health.js";
+import { authRouter } from "./routes/auth.js";
+import { mediaRouter } from "./routes/media.js";
+import { cyclesRouter } from "./routes/cycles.js";
+import { thoughtsRouter } from "./routes/thoughts.js";
+import { progressRouter } from "./routes/progress.js";
+import { messagesRouter } from "./routes/messages.js";
+import { moodsRouter } from "./routes/moods.js";
+import { notesRouter } from "./routes/notes.js";
+import { coupleRouter } from "./routes/couple.js";
+import { NotFoundError } from "./utils/errors.js";
+
+export function createApp() {
+  const app = express();
+
+  // Security headers
+  app.use(helmet());
+
+  // CORS: Allow only frontend origin with credentials enabled
+  const allowedOrigins = env.CLIENT_ORIGIN.split(",").map((o) => o.trim());
+  app.use(
+    cors({
+      origin: (origin, callback) => {
+        // Allow requests with no origin (e.g. mobile apps or curl) in development/test
+        if (!origin && env.NODE_ENV !== "production") {
+          return callback(null, true);
+        }
+        if (!origin || allowedOrigins.includes(origin)) {
+          return callback(null, true);
+        }
+        callback(new Error(`CORS blocked for origin: ${origin}`));
+      },
+      credentials: true,
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+      allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+    })
+  );
+
+  // Request logging with pino-http
+  if (env.NODE_ENV !== "test") {
+    app.use(
+      pinoHttp({
+        logger,
+        autoLogging: {
+          ignore: (req) => req.url === "/health" || req.url === "/api/health",
+        },
+      })
+    );
+  }
+
+  // Rate limiting (applies to all non-test requests)
+  app.use(generalLimiter);
+
+  // Body and cookie parsing
+  app.use(express.json({ limit: "5mb" }));
+  app.use(express.urlencoded({ extended: true, limit: "5mb" }));
+  app.use(cookieParser());
+
+  // Root health and service endpoints
+  app.use("/health", healthRouter);
+  app.use("/auth", authRouter);
+  app.use("/media", mediaRouter);
+  app.use("/voice", mediaRouter);
+  app.use("/cycles", cyclesRouter);
+  app.use("/thoughts", thoughtsRouter);
+  app.use("/progress", progressRouter);
+  app.use("/messages", messagesRouter);
+  app.use("/moods", moodsRouter);
+  app.use("/notes", notesRouter);
+  app.use("/couple", coupleRouter);
+
+  // API router namespace
+  app.use("/api", apiRouter);
+
+  // Fallback 404 handler
+  app.use((_req, _res, next) => {
+    next(new NotFoundError("API endpoint not found."));
+  });
+
+  // Centralized error handler
+  app.use(errorHandler);
+
+  return app;
+}

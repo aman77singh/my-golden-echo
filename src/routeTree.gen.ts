@@ -11,12 +11,18 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApologiesRouteImport } from './routes/apologies'
+import { Route as AppRouteImport } from './routes/app'
 import { Route as LetterRouteImport } from './routes/letter'
 import { Route as MusicRouteImport } from './routes/music'
 import { Route as PhotosRouteImport } from './routes/photos'
 import { Route as SecretRouteImport } from './routes/secret'
 import { Route as ThoughtsRouteImport } from './routes/thoughts'
 import { Route as TimelineRouteImport } from './routes/timeline'
+import { Route as AppIndexRouteImport } from './routes/app/index'
+import { Route as AppChatRouteImport } from './routes/app/chat'
+import { Route as AppCycleRouteImport } from './routes/app/cycle'
+import { Route as AppProgressRouteImport } from './routes/app/progress'
+import { Route as AppThoughtsRouteImport } from './routes/app/thoughts'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -26,6 +32,11 @@ const IndexRoute = IndexRouteImport.update({
 const ApologiesRoute = ApologiesRouteImport.update({
   id: '/apologies',
   path: '/apologies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LetterRoute = LetterRouteImport.update({
@@ -58,16 +69,47 @@ const TimelineRoute = TimelineRouteImport.update({
   path: '/timeline',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppChatRoute = AppChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCycleRoute = AppCycleRouteImport.update({
+  id: '/cycle',
+  path: '/cycle',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProgressRoute = AppProgressRouteImport.update({
+  id: '/progress',
+  path: '/progress',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppThoughtsRoute = AppThoughtsRouteImport.update({
+  id: '/thoughts',
+  path: '/thoughts',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/apologies': typeof ApologiesRoute
+  '/app': typeof AppRouteWithChildren
   '/letter': typeof LetterRoute
   '/music': typeof MusicRoute
   '/photos': typeof PhotosRoute
   '/secret': typeof SecretRoute
   '/thoughts': typeof ThoughtsRoute
   '/timeline': typeof TimelineRoute
+  '/app/chat': typeof AppChatRoute
+  '/app/cycle': typeof AppCycleRoute
+  '/app/progress': typeof AppProgressRoute
+  '/app/thoughts': typeof AppThoughtsRoute
+  '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -78,29 +120,46 @@ export interface FileRoutesByTo {
   '/secret': typeof SecretRoute
   '/thoughts': typeof ThoughtsRoute
   '/timeline': typeof TimelineRoute
+  '/app/chat': typeof AppChatRoute
+  '/app/cycle': typeof AppCycleRoute
+  '/app/progress': typeof AppProgressRoute
+  '/app/thoughts': typeof AppThoughtsRoute
+  '/app': typeof AppIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/apologies': typeof ApologiesRoute
+  '/app': typeof AppRouteWithChildren
   '/letter': typeof LetterRoute
   '/music': typeof MusicRoute
   '/photos': typeof PhotosRoute
   '/secret': typeof SecretRoute
   '/thoughts': typeof ThoughtsRoute
   '/timeline': typeof TimelineRoute
+  '/app/chat': typeof AppChatRoute
+  '/app/cycle': typeof AppCycleRoute
+  '/app/progress': typeof AppProgressRoute
+  '/app/thoughts': typeof AppThoughtsRoute
+  '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/apologies'
+    | '/app'
     | '/letter'
     | '/music'
     | '/photos'
     | '/secret'
     | '/thoughts'
     | '/timeline'
+    | '/app/chat'
+    | '/app/cycle'
+    | '/app/progress'
+    | '/app/thoughts'
+    | '/app/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,21 +170,33 @@ export interface FileRouteTypes {
     | '/secret'
     | '/thoughts'
     | '/timeline'
+    | '/app/chat'
+    | '/app/cycle'
+    | '/app/progress'
+    | '/app/thoughts'
+    | '/app'
   id:
     | '__root__'
     | '/'
     | '/apologies'
+    | '/app'
     | '/letter'
     | '/music'
     | '/photos'
     | '/secret'
     | '/thoughts'
     | '/timeline'
+    | '/app/chat'
+    | '/app/cycle'
+    | '/app/progress'
+    | '/app/thoughts'
+    | '/app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApologiesRoute: typeof ApologiesRoute
+  AppRoute: typeof AppRouteWithChildren
   LetterRoute: typeof LetterRoute
   MusicRoute: typeof MusicRoute
   PhotosRoute: typeof PhotosRoute
@@ -148,6 +219,13 @@ declare module '@tanstack/react-router' {
       path: '/apologies'
       fullPath: '/apologies'
       preLoaderRoute: typeof ApologiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/letter': {
@@ -192,12 +270,66 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TimelineRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/chat': {
+      id: '/app/chat'
+      path: '/chat'
+      fullPath: '/app/chat'
+      preLoaderRoute: typeof AppChatRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/cycle': {
+      id: '/app/cycle'
+      path: '/cycle'
+      fullPath: '/app/cycle'
+      preLoaderRoute: typeof AppCycleRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/progress': {
+      id: '/app/progress'
+      path: '/progress'
+      fullPath: '/app/progress'
+      preLoaderRoute: typeof AppProgressRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/thoughts': {
+      id: '/app/thoughts'
+      path: '/thoughts'
+      fullPath: '/app/thoughts'
+      preLoaderRoute: typeof AppThoughtsRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
+
+interface AppRouteChildren {
+  AppChatRoute: typeof AppChatRoute
+  AppCycleRoute: typeof AppCycleRoute
+  AppProgressRoute: typeof AppProgressRoute
+  AppThoughtsRoute: typeof AppThoughtsRoute
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppChatRoute: AppChatRoute,
+  AppCycleRoute: AppCycleRoute,
+  AppProgressRoute: AppProgressRoute,
+  AppThoughtsRoute: AppThoughtsRoute,
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApologiesRoute: ApologiesRoute,
+  AppRoute: AppRouteWithChildren,
   LetterRoute: LetterRoute,
   MusicRoute: MusicRoute,
   PhotosRoute: PhotosRoute,

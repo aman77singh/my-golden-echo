@@ -1,0 +1,173 @@
+import React from "react";
+import { Link, useLocation } from "@tanstack/react-router";
+import { motion, AnimatePresence } from "motion/react";
+import {
+  Home,
+  MessageCircle,
+  Flame,
+  CalendarHeart,
+  Sparkles,
+  MoreHorizontal,
+  Heart,
+} from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { usePWAInstall } from "@/hooks/usePWAInstall";
+import { PWAInstallPrompt } from "@/components/pwa/PWAInstallPrompt";
+import { MoreSheet } from "@/components/app/screens/MoreSheet";
+import { Toaster } from "@/components/ui/sonner";
+import { ensureAuthenticatedSession } from "@/lib/api";
+import { connectSocket } from "@/lib/socket";
+
+interface AppShellProps {
+  children?: React.ReactNode;
+}
+
+export function AppShell({ children }: AppShellProps) {
+  const queryClient = useQueryClient();
+  const location = useLocation();
+  const pathname = location.pathname;
+  const [moreOpen, setMoreOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    ensureAuthenticatedSession()
+      .then(() => {
+        connectSocket(queryClient);
+      })
+      .catch((err) => {
+        console.warn("Session init warning:", err);
+      });
+  }, [queryClient]);
+
+  const {
+    isInstallable,
+    isInstalled,
+    isIOS,
+    showIOSPrompt,
+    setShowIOSPrompt,
+    promptInstall,
+  } = usePWAInstall();
+
+  const tabs = [
+    { to: "/app", label: "Home", icon: Home, exact: true },
+    { to: "/app/chat", label: "Chat", icon: MessageCircle },
+    { to: "/app/progress", label: "Progress", icon: Flame },
+    { to: "/app/cycle", label: "Cycle", icon: CalendarHeart },
+    { to: "/app/thoughts", label: "Thoughts", icon: Sparkles },
+  ];
+
+  return (
+    <div className="min-h-screen bg-[#0d0d12] text-foreground flex flex-col font-sans antialiased selection:bg-accent/30 selection:text-accent">
+      {/* Background Ambience */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[340px] h-[300px] bg-gradient-to-b from-[#E5A962]/10 via-[#E07A5F]/5 to-transparent blur-[80px]" />
+        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 w-[300px] h-[240px] bg-gradient-to-t from-accent/5 to-transparent blur-[70px]" />
+      </div>
+
+      {/* Mobile Shell Wrapper */}
+      <div className="relative z-10 mx-auto flex w-full max-w-md flex-1 flex-col">
+        {/* Top Header */}
+        <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-white/5 bg-[#0d0d12]/80 px-4 backdrop-blur-xl">
+          <Link to="/app" className="flex items-center gap-2">
+            <span className="flex h-7 w-7 items-center justify-center rounded-xl bg-gradient-to-tr from-[#E5A962] to-[#E07A5F] text-[#0d0d12] shadow-sm shadow-accent/30">
+              <Heart className="h-4 w-4 fill-current" />
+            </span>
+            <span className="font-display text-base font-bold tracking-tight text-foreground">
+              Our Space
+            </span>
+          </Link>
+
+          <div className="flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={() => setMoreOpen(true)}
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-muted-foreground transition-colors hover:border-accent/40 hover:bg-accent/10 hover:text-foreground active:scale-95"
+              aria-label="Open More Menu"
+            >
+              <MoreHorizontal className="h-4 w-4" />
+            </button>
+          </div>
+        </header>
+
+        {/* Tab Page Content with Fade + Slide Transition */}
+        <main className="flex-1 px-4 pt-4">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={pathname}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.28, ease: "easeInOut" }}
+              className="min-h-full"
+            >
+              {children}
+            </motion.div>
+          </AnimatePresence>
+        </main>
+
+        {/* Bottom Tab Bar */}
+        <nav
+          aria-label="App Navigation"
+          className="fixed bottom-0 inset-x-0 z-40 mx-auto max-w-md border-t border-white/10 bg-[#121118]/90 px-3 py-2 backdrop-blur-2xl"
+        >
+          <div className="flex items-center justify-between">
+            {tabs.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = tab.exact
+                ? pathname === tab.to
+                : pathname.startsWith(tab.to);
+
+              return (
+                <Link
+                  key={tab.to}
+                  to={tab.to}
+                  className={`group relative flex flex-1 flex-col items-center justify-center py-1 transition-all ${
+                    isActive ? "text-accent" : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <div
+                    className={`relative flex h-8 w-12 items-center justify-center rounded-full transition-all ${
+                      isActive ? "bg-accent/15 text-accent" : ""
+                    }`}
+                  >
+                    <Icon className="h-5 w-5 transition-transform group-active:scale-90" />
+                    {isActive && (
+                      <motion.span
+                        layoutId="activeTabBadge"
+                        className="absolute -bottom-1 h-1 w-1 rounded-full bg-accent"
+                        transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                      />
+                    )}
+                  </div>
+                  <span className="mt-1 text-[10px] font-medium tracking-tight">
+                    {tab.label}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </nav>
+      </div>
+
+      {/* PWA Prompts & Dialogs */}
+      <PWAInstallPrompt
+        isInstallable={isInstallable}
+        isInstalled={isInstalled}
+        isIOS={isIOS}
+        showIOSPrompt={showIOSPrompt}
+        setShowIOSPrompt={setShowIOSPrompt}
+        onInstall={promptInstall}
+      />
+
+      {/* More Features Menu */}
+      <MoreSheet
+        open={moreOpen}
+        onOpenChange={setMoreOpen}
+        onInstallApp={promptInstall}
+        isInstallable={isInstallable}
+      />
+
+      {/* Global Notifications */}
+      <Toaster richColors position="top-center" />
+    </div>
+  );
+}
