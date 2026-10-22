@@ -5,7 +5,6 @@ import {
   createRootRouteWithContext,
   useRouter,
   useLocation,
-  useNavigate,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -151,7 +150,6 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const location = useLocation();
-  const navigate = useNavigate();
   const pathname = location.pathname;
 
   const security = content.security;
@@ -182,8 +180,8 @@ function RootComponent() {
   }, []);
 
   const ourSong = content.spotify.tracks[activeTrack]?.isOurSong && playing;
-  const isProtectedChapter = Boolean(pathToId[pathname] && pathname !== "/");
-  const shouldShowGate = isSecurityEnabled && isProtectedChapter && !authenticated;
+  const isKeepsakePage = Boolean(pathToId[pathname]);
+  const shouldShowGate = isSecurityEnabled && isKeepsakePage && !authenticated;
 
   useEffect(() => {
     const sectionId = pathToId[pathname];
@@ -239,15 +237,12 @@ function RootComponent() {
     );
   }
 
-  // If not authenticated, lock chapters 02-08 behind the Password & Butterfly Gate
+  // Require the Keepsake password before showing its home page or chapters.
   if (shouldShowGate) {
     return (
       <QueryClientProvider client={queryClient}>
         <HeartCursor />
-        <PasswordGate
-          onUnlock={handleUnlock}
-          onClose={() => navigate({ to: "/" })}
-        />
+        <PasswordGate onUnlock={handleUnlock} />
         <div className="pointer-events-none fixed inset-0 z-[80] opacity-[.035] mix-blend-multiply film-grain" aria-hidden="true" />
       </QueryClientProvider>
     );
