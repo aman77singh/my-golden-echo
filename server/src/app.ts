@@ -77,6 +77,9 @@ export function createApp() {
   app.use(cookieParser());
 
   // Root health and service endpoints
+  app.get("/", (_req, res) => {
+    res.status(200).json({ status: "ok", service: "our-space-backend", version: "1.0.0" });
+  });
   app.use("/health", healthRouter);
   app.use("/auth", authRouter);
   app.use("/media", mediaRouter);
