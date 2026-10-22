@@ -22,10 +22,10 @@ const envSchema = z.object({
   JOBS_SECRET_KEY: z.string().default("our_space_cron_secret_tick_2026"),
   SEED_HER_NAME: z.string().default("Aditi"),
   SEED_HER_EMAIL: z.string().email().default("aditi@ourspace.local"),
-  SEED_HER_PASSWORD: z.string().min(6).default("AditiSecret123!"),
+  SEED_HER_PASSWORD: z.string().min(4).default("14/27"),
   SEED_HIM_NAME: z.string().default("Aman"),
   SEED_HIM_EMAIL: z.string().email().default("aman@ourspace.local"),
-  SEED_HIM_PASSWORD: z.string().min(6).default("AmanSecret123!"),
+  SEED_HIM_PASSWORD: z.string().min(4).default("14/27"),
   SEED_COUPLE_START_DATE: z.string().default("2025-04-16T00:00:00Z"),
 });
 

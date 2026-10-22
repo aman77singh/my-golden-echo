@@ -84,7 +84,7 @@ export async function apiFetch<T = any>(
         credentials: "include",
         body: JSON.stringify({
           email: "aman@ourspace.local",
-          password: "AmanSecret123!",
+          password: "14/27",
         }),
       });
 
@@ -162,7 +162,7 @@ export async function ensureAuthenticatedSession(): Promise<{
       method: "POST",
       body: JSON.stringify({
         email: "aman@ourspace.local",
-        password: "AmanSecret123!",
+        password: "14/27",
       }),
     });
 
