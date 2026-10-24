@@ -102,6 +102,11 @@ body.app-theme [class*="text-muted-foreground/40"],
 body.app-theme [class*="text-muted-foreground/50"],
 body.app-theme [class*="text-muted-foreground/60"] { color: var(--muted-foreground); }
 
+.app-safe-header {
+  min-height: calc(3.5rem + env(safe-area-inset-top));
+  padding-top: env(safe-area-inset-top);
+}
+
 @utility section-shell {
   min-height: 100vh;
   padding: 7rem 1.25rem;
