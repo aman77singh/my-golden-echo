@@ -179,6 +179,7 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
         result: {
           sent: number;
           failed?: number;
+          failureStatusCodes?: number[];
           skipped?: string;
           simulated?: boolean;
         };
@@ -187,10 +188,32 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
 
       if (result.simulated) {
         toast.warning("Push was simulated. The server's VAPID keys are not configured.");
-      } else if (result.sent > 0 && !result.failed) {
+      } else if (result.sent > 0 && result.failed) {
+        toast.warning(
+          `Push reached ${result.sent} device(s), but ${result.failed} failed (${result.failureStatusCodes?.filter(Boolean).join(", ") || "network error"}).`,
+        );
+      } else if (result.sent > 0) {
         toast.success("Push sent to your device. Check Notification Center.");
       } else if (result.failed) {
-        toast.error("The push service could not deliver the test alert. Please try again.");
+        const statusCodes = result.failureStatusCodes?.filter(Boolean) ?? [];
+        const statusCode = statusCodes[0];
+        if (statusCode === 401 || statusCode === 403) {
+          toast.error(
+            `The push provider rejected the server credentials (HTTP ${statusCode}). The production VAPID keys may not match.`,
+          );
+        } else if (statusCode === 400 || statusCode === 404 || statusCode === 410) {
+          toast.error(
+            `The push provider rejected this device subscription (HTTP ${statusCode}). Disable notifications, enable them again, then retry.`,
+          );
+        } else if (statusCode) {
+          toast.error(
+            `The push provider returned HTTP ${statusCode}. Please retry shortly.`,
+          );
+        } else {
+          toast.error(
+            "The push service could not connect to the provider. Check the server logs and retry.",
+          );
+        }
       } else if (result.skipped === "no_subscriptions") {
         toast.error("This account has no registered device. Enable push on this iPhone first.");
       } else if (result.skipped === "vapid_not_configured") {

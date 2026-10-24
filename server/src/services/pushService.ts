@@ -33,6 +33,7 @@ export interface PushDeliveryResult {
   sent: number;
   pruned: number;
   failed?: number;
+  failureStatusCodes?: number[];
   skipped?: string;
   simulated?: boolean;
 }
@@ -152,6 +153,7 @@ export async function sendToUser(
     let sent = 0;
     let pruned = 0;
     let failed = 0;
+    const failureStatusCodes = new Set<number>();
 
     await Promise.all(
       subscriptions.map(async (sub) => {
@@ -175,13 +177,21 @@ export async function sendToUser(
             pruned++;
           } else {
             failed++;
+            failureStatusCodes.add(
+              typeof err?.statusCode === "number" ? err.statusCode : 0
+            );
             logger.warn({ subId: sub._id, err: err?.message }, "Failed to send web push notification.");
           }
         }
       })
     );
 
-    return { sent, pruned, failed };
+    return {
+      sent,
+      pruned,
+      failed,
+      failureStatusCodes: [...failureStatusCodes].sort((a, b) => a - b),
+    };
   } catch (error: any) {
     logger.error({ err: error?.message, targetUserId }, "Error in sendToUser push delivery.");
     return { sent: 0, pruned: 0, skipped: "error" };
