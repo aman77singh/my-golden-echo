@@ -161,7 +161,7 @@ export function AppShell({ children }: AppShellProps) {
         </header>
 
         {/* Tab Page Content with Fade + Slide Transition */}
-        <main className="flex-1 px-4 pt-4">
+        <main className="min-h-0 flex-1 px-4 pt-4">
           <PrivacyLockOverlay>
             <AnimatePresence mode="wait">
               <motion.div
@@ -181,7 +181,7 @@ export function AppShell({ children }: AppShellProps) {
         {/* Bottom Tab Bar */}
         <nav
           aria-label="App Navigation"
-          className="fixed bottom-0 inset-x-0 z-40 mx-auto max-w-md border-t border-border/80 bg-card/95 px-3 py-2 backdrop-blur-2xl shadow-panel"
+          className="fixed bottom-0 inset-x-0 z-40 mx-auto max-w-md border-t border-border/80 bg-card/95 px-3 py-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] backdrop-blur-2xl shadow-panel"
         >
           <div className="flex items-center justify-between">
             {tabs.map((tab) => {

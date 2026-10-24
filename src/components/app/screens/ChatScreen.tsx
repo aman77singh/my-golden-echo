@@ -516,7 +516,7 @@ export function ChatScreen() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100dvh-9rem)] relative pb-1 sm:pb-2">
+    <div className="relative flex h-[calc(100dvh-9rem-env(safe-area-inset-top)-env(safe-area-inset-bottom))] min-h-0 flex-col pb-1 sm:pb-2">
       {/* 1. Header Status Bar */}
       <div className="shrink-0 rounded-2xl border border-border/70 bg-card/90 p-3 mb-2 backdrop-blur-md flex items-center justify-between shadow-panel">
         <div className="flex items-center gap-2.5">
@@ -573,7 +573,7 @@ export function ChatScreen() {
       {/* 3. Messages Container */}
       <div
         ref={messagesContainerRef}
-        className="flex-1 overflow-y-auto px-1 space-y-4 scroll-smooth"
+        className="min-h-0 flex-1 space-y-4 overflow-y-auto px-1 scroll-smooth"
       >
         {/* Load Older Messages Trigger */}
         {hasMoreOlder && messages.length >= 20 && (
