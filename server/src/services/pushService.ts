@@ -29,6 +29,14 @@ export interface PushNotificationPayload {
   tag?: string;
 }
 
+export interface PushDeliveryResult {
+  sent: number;
+  pruned: number;
+  failed?: number;
+  skipped?: string;
+  simulated?: boolean;
+}
+
 /**
  * Check if the user is currently within their configured quiet hours in their local timezone.
  */
@@ -91,7 +99,7 @@ export async function sendToUser(
   targetUserId: string,
   payload: PushNotificationPayload,
   ignoreQuietHours: boolean = false
-): Promise<{ sent: number; pruned: number; skipped?: string }> {
+): Promise<PushDeliveryResult> {
   try {
     const targetUser = await User.findById(targetUserId);
     if (!targetUser) {
@@ -116,6 +124,16 @@ export async function sendToUser(
       return { sent: 0, pruned: 0, skipped: "no_subscriptions" };
     }
 
+    if (!env.VAPID_PUBLIC_KEY || !env.VAPID_PRIVATE_KEY) {
+      if (env.NODE_ENV === "production") {
+        logger.error("Push delivery unavailable: VAPID keys are not configured in production.");
+        return { sent: 0, pruned: 0, skipped: "vapid_not_configured" };
+      }
+
+      logger.info("Push delivery simulated because VAPID keys are not configured.");
+      return { sent: subscriptions.length, pruned: 0, simulated: true };
+    }
+
     const payloadString = JSON.stringify({
       title: payload.title,
       body: payload.body,
@@ -133,16 +151,11 @@ export async function sendToUser(
 
     let sent = 0;
     let pruned = 0;
+    let failed = 0;
 
     await Promise.all(
       subscriptions.map(async (sub) => {
         try {
-          if (!env.VAPID_PUBLIC_KEY || !env.VAPID_PRIVATE_KEY) {
-            // Simulated delivery in dev/test if keys not available
-            sent++;
-            return;
-          }
-
           const pushSub = {
             endpoint: sub.endpoint,
             keys: {
@@ -161,13 +174,14 @@ export async function sendToUser(
             await PushSubscription.deleteOne({ _id: sub._id });
             pruned++;
           } else {
+            failed++;
             logger.warn({ subId: sub._id, err: err?.message }, "Failed to send web push notification.");
           }
         }
       })
     );
 
-    return { sent, pruned };
+    return { sent, pruned, failed };
   } catch (error: any) {
     logger.error({ err: error?.message, targetUserId }, "Error in sendToUser push delivery.");
     return { sent: 0, pruned: 0, skipped: "error" };
@@ -181,7 +195,7 @@ export async function sendToPartner(
   senderUserId: string,
   payload: PushNotificationPayload,
   ignoreQuietHours: boolean = false
-): Promise<{ sent: number; pruned: number; skipped?: string }> {
+): Promise<PushDeliveryResult> {
   try {
     const sender = await User.findById(senderUserId);
     if (!sender) {

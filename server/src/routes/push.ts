@@ -200,7 +200,6 @@ pushRouter.post("/test", async (req: Request, res: Response, next: NextFunction)
       {
         title: "Our Space Notification Test ✨",
         body: "Your notifications are working beautifully!",
-        category: "reminders",
         url: "/app",
       },
       true // ignore quiet hours for explicit test

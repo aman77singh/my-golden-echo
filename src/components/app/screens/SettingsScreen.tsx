@@ -175,8 +175,29 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
   const handleTestPush = async () => {
     try {
       triggerHaptic("selection");
-      await apiClient.post("/push/test", {});
-      toast.success("Test notification sent! Check your device alerts.");
+      const { data } = await apiClient.post<{
+        result: {
+          sent: number;
+          failed?: number;
+          skipped?: string;
+          simulated?: boolean;
+        };
+      }>("/push/test", {});
+      const result = data.result;
+
+      if (result.simulated) {
+        toast.warning("Push was simulated. The server's VAPID keys are not configured.");
+      } else if (result.sent > 0 && !result.failed) {
+        toast.success("Push sent to your device. Check Notification Center.");
+      } else if (result.failed) {
+        toast.error("The push service could not deliver the test alert. Please try again.");
+      } else if (result.skipped === "no_subscriptions") {
+        toast.error("This account has no registered device. Enable push on this iPhone first.");
+      } else if (result.skipped === "vapid_not_configured") {
+        toast.error("Push notifications are not configured on the server.");
+      } else {
+        toast.error(`Test push was not sent (${result.skipped || "unknown reason"}).`);
+      }
     } catch (err: any) {
       toast.error(err?.message || "Failed to send test push.");
     }
